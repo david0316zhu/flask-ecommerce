@@ -20,7 +20,7 @@ app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 def home():
     session['logged_in'] = False
     session['customer'] = False
-    return render_template('temp-records.html')
+    return render_template('index.html')
 
 
 @app.route("/")
@@ -57,7 +57,7 @@ def live_counter():
 @app.route("/")
 @app.route("/estore", methods=['GET', 'POST'])
 def e_store():
-    return render_template('menu.html')
+    return render_template('customer_menu.html')
 
 
 @app.route("/")
