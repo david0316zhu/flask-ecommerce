@@ -5,7 +5,7 @@ import shelve
 
 
 class Tempform(FlaskForm):
-    nric = TextAreaField("nric", validators=[DataRequired(),Length(min=4, max=4)])
+    nric = StringField("nric", validators=[DataRequired(),Length(min=4, max=4)])
     temperature = FloatField("Temperature", validators=[DataRequired()])
     submit = SubmitField("Submit")
 

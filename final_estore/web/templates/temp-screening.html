@@ -35,7 +35,7 @@
         </div>
     </header>
     <main>
-        <div class="container-fluid temp-container">
+        <div class="container-fluid grey-container">
             <div class="col-lg-6 text-center py-5" id="temp-success">
                 <div class="temp-icon mb-5">
                     <i class="material-icons green-text">check_circle_outline</i>
@@ -61,41 +61,41 @@
                 </div>
             </div>
             <div class="col-lg-6" id="temp-info">
-                <form id="temp-form" class="mb-5" method ="POST" action="">
+                <form id="temp-form" class="mb-5" method="POST" action="">
                     {{ form.hidden_tag() }}
-                        <div class="mb-5">
-                            <b>Your Information:</b>
-                        </div>
-                        <div class="row mb-5">
-                            <div class="form-group col-lg-6">
-                                {% if form.nric.errors %}
-                                    {{ form.nric(class="form-control form-control-lg is-invalid") }}
-                                    <div class="invalid-feedback">
-                                        {% for error in form.nric.errors %}
-                                            <span>{{ error }}</span>
-                                        {% endfor %}
-                                    </div>
-                                {% else %}
-                                    {{ form.nric(class="form-control form-control-lg", placeholder="Last 4 NRIC Number")}}
-                                {% endif %}
+                    <div class="mb-5">
+                        <b>Your Information:</b>
+                    </div>
+                    <div class="row mb-5">
+                        <div class="form-group col-lg-6">
+                            {% if form.nric.errors %}
+                            {{ form.nric(class="form-input is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.nric.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
                             </div>
-                            <div class="col-lg-6">
-                                {% if form.temperature.errors %}
-                                    {{ form.temperature(class="form-control form-control-lg is-invalid") }}
-                                    <div class="invalid-feedback">
-                                        {% for error in form.temperature.errors %}
-                                            <span>{{ error }}</span>
-                                        {% endfor %}
-                                    </div>
-                                {% else %}
-                                    {{ form.temperature(class="form-control form-control-lg", placeholder="Temperature")}}
-                                {% endif %}
+                            {% else %}
+                            {{ form.nric(class="form-input", placeholder="Last 4 NRIC Number")}}
+                            {% endif %}
+                        </div>
+                        <div class="col-lg-6">
+                            {% if form.temperature.errors %}
+                            {{ form.temperature(class="form-input is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.temperature.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
                             </div>
+                            {% else %}
+                            {{ form.temperature(class="form-input", placeholder="Temperature")}}
+                            {% endif %}
                         </div>
-                        <div id="form-error" class="error"></div>
-                        <div class="row justify-content-end">
-                            {{ form.submit(class="btn primary-btn") }} 
-                        </div>
+                    </div>
+                    <div id="form-error" class="error"></div>
+                    <div class="row justify-content-end">
+                        {{ form.submit(class="btn primary-btn") }}
+                    </div>
                 </form>
                 <div class="qr-wrapper mb-5">
                     <div class="qr">
@@ -155,10 +155,10 @@
             $("#temp-success").hide();
             $("#temp-error").hide();
 
-            
+
         });
     </script>
-    
+
 </body>
 
 </html>

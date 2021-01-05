@@ -20,7 +20,7 @@ app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 def home():
     session['logged_in'] = False
     session['customer'] = False
-    return render_template('index.html')
+    return render_template('temp-records.html')
 
 
 @app.route("/")

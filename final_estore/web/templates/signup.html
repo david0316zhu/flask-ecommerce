@@ -30,39 +30,39 @@
                     </a>
                 </div>
                 {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}">
-                        {{ message }}
-                        </div>
-                    {% endfor%}
-                    {% endif %}
+                {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+                {% endfor%}
+                {% endif %}
                 {% endwith %}
                 <form class="form w-100 mb-3 d-flex flex-column justify-content-center align-items-center"
                     id="signup-form" method="POST" action="">
                     {{ form.hidden_tag() }}
-                    <div class="form-group-wrapper w-100">
+                    <div class="form-input-wrapper w-100">
                         {% if form.email.errors %}
-                            {{ form.email(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.email.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
+                        {{ form.email(class="form-input is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
                         {% else %}
-                            {{ form.email(class="form-control form-control-lg", placeholder="Email") }}
+                        {{ form.email(class="form-input-dark w-100", placeholder="Email") }}
                         {% endif %}
                     </div>
-                    <div class="form-group-wrapper w-100">
+                    <div class="form-input-wrapper w-100">
                         {% if form.password.errors %}
-                            {{ form.password(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.password.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
+                        {{ form.password(class="form-input is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.password.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
                         {% else %}
-                            {{ form.password(class="form-control form-control-lg", placeholder="Password") }}
+                        {{ form.password(class="form-input-dark w-100", placeholder="Password") }}
                         {% endif %}
                     </div>
                     <div id="error" class="error mb-3"></div>
