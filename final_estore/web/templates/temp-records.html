@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Records</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@300;400;700&family=Suez+One&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+        rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="./static/styles.css">
+    <link rel="shortcut icon" type="image/png" href="./static/assets/img/logo.png" />
+</head>
+
+<body>
+    <nav class="navbar fixed-top home-nav justify-content-between">
+        <a class="navbar-brand" href="{{ url_for('home') }}">
+            <h4>Auntie's <br />Mama Shop</h4>
+        </a>
+        <ul class="nav home-nav-list">
+            <li class="active-nav-item">
+                <a href="{{ url_for('staff_records') }}">Temperature Screening</a>
+            </li>
+            <li>
+                <div class="dropdown home-nav-dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Store Entry
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="{{ url_for('staff_graph') }}">Store Entry Graph</a>
+                        <a class="dropdown-item" href="{{ url_for('staff_home') }}">Live Count</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div class="home-nav-right">
+            <div class="phone">
+                <i class="material-icons-outlined yellow-text mr-2">call</i>
+                <span>+65 1234 5678</span>
+            </div>
+            <a class="d-flex align-items-center exit-btn" id="exit-btn" href="{{ url_for('home') }}">
+                <span class="mr-2">Exit</span>
+                <i class="material-icons">login</i>
+            </a>
+        </div>
+    </nav>
+    <header class="dark-header d-flex align-items-center justify-content-center">
+        <div>
+            <h1>Temperature Screening Records</h1>
+        </div>
+    </header>
+    <main>
+        <div class="container-fluid temp-container justify-content-between">
+            <div class="bootstrap-iso">
+                <div class="filter-panel">
+                    <div class="mb-5">
+                        <h3>Filter</h3>
+                    </div>
+                    <form id="filter-form">
+                        <div class="mb-3">
+                            <div>
+                                <span><b>By Date</b></span>
+                            </div>
+                            <div id="datepicker"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="start-time">
+                                <span><b>By Time</b></span>
+                            </label>
+                            <div class="timepicker">
+                                <input class="form-input" id="start-time" name="start-time" type="time" required />
+                                <span>To</span>
+                                <input class="form-input" id="end-time" name="end-time" type="time" required />
+                            </div>
+                        </div>
+                        <div id="form-error" class="error mb-3"></div>
+                        <button class="btn primary-btn">
+                            <span>Submit</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="row flex-column col-lg-8">
+                <div class="d-flex justify-content-end  mb-5">
+                    <div class="search-input">
+                        <input id="search" type="text" placeholder="Search by NRIC">
+                        <i class="material-icons">search</i>
+                    </div>
+                </div>
+                <table class="table">
+                    <tr class="table-header">
+                        <th>Last 4 digits of NRIC</th>
+                        <th>Temperature</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                    </tr>
+                    {% for entry in temp_list %}
+                    <tr>
+                        <td>{{ entry.get_ic_num() }}</td>
+                        <td>{{ entry.get_temperature() }}</td>
+                        <td>{{ entry.get_date() }}</td>
+                        <td>{{ entry.get_time() }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="../js/validators.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Set up datepicker
+            $("#datepicker").datepicker();
+
+            // Set up filter form
+            $("#filter-form").submit(function (e) {
+                e.preventDefault();
+
+                const date = $("#datepicker").datepicker("getDate");
+                const startTime = $(this).find("input[name='start-time']").val();
+                const endTime = $(this).find("input[name='end-time']").val();
+
+                // Check if all fields are valid
+                if (!validateDate(date)) {
+                    $("#form-error").text("Please choose a valid date.")
+                    $("#form-error").show();
+                    return;
+                }
+                if (!validateTimes(startTime, endTime)) {
+                    $("#form-error").text("Start time must be after end time")
+                    $("#form-error").show();
+                    return;
+                }
+
+                // Filter records and display table
+            });
+
+            $("#search").on("keyup", function () {
+                let value = this.value.toLowerCase().trim();
+                // Search records and show filtered records
+                $(".table tr").show().filter(function () {
+                    if ($(this).hasClass("table-header")) {
+                        return false;
+                    }
+                    return $(this).find(".nric").text().toLowerCase().trim().indexOf(value) == -1;
+                }).hide();
+            });
+        });
+    </script>
+</body>
+
+</html>

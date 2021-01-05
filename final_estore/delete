@@ -1,0 +1,85 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="./static/validators.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#temp-success").hide();
+            $("#temp-error").hide();
+
+            $("#temp-form").submit(function () {
+                // Prevent form submission
+                event.preventDefault();
+
+                let $form = $(this);
+                const nric = $form.find("input[name='nric']").val();
+                const temperature = $form.find("input[name='temperature']").val();
+
+                // Check if all fields are valid
+                if (!validateNric(nric)) {
+                    $("#form-error").text("NRIC must have 4 characters.")
+                    $("#form-error").show();
+                    return;
+                }
+                if (!validateTemperature(temperature)) {
+                    $("#form-error").text("Temperature must be a number.")
+                    $("#form-error").show();
+                    return;
+                }
+
+                // Redirect to live counter if temperature is normal
+                if (temperature > 37.5) {
+                    $("#temp-error").show();
+                    $("#temp-info").hide();
+                } else if (temperature <= 37.5) {
+                    $("#temp-success").show();
+                    $("#temp-info").hide();
+                    setTimeout(function () {
+                        window.location = "{{ url_for('live_counter') }}";
+                    }, 1000);
+                }
+            });
+        });
+    </script>
+
+<input class="form-input" type="text" placeholder="Last 4 NRIC Number*" required
+                                    name="nric" /
+                                <input class="form-input" type="text" placeholder="Temperature*" required
+                                    name="temperature" />
+
+
+
+$("#temp-form").submit(function () {
+                // Prevent form submission
+                event.preventDefault();
+
+                let $form = $(this);
+                const nric = $form.find("input[name='nric']").val();
+                const temperature = $form.find("input[name='temperature']").val();
+
+                // Check if all fields are valid
+                if (!validateNric(nric)) {
+                    $("#form-error").text("NRIC must have 4 characters.")
+                    $("#form-error").show();
+                    return;
+                }
+                if (!validateTemperature(temperature)) {
+                    $("#form-error").text("Temperature must be a number.")
+                    $("#form-error").show();
+                    return;
+                }
+
+                // Redirect to live counter if temperature is normal
+                if (temperature > 37.5) {
+                    $("#temp-error").show();
+                    $("#temp-info").hide();
+                } else if (temperature <= 37.5) {
+                    $("#temp-success").show();
+                    $("#temp-info").hide();
+                    setTimeout(function () {
+                        window.location = "{{ url_for('live_counter') }}";
+                    }, 1000);
+                }
+            });

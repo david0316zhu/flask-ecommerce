@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Screening</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@300;400;700&family=Suez+One&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="./static/styles.css">
+    <link rel="shortcut icon" type="image/png" href="./static/assets/img/logo.png" />
+</head>
+
+<body>
+    <nav class="navbar fixed-top home-nav justify-content-between">
+        <a class="navbar-brand" href="{{ url_for('home') }}">
+            <h4>Auntie's <br />Mama Shop</h4>
+        </a>
+        <ul class="nav home-nav-list">
+            <li class="active-nav-item">
+                <a href="{{ url_for('temp_screen') }}">Temperature Screening</a>
+            </li>
+            <li>
+                <a href="{{ url_for('live_counter') }}">Live Counter</a>
+            </li>
+        </ul>
+    </nav>
+    <header class="dark-header d-flex align-items-center justify-content-center">
+        <div>
+            <h1>Temperature Screening</h1>
+        </div>
+    </header>
+    <main>
+        <div class="container-fluid grey-container">
+            <div class="col-lg-6 text-center py-5" id="temp-error">
+                <div class="temp-icon mb-5">
+                    <i class="material-icons red-text">not_interested</i>
+                </div>
+                <div class="mb-5">
+                    <h3>Unsuccessful Entry!</h3>
+                </div>
+                <div class="temp-subtitle mb-5">
+                    <span class="red-text"><b>*Temperatures above 37.5 degrees, will be denied entry into the store to
+                            provide a safe shopping environment for customers</b></span>
+                </div>
+                <div class="row justify-content-center">
+                    <a class="btn secondary-btn d-flex align-items-center" href="{{ url_for('home') }}">
+                        <span><b>Back To Home</b></span>
+                        <i class="material-icons">home</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="dark-footer">
+        <div class="footer-top">
+            <div class="footer-info">
+                <div class="mb-3">
+                    <span class="footer-title">Auntie's Mama Shop</span>
+                </div>
+                <div class="mb-3">
+                    <span class="footer-subtitle">Operating Hours</span>
+                </div>
+                <div>
+                    <div>
+                        <b>Mon - Sat:</b>
+                        <span>9.00 am - 10.00 pm</span>
+                    </div>
+                    <div>
+                        <b>Sun:</b>
+                        <span>10.00 am - 8.00 pm</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-copyright">
+                <span>&copy; All Rights Reserved AUNTIE'S MAMA SHOP 2020</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+    </script>
+</body>
+
+</html>

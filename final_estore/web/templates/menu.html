@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@300;400;700&family=Suez+One&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+        rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="./static/styles.css">
+    <link rel="shortcut icon" type="image/png" href="./static/assets/img/logo.png" />
+</head>
+
+<body>
+    <nav class="navbar fixed-top home-nav justify-content-between">
+        <a class="navbar-brand" href="{{ url_for('home') }}">
+            <h4>Auntie's <br />Mama Shop</h4>
+        </a>
+        <ul class="nav home-nav-list">
+            <li>
+                <a href="{{ url_for('live_counter') }}">Live Counter</a>
+            </li>
+            <li>
+                <div class="dropdown home-nav-dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Shop
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="{{ url_for('e_store') }}">Menu</a>
+                        {% if session.get('customer') %}
+                        <a class="dropdown-item" href="cart.html">Cart</a>
+                        <a class="dropdown-item" href="orders.html">Orders</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div class="home-nav-right">
+            <div class="phone">
+                <i class="material-icons-outlined yellow-text mr-2">call</i>
+                <span>+65 1234 5678</span>
+            </div>
+            <a class="home-nav-icon position-relative" href="cart.html">
+                <div class="badge">3</div>
+                <i class="material-icons">shopping_cart</i>
+            </a>
+            <a class="d-flex align-items-center exit-btn" id="exit-btn" href="{{ url_for('home') }}">
+                <span class="mr-2">Exit</span>
+                <i class="material-icons">login</i>
+            </a>
+        </div>
+    </nav>
+    <header class="dark-header d-flex align-items-center justify-content-center">
+        <div>
+            <h1>Menu</h1>
+        </div>
+    </header>
+    <main>
+        <div class="container-fluid grey-container justify-content-between">
+            <div>
+                <div class="white-card filter-panel mb-5">
+                    <div class="mb-5">
+                        <h3>Filter</h3>
+                    </div>
+                    <form id="filter-form">
+                        <div class="d-flex flex-column mb-3">
+                            <label class="mb-2" for="price">
+                                <span><b>By Price</b></span>
+                            </label>
+                            <input class="form-input" type="text" name="price_filter" >
+                        </div>
+                        <div id="form-error" class="error mb-3"></div>
+                        <button class="btn primary-btn">
+                            <span>Submit</span>
+                        </button>
+                    </form>
+                </div>
+                <div class="white-card need-help">
+                    <i class="material-icons">support</i>
+                    <h4>Need Help?</h4>
+                    <span>Call +65 1234 5678</span>
+                </div>
+            </div>
+            <div class="row flex-column col-lg-8 main-panel">
+                <div class="d-flex justify-content-end  mb-5">
+                    <div class="search-input">
+                        <input class="form-input" type="text" placeholder="Search" name="search_bar" />
+                        <i class="material-icons">search</i>
+                    </div>
+                </div>
+                <div class="list-header">
+                    <span class="list-lg">Item</span>
+                    <span class="list-sm">Price</span>
+                    <span class="list-sm">Order</span>
+                </div>
+                <ul class="products-list">
+                    <li class="products-item">
+                        <div class="list-lg products-product">
+                            <div class="products-img">
+                                <img src="./static/assets/img/logo.png" alt="product">
+                            </div>
+                            <div class="products-title">
+                                <h4>Nongshim Shrimp Shin Ramyun Noodles</h4>
+                                <span>5 Count/ 120 grams</span>
+                            </div>
+                        </div>
+                        <div class="list-sm menu-products-price">
+                            <span>$4.35</span>
+                        </div>
+                        <div class="list-sm products-quantity">
+                            <div>
+                                <i class="material-icons icon-btn">add</i>
+                                <span>2</span>
+                                <i class="material-icons icon-btn">remove</i>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="products-item">
+                        <div class="list-lg products-product">
+                            <div class="products-img">
+                                <img src="./static/assets/img/logo.png" alt="product">
+                            </div>
+                            <div class="products-title">
+                                <h4>Nongshim Shrimp Shin Ramyun Noodles</h4>
+                                <span>5 Count/ 120 grams</span>
+                            </div>
+                        </div>
+                        <div class="list-sm menu-products-price">
+                            <span>$4.35</span>
+                        </div>
+                        <div class="list-sm products-quantity">
+                            <div>
+                                <i class="material-icons icon-btn">add</i>
+                                <span>2</span>
+                                <i class="material-icons icon-btn">remove</i>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</body>
+
+</html>
