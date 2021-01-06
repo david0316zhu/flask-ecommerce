@@ -88,6 +88,9 @@
                 </div>
             </div>
             <div class="row flex-column col-lg-8 main-panel">
+                {% if temp_list|length == 0 %}
+                <span><b>No data available.</b></span>
+                {% else %}
                 <div class="d-flex justify-content-end  mb-5">
                     <div class="search-input">
                         <input id="search" type="text" placeholder="Search by NRIC">
@@ -110,6 +113,7 @@
                     </tr>
                     {% endfor %}
                 </table>
+                {% endif %}
             </div>
         </div>
     </main>

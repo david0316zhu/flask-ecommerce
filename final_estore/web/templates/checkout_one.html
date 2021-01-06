@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cart</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@300;400;700&family=Suez+One&display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" />
+    <link rel="stylesheet" href="./static/styles.css" />
+    <link rel="shortcut icon" type="image/png" href="./static/assets/img/logo.png" />
+</head>
+
+<body>
+    <nav class="navbar fixed-top home-nav justify-content-between">
+        <a class="navbar-brand" href="../index.html">
+            <h4>Auntie's <br />Mama Shop</h4>
+        </a>
+        <ul class="nav home-nav-list">
+            <li>
+                <a href="../live-counter.html">Live Counter</a>
+            </li>
+            <li>
+                <div class="dropdown home-nav-dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Shop
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="menu.html">Menu</a>
+                        <a class="dropdown-item" href="cart.html">Cart</a>
+                        <a class="dropdown-item" href="orders.html">Orders</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div class="home-nav-right">
+            <div class="phone">
+                <i class="material-icons-outlined yellow-text mr-2">call</i>
+                <span>+65 1234 5678</span>
+            </div>
+            <a class="home-nav-icon position-relative" href="cart.html">
+                <div class="badge">3</div>
+                <i class="material-icons">shopping_cart</i>
+            </a>
+            <a class="d-flex align-items-center exit-btn" id="exit-btn" href="../index.html">
+                <span class="mr-2">Exit</span>
+                <i class="material-icons">login</i>
+            </a>
+        </div>
+    </nav>
+    <header class="dark-header d-flex flex-column align-items-center justify-content-center">
+        <div>
+            <h1>Checkout Step 2</h1>
+        </div>
+        <div class="timeline w-100">
+            <ol>
+                <li class="timeline-active">Your details</li>
+                <li>Payment</li>
+                <li>Finish!</li>
+            </ol>
+        </div>
+    </header>
+    <main>
+        <div class="container-fluid grey-container">
+            <div class="row">
+                <div class="checkout-left col-lg-3">
+                    <div class="white-card">
+                        <h4>Delivery Time</h4>
+                        <span>We take an average of 1 week to deliver.</span>
+                        <br />
+                        <span>Self collection is available too, at AUNTIE'S
+                            MAMA SHOP.</span>
+                    </div>
+                    <div class="white-card">
+                        <h4>Secure Payment</h4>
+                        <span>Payment information is not stored.</span>
+                    </div>
+                    <div class="white-card need-help">
+                        <i class="material-icons">support</i>
+                        <h4>Need Help?</h4>
+                        <span>Call +65 1234 5678</span>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="white-card">
+                        <div class="text-center">
+                            <h2>Your Order Details</h2>
+                        </div>
+                        <div>
+                            <div class="d-flex flex-column mb-3">
+                                <label class="mb-2" for="price">
+                                    <span><b>Name</b></span>
+                                </label>
+                            </div>
+                            <div class="d-flex flex-column mb-3">
+                                <label class="mb-2" for="price">
+                                    <span><b>Address</b></span>
+                                </label>
+                            </div>
+                            <div class="d-flex flex-column mb-3">
+                                <div class="mb-2">
+                                    <span><b>Date</b></span>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column mb-3">
+                                <label for="start-time">
+                                    <span><b>Time</b></span>
+                                </label>
+                                <div class="timepicker">
+                                </div>
+                            </div>
+                            <div id="form-error" class="error mb-3"></div>
+                            <div id="form-error" class="error mb-3"></div>
+                            <div class="w-100 d-flex align-items-center justify-content-center">
+                                <button class="btn primary-btn">
+                                    <span>Submit</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 checkout-right">
+                    <div class="white-card">
+                        <div class="d-flex align-items-center mb-5">
+                            <h4>Your Order</h4>
+                            <i class="material-icons ml-2">receipt</i>
+                            <hr />
+                        </div>
+                        <div class="checkout-item">
+                            <div>
+                                <span><b>2x</b></span>
+                                <span>Aglio Olio Packet</span>
+                            </div>
+                            <span>$11.00</span>
+                        </div>
+                        <div class="checkout-item">
+                            <div>
+                                <span><b>2x</b></span>
+                                <span>Aglio Olio Packet</span>
+                            </div>
+                            <span>$11.00</span>
+                        </div>
+                        <hr />
+                        <div class="checkout-item">
+                            <span><b>Subtotal</b></span>
+                            <span>$11.00</span>
+                        </div>
+                        <div class="checkout-item">
+                            <span><b>Delivery fee</b></span>
+                            <span>$11.00</span>
+                        </div>
+                        <hr />
+                        <div class="checkout-item checkout-total mt-2">
+                            <span><b>Total</b></span>
+                            <span>$11.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</body>
+
+</html>

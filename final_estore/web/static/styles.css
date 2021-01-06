@@ -960,3 +960,78 @@ video {
     font-size: 1.7rem;
     font-weight: bold;
 }
+
+/* Checkout */
+
+.checkout-left>div:not(:last-child) {
+    margin-bottom: 2rem;
+}
+ 
+.checkout-right {
+    color: var(--dark-grey);
+}
+
+.checkout-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.checkout-item.checkout-total {
+    font-size: 2rem;
+    text-transform: uppercase;
+}
+
+.timeline {
+    overflow-x: hidden;
+    padding: 20px 0;
+}
+
+.timeline ol {
+    width: 100%;
+    transition: all 1s;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.timeline ol li {
+    list-style: none;
+    position: relative;
+    text-align: center;
+    flex-grow: 1;
+    flex-basis: 0;
+    padding: 0 5px;
+}
+
+.timeline ol li::before {
+    content: "";
+    width: 20px;
+    height: 20px;
+    display: block;
+    border-radius: 50%;
+    background-color: var(--dark-orange);
+    border: 5px solid var(--light-grey);
+    margin: 0 auto 5px auto;
+}
+
+.timeline ol li:not(:last-child)::after {
+    content: "";
+    width: calc(100% - 14px);
+    height: 5px;
+    display: block;
+    background-color: var(--light-grey);
+    margin: 0;
+    position: absolute;
+    top: 7px;
+    left: calc(50% + 7px);
+}
+
+.timeline-active::after {
+    background-color: var(--medium-yellow) !important;
+}
+
+.timeline-active::before {
+    border-color: var(--medium-yellow) !important;
+}
