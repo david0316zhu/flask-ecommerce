@@ -43,3 +43,25 @@ class User:
 
     def get_password(self):
         return self.__password
+
+class Product:
+    count = 0
+    
+    def __init__(self, title, info, price):
+        Product.count += 1
+        self.__product_id = Product.count
+        self.__title = title
+        self.__info = info
+        self.__price = price
+    
+    def get_product_id(self):
+        return self.__product_id
+
+    def get_title(self):
+        return self.__title
+
+    def get_info(self):
+        return self.__info
+    
+    def get_price(self):
+        return self.__price

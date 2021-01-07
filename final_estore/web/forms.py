@@ -22,4 +22,11 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
 
+class SearchForm(FlaskForm):
+    search = StringField("search", validators=[DataRequired(),Length(max=4)])
+    submit = SubmitField('search')
 
+class ProductForm(FlaskForm):
+    title = StringField("title", validators=[DataRequired()])
+    info = StringField("info", validators=[DataRequired()])
+    price = FloatField("price", validators=[DataRequired()])

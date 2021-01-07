@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, flash, redirect, session
-from forms import Tempform, LoginForm, RegistrationForm
-from models import Temp, User
+from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm
+from models import Temp, User, Product
 import shelve
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, current_user, logout_user, login_required, LoginManager
@@ -18,9 +18,12 @@ app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 @app.route("/")
 @app.route("/home")
 def home():
+    db = shelve.open('storage.db', 'c')
+    
+    db.close()
     session['logged_in'] = False
     session['customer'] = False
-    return render_template('temp-records.html')
+    return render_template('index.html')
 
 
 @app.route("/")
@@ -168,12 +171,20 @@ def staff_records():
         temp_dict = {}
         db = shelve.open('storage.db', 'r')
         temp_dict = db['Temp']
-        db.close()
         temp_list = []
         for key in temp_dict:
             entry = temp_dict.get(key)
             temp_list.append(entry)
-        return render_template('temp-records.html', temp_list=temp_list)
+        form = SearchForm()
+        if form.validate_on_submit():
+            search_list = []
+            for j in temp_list:
+                nric_check = j.get_ic_num()
+                if form.search.data.casefold() in nric_check.casefold():
+                    search_list.append(j)
+            temp_list = search_list
+            return render_template('temp-records.html', temp_list=temp_list, form=form)
+        return render_template('temp-records.html', temp_list=temp_list, form=form)
     else:
         return redirect(url_for('staff_login'))
 
@@ -183,6 +194,39 @@ def staff_records():
 def staff_graph():
     if session.get('logged_in'):
         return render_template('store-entry-graph.html')
+    else:
+        return redirect(url_for('staff_login'))
+
+
+@app.route("/")
+@app.route("/admin_estore", methods=['GET', 'POST'])
+def staff_estore():
+    if session.get('logged_in'):
+        db = shelve.open('storage.db', 'c')
+        product_dict = {}
+        product_dict = db['Product']
+        product_list = []
+        for key in product_dict:
+            entry = product_dict.get(key)
+            product_list.append(entry)
+        product_form = ProductForm()
+        form = SearchForm()
+        if product_form.validate_on_submit():
+            new_product_dict = db["Product"]
+            new_product = Product(product_form.title.data, product_form.info.data, product_form.price.data)
+            new_product_dict[new_product.get_product_id()] = new_product
+            db['Product'] = new_product_dict
+            return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form)
+        
+        if form.validate_on_submit():
+            search_list = []
+            for i in product_list:
+                item = i.get_title()
+                if form.search.data.casefold() in item.casefold():
+                    search_list.append(i)
+            product_list = search_list
+            return render_template('admin_menu.html', product_list=product_list, form=form)
+        return render_template('admin_menu.html')
     else:
         return redirect(url_for('staff_login'))
 

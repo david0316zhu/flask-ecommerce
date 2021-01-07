@@ -91,12 +91,24 @@
                 {% if temp_list|length == 0 %}
                 <span><b>No data available.</b></span>
                 {% else %}
-                <div class="d-flex justify-content-end  mb-5">
-                    <div class="search-input">
-                        <input id="search" type="text" placeholder="Search by NRIC">
-                        <i class="material-icons">search</i>
+                <form method="POST" action="">
+                    {{ form.hidden_tag() }}
+                    <div class="d-flex justify-content-end  mb-5">
+                        <div class="search-input">
+                            {% if form.search.errors %}
+                            {{ form.search(class="form-input is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.search.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.search(id="search", placeholder="Search by NRIC")}}
+                            {% endif %}
+                            {{ form.submit(class="material-icons") }}
+                        </div>
                     </div>
-                </div>
+                </form>
                 <table class="table">
                     <tr class="table-header">
                         <th>Last 4 digits of NRIC</th>
