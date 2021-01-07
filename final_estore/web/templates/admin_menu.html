@@ -14,18 +14,18 @@
         href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
         rel="stylesheet">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" href="../css/styles.css">
-    <link rel="shortcut icon" type="image/png" href="../assets/img/logo.png" />
+    <link rel="stylesheet" href="./static/styles.css">
+    <link rel="shortcut icon" type="image/png" href="./static/assets/img/logo.png" />
 </head>
 
 <body>
     <nav class="navbar fixed-top home-nav justify-content-between">
-        <a class="navbar-brand" href="../index.html">
+        <a class="navbar-brand" href="{{ url_for('home') }}">
             <h4>Auntie's <br />Mama Shop</h4>
         </a>
         <ul class="nav home-nav-list">
             <li>
-                <a href="temp-records.html">Temperature Screening</a>
+                <a href="{{ url_for('staff_records') }}">Temperature Screening</a>
             </li>
             <li>
                 <div class="dropdown home-nav-dropdown">
@@ -35,7 +35,7 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" href="store-entry-graph.html">Store Entry Graph</a>
-                        <a class="dropdown-item" href="live-counter.html">Live Count</a>
+                        <a class="dropdown-item" href="{{ url_for('staff_home') }}">Live Count</a>
                     </div>
                 </div>
             </li>
@@ -46,7 +46,7 @@
                         Shop
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="menu.html">Menu</a>
+                        <a class="dropdown-item" href="{{ url_for('staff_estore') }}">Menu</a>
                         <a class="dropdown-item" href="orders.html">Orders</a>
                         <a class="dropdown-item" href="shop-graph.html">Shop Graph</a>
                     </div>
@@ -58,7 +58,7 @@
                 <i class="material-icons-outlined yellow-text mr-2">call</i>
                 <span>+65 1234 5678</span>
             </div>
-            <a class="d-flex align-items-center exit-btn" id="exit-btn" href="../index.html">
+            <a class="d-flex align-items-center exit-btn" id="exit-btn" href="{{ url_for('home') }}">
                 <span class="mr-2">Exit</span>
                 <i class="material-icons">login</i>
             </a>
@@ -81,7 +81,7 @@
                             <div class="mb-2">
                                 <span><b>By Price</b></span>
                             </div>
-                            {{ render_field(form.price, class="form-input", type="text", placeholder="E.g. 1")}}
+                            
                         </div>
                         <div id="form-error" class="error mb-3"></div>
                         <button class="btn primary-btn">
@@ -96,12 +96,24 @@
                 </div>
             </div>
             <div class="row flex-column col-lg-8 main-panel">
-                <div class="d-flex justify-content-end  mb-5">
-                    <div class="search-input">
-                        {{ render_field(form.search, type="text", placeholder="Search title")}}
-                        <i class="material-icons">search</i>
+                <form method="POST" action="">
+                    {{ form.hidden_tag() }}
+                    <div class="d-flex justify-content-end  mb-5">
+                        <div class="search-input">
+                            {% if form.search.errors %}
+                            {{ form.search(class="form-input is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.search.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.search(placeholder="Search by title")}}
+                            {% endif %}
+                            {{ form.submit(class="material-icons") }}
+                        </div>
                     </div>
-                </div>
+                </form>
                 <div class="list-header">
                     <span class="list-lg">Item</span>
                     <span class="list-sm">Price</span>
@@ -109,17 +121,18 @@
                 </div>
                 <ul class="products-list">
                     <li class="products-item">
+                        {% for entry in product_list %}
                         <div class="list-lg products-product">
                             <div class="products-img">
                                 <img src="./statics/assets/img/logo.png" alt="product">
                             </div>
                             <div class="products-title">
-                                <h4>Nongshim Shrimp Shin Ramyun Noodles</h4>
-                                <span>5 Count/ 120 grams</span>
+                                <h4>{{ entry.get_title() }}</h4>
+                                <span>{{ entry.get_info() }}</span>
                             </div>
                         </div>
                         <div class="list-sm menu-products-price">
-                            <span>$4.35</span>
+                            <span>{{ "$"+entry.get_price() }}</span>
                         </div>
                         <div class="list-sm d-flex">
                             <div class="list-btn mr-2">
@@ -129,28 +142,7 @@
                                 <i class="material-icons">delete</i>
                             </div>
                         </div>
-                    </li>
-                    <li class="products-item">
-                        <div class="list-lg products-product">
-                            <div class="products-img">
-                                <img src="../assets/img/logo.png" alt="product">
-                            </div>
-                            <div class="products-title">
-                                <h4>Nongshim Shrimp Shin Ramyun Noodles</h4>
-                                <span>5 Count/ 120 grams</span>
-                            </div>
-                        </div>
-                        <div class="list-sm menu-products-price">
-                            <span>$4.35</span>
-                        </div>
-                        <div class="list-sm d-flex">
-                            <div class="list-btn mr-2">
-                                <i class="material-icons">create</i>
-                            </div>
-                            <div class="list-btn">
-                                <i class="material-icons">delete</i>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </li>
                 </ul>
             </div>
