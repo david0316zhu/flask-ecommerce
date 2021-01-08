@@ -38,6 +38,8 @@
                         {% if session.get('customer') %}
                         <a class="dropdown-item" href="cart.html">Cart</a>
                         <a class="dropdown-item" href="orders.html">Orders</a>
+                        {% else %}
+                        <a class="dropdown-item" href="{{ url_for('e_store_register')}}">Sign Up</a>
                         {% endif %}
                     </div>
                 </div>
@@ -90,30 +92,42 @@
                 </div>
             </div>
             <div class="row flex-column col-lg-8 main-panel">
-                <div class="d-flex justify-content-end  mb-5">
-                    <div class="search-input">
-                        <input class="form-input" type="text" placeholder="Search" name="search_bar" />
-                        <i class="material-icons">search</i>
+                <form method="POST" action="">
+                    {{ form.hidden_tag() }}
+                    <div class="d-flex justify-content-end  mb-5">
+                        <div class="search-input">
+                            {% if form.search.errors %}
+                            {{ form.search(class="form-input is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.search.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.search(placeholder="Search by title")}}
+                            {% endif %}
+                            {{ form.submit(class="material-icons") }}
+                        </div>
                     </div>
-                </div>
                 <div class="list-header">
                     <span class="list-lg">Item</span>
                     <span class="list-sm">Price</span>
                     <span class="list-sm">Order</span>
                 </div>
                 <ul class="products-list">
+                    {% for entry in product_list %}
                     <li class="products-item">
                         <div class="list-lg products-product">
                             <div class="products-img">
                                 <img src="./static/assets/img/logo.png" alt="product">
                             </div>
                             <div class="products-title">
-                                <h4>Nongshim Shrimp Shin Ramyun Noodles</h4>
-                                <span>5 Count/ 120 grams</span>
+                                <h4>{{ entry.get_title() }}</h4>
+                                <span>{{ entry.get_info() }}</span>
                             </div>
                         </div>
                         <div class="list-sm menu-products-price">
-                            <span>$4.35</span>
+                            <span>{{ "$"+entry.get_price() }}</span>
                         </div>
                         <div class="list-sm products-quantity">
                             <div>
@@ -123,27 +137,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="products-item">
-                        <div class="list-lg products-product">
-                            <div class="products-img">
-                                <img src="./static/assets/img/logo.png" alt="product">
-                            </div>
-                            <div class="products-title">
-                                <h4>Nongshim Shrimp Shin Ramyun Noodles</h4>
-                                <span>5 Count/ 120 grams</span>
-                            </div>
-                        </div>
-                        <div class="list-sm menu-products-price">
-                            <span>$4.35</span>
-                        </div>
-                        <div class="list-sm products-quantity">
-                            <div>
-                                <i class="material-icons icon-btn">add</i>
-                                <span>2</span>
-                                <i class="material-icons icon-btn">remove</i>
-                            </div>
-                        </div>
-                    </li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>

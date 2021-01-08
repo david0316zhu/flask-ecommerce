@@ -60,7 +60,23 @@ def live_counter():
 @app.route("/")
 @app.route("/estore", methods=['GET', 'POST'])
 def e_store():
-    return render_template('customer_menu.html')
+    db = shelve.open('storage.db', 'c')
+    product_dict = {}
+    product_dict = db['Product']
+    product_list = []
+    for key in product_dict:
+        entry = product_dict.get(key)
+        product_list.append(entry)
+    form = SearchForm()
+    if form.validate_on_submit():
+        search_list = []
+        for i in product_list:
+            item = i.get_title()
+            if form.search.data.casefold() in item.casefold():
+                search_list.append(i)
+        product_list = search_list
+        return render_template('customer_menu.html', product_list=product_list, form=form)
+    return render_template('customer_menu.html', product_list=product_list, form=form)
 
 
 @app.route("/")
