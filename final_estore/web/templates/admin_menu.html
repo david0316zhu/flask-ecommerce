@@ -20,7 +20,7 @@
 
 <body>
     <nav class="navbar fixed-top home-nav justify-content-between">
-        <a class="navbar-brand" href="{{ url_for('home') }}">
+        <a class="navbar-brand" href="{{ url_for('staff_home') }}">
             <h4>Auntie's <br />Mama Shop</h4>
         </a>
         <ul class="nav home-nav-list">
@@ -34,7 +34,7 @@
                         Store Entry
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="store-entry-graph.html">Store Entry Graph</a>
+                        <a class="dropdown-item" href="{{ url_for('staff_graph') }}">Store Entry Graph</a>
                         <a class="dropdown-item" href="{{ url_for('staff_home') }}">Live Count</a>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" href="{{ url_for('staff_estore') }}">Menu</a>
                         <a class="dropdown-item" href="orders.html">Orders</a>
-                        <a class="dropdown-item" href="shop-graph.html">Shop Graph</a>
+                        <a class="dropdown-item" href="{{ url_for('shop_graph')}}">Shop Graph</a>
                     </div>
                 </div>
             </li>
