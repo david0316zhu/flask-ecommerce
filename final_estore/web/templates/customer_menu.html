@@ -72,17 +72,27 @@
                     <div class="mb-5">
                         <h3>Filter</h3>
                     </div>
-                    <form id="filter-form">
+                    <form id="filter-form" method="POST" action="">
                         <div class="d-flex flex-column mb-3">
                             <label class="mb-2" for="price">
                                 <span><b>By Price</b></span>
                             </label>
-                            <input class="form-input" type="text" name="price_filter" >
+                            {{ price_form.hidden_tag() }}
+                                    <div class="form-input">
+                                        {% if price_form.price.errors %}
+                                        {{ price_form.price(class="form-input is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in price_form.price.errors %}
+                                            <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% else %}
+                                        {{ price_form.price(placeholder="Search by Price")}}
+                                        {% endif %}
+                                    </div>
+                                <div id="form-error" class="error mb-3"></div>
+                                    {{ price_form.submit(class="btn primary-btn")}}
                         </div>
-                        <div id="form-error" class="error mb-3"></div>
-                        <button class="btn primary-btn">
-                            <span>Submit</span>
-                        </button>
                     </form>
                 </div>
                 <div class="white-card need-help">
@@ -114,8 +124,8 @@
                     <span class="list-sm">Price</span>
                     <span class="list-sm">Order</span>
                 </div>
+                {% for entry in product_list %}
                 <ul class="products-list">
-                    {% for entry in product_list %}
                     <li class="products-item">
                         <div class="list-lg products-product">
                             <div class="products-img">
@@ -127,7 +137,7 @@
                             </div>
                         </div>
                         <div class="list-sm menu-products-price">
-                            <span>{{ "$"+entry.get_price() }}</span>
+                            <span>${{entry.get_price() }}</span>
                         </div>
                         <div class="list-sm products-quantity">
                             <div>
@@ -137,8 +147,8 @@
                             </div>
                         </div>
                     </li>
-                    {% endfor %}
                 </ul>
+                {% endfor %}
             </div>
         </div>
     </main>

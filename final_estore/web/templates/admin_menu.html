@@ -119,9 +119,9 @@
                     <span class="list-sm">Price</span>
                     <span class="list-sm">Action</span>
                 </div>
+                {% for entry in product_list %}
                 <ul class="products-list">
                     <li class="products-item">
-                        {% for entry in product_list %}
                         <div class="list-lg products-product">
                             <div class="products-img">
                                 <img src="./statics/assets/img/logo.png" alt="product">
@@ -132,7 +132,7 @@
                             </div>
                         </div>
                         <div class="list-sm menu-products-price">
-                            <span>{{ "$"+entry.get_price() }}</span>
+                            <span>${{ entry.get_price() }}</span>
                         </div>
                         <div class="list-sm d-flex">
                             <div class="list-btn mr-2">
@@ -142,9 +142,9 @@
                                 <i class="material-icons">delete</i>
                             </div>
                         </div>
-                        {% endfor %}
                     </li>
                 </ul>
+                {% endfor %}
             </div>
             <button class="btn primary-btn mt-3 floating-btn">
                 <i class="material-icons mr-2">add</i>
@@ -164,31 +164,56 @@
                     <div class="close-btn" id="close-btn">
                         <i class="material-icons">close</i>
                     </div>
-                    <form class="form d-flex flex-column justify-content-center align-items-center">
-                        <div class="w-100 mb-3">
-                            <label for="title">
-                                <span><b>Title</b></span>
-                            </label>
-                            {{ render_field(form.title, type="text", placeholder="Title", required=True)}}
-                        </div>
-                        <div class="w-100 mb-3">
-                            <label for="description">
-                                <span><b>Description</b></span>
-                            </label>
-                            {{ render_field(form.description, type="text", placeholder="Describe your product",
-                            required=True)}}
-                        </div>
-                        <div class="w-100 mb-3">
-                            <label for="price">
-                                <span><b>Price</b></span>
-                            </label>
-                            {{ render_field(form.price, type="text", placeholder="Price of product", required=True)}}
-                        </div>
-                        <div id="popup-error" class="error mb-3"></div>
-                        <div id="popup-success" class="success mb-3"></div>
-                        <button class="btn primary-btn mt-3">
-                            <span>Update</span>
-                        </button>
+                    <form class="form d-flex flex-column justify-content-center align-items-center" method="POST" action="">
+                        {{ product_form.hidden_tag() }}
+                            <div class="w-100 mb-3">
+                                <label for="title">
+                                    <span><b>Title</b></span>
+                                </label>
+                                {% if product_form.title.errors %}
+                                {{ product_form.title(class="form-input is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in product_form.title.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ product_form.title(placeholder="Title")}}
+                                {% endif %}
+                            </div>
+                            <div class="w-100 mb-3">
+                                <label for="description">
+                                    <span><b>Description</b></span>
+                                </label>
+                                {% if product_form.info.errors %}
+                                {{ product_form.info(class="form-input is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in product_info.title.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ product_form.info(placeholder="Description of Product")}}
+                                {% endif %}
+                            </div>
+                            <div class="w-100 mb-3">
+                                <label for="price">
+                                    <span><b>Price</b></span>
+                                </label>
+                                {% if product_form.price.errors %}
+                                {{ product_form.price(class="form-input is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in product_form.price.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ product_form.price(placeholder="Price")}}
+                                {% endif %}
+                            </div>
+                            <div id="popup-error" class="error mb-3"></div>
+                            <div id="popup-success" class="success mb-3"></div>
+                                {{ product_form.submit(class="btn primary-btn")}}
                     </form>
                 </div>
             </div>

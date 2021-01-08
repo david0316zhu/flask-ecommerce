@@ -13,18 +13,18 @@
     <link
         href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
         rel="stylesheet">
-    <link rel="stylesheet" href="../css/styles.css">
-    <link rel="shortcut icon" type="image/png" href="../assets/img/logo.png" />
+    <link rel="stylesheet" href="./static/styles.css">
+    <link rel="shortcut icon" type="image/png" href="./static/assets/img/logo.png" />
 </head>
 
 <body>
     <nav class="navbar fixed-top home-nav justify-content-between">
-        <a class="navbar-brand" href="../index.html">
+        <a class="navbar-brand" href="{{ url_for('home') }}">
             <h4>Auntie's <br />Mama Shop</h4>
         </a>
         <ul class="nav home-nav-list">
             <li>
-                <a href="temp-records.html">Temperature Screening</a>
+                <a href="{{ url_for('staff_records') }}">Temperature Screening</a>
             </li>
             <li>
                 <div class="dropdown home-nav-dropdown">
@@ -33,8 +33,8 @@
                         Store Entry
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="store-entry-graph.html">Store Entry Graph</a>
-                        <a class="dropdown-item" href="live-counter.html">Live Count</a>
+                        <a class="dropdown-item" href="{{ url_for('staff_graph') }}">Store Entry Graph</a>
+                        <a class="dropdown-item" href="{{ url_for('staff_home') }}">Live Count</a>
                     </div>
                 </div>
             </li>
@@ -45,9 +45,9 @@
                         Shop
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="menu.html">Menu</a>
+                        <a class="dropdown-item" href="{{ url_for('staff_estore') }}">Menu</a>
                         <a class="dropdown-item" href="orders.html">Orders</a>
-                        <a class="dropdown-item" href="shop-graph.html">Shop Graph</a>
+                        <a class="dropdown-item" href="{{ url_for('shop_graph') }}">Shop Graph</a>
                     </div>
                 </div>
             </li>
@@ -57,7 +57,7 @@
                 <i class="material-icons-outlined yellow-text mr-2">call</i>
                 <span>+65 1234 5678</span>
             </div>
-            <a class="d-flex align-items-center exit-btn" id="exit-btn" href="../index.html">
+            <a class="d-flex align-items-center exit-btn" id="exit-btn" href="{{ url_for('home') }}">
                 <span class="mr-2">Exit</span>
                 <i class="material-icons">login</i>
             </a>

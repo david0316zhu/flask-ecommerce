@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, FloatField, PasswordField
+from wtforms import StringField, SubmitField, TextAreaField, FloatField, PasswordField, DecimalField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 import shelve
 
@@ -23,16 +23,16 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 class SearchForm(FlaskForm):
-    search = StringField("search", validators=[DataRequired(),Length(max=4)])
+    search = StringField("search", validators=[DataRequired()])
     submit = SubmitField('search')
 
 class ProductForm(FlaskForm):
     title = StringField("title", validators=[DataRequired()])
     info = StringField("info", validators=[DataRequired()])
-    price = FloatField("price", validators=[DataRequired()])
-    submit = SubmitField('add')
+    price = DecimalField("price", validators=[DataRequired()])
+    submit = SubmitField("Add")
 
 class PriceForm(FlaskForm):
-    price = FloatField('price', validators=[DataRequired()])
-    submit = SubmitField('search')
+    price = DecimalField('price', validators=[DataRequired()])
+    submit = SubmitField('Search')
     
