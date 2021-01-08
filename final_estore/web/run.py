@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, flash, redirect, session
-from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm
+from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm
 from models import Temp, User, Product
 import shelve
 from flask_bcrypt import Bcrypt
@@ -228,6 +228,7 @@ def staff_estore():
         product_form = ProductForm()
         form = SearchForm()
         product_form = ProductForm()
+        price_form = PriceForm()
         if product_form.validate_on_submit():
             new_product_dict = db["Product"]
             new_product = Product(product_form.title.data, product_form.info.data, product_form.price.data)
@@ -235,6 +236,15 @@ def staff_estore():
             db['Product'] = new_product_dict
             return render_template('admin_menu.html', product_list=product_list, form=form)
         
+        if price_form.validate_on_submit():
+            price_list = []
+            for j in price_list:
+                prices = j.get_price()
+                if price_form.price.data >= prices:
+                    price_list.append(j)
+            product_list = price_list
+            return render_template('admin_menu.html', product_list=product_list, form=form)
+
         if form.validate_on_submit():
             search_list = []
             for i in product_list:

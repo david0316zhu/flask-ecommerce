@@ -30,3 +30,9 @@ class ProductForm(FlaskForm):
     title = StringField("title", validators=[DataRequired()])
     info = StringField("info", validators=[DataRequired()])
     price = FloatField("price", validators=[DataRequired()])
+    submit = SubmitField('add')
+
+class PriceForm(FlaskForm):
+    price = FloatField('price', validators=[DataRequired()])
+    submit = SubmitField('search')
+    
