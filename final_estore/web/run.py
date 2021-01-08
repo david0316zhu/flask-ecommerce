@@ -268,7 +268,7 @@ def staff_estore():
                 if price_form.price.data >= prices:
                     price_list.append(j)
             product_list = price_list
-            return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form)
+            return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form, price_form=price_form)
 
         if form.validate_on_submit():
             db.close()
@@ -278,8 +278,8 @@ def staff_estore():
                 if form.search.data.casefold() in item.casefold():
                     search_list.append(i)
             product_list = search_list
-            return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form)
-        return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form)
+            return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form, price_form=price_form)
+        return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form, price_form=price_form)
     else:
         return redirect(url_for('staff_login'))
 

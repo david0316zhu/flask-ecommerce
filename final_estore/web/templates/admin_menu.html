@@ -84,9 +84,21 @@
                             
                         </div>
                         <div id="form-error" class="error mb-3"></div>
-                        <button class="btn primary-btn">
-                            <span>Submit</span>
-                        </button>
+                        {{ price_form.hidden_tag() }}
+                                <div class="form-input">
+                                    {% if price_form.price.errors %}
+                                    {{ price_form.price(class="form-input is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in price_form.price.errors %}
+                                        <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                    {{ price_form.price(placeholder="Search by Price")}}
+                                    {% endif %}
+                                </div>
+                            <div id="form-error" class="error mb-3"></div>
+                                {{ price_form.submit(class="btn primary-btn")}}
                     </form>
                 </div>
                 <div class="white-card need-help">
