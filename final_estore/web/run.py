@@ -23,7 +23,7 @@ def home():
     db.close()
     session['logged_in'] = False
     session['customer'] = False
-    return render_template('index.html')
+    return render_template('admin_menu.html')
 
 
 @app.route("/")

@@ -747,6 +747,7 @@ video {
     height: 150px;
     display: flex;
     flex-direction: column;
+    margin-right: 1rem;
 }
 
 /* temp-screening.html, temp-records.html */

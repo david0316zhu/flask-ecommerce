@@ -153,6 +153,48 @@
         </div>
     </main>
 
+    <!-- Popup -->
+    <div class="position-relative">
+        <div class="popup-wrapper" id="popup">
+            <div class="overlay" id="popup-overlay">
+                <div class="popup">
+                    <div class="mb-3">
+                        <span class="popup-title">Update Product</span>
+                    </div>
+                    <div class="close-btn" id="close-btn">
+                        <i class="material-icons">close</i>
+                    </div>
+                    <form class="form d-flex flex-column justify-content-center align-items-center">
+                        <div class="w-100 mb-3">
+                            <label for="title">
+                                <span><b>Title</b></span>
+                            </label>
+                            {{ render_field(form.title, type="text", placeholder="Title", required=True)}}
+                        </div>
+                        <div class="w-100 mb-3">
+                            <label for="description">
+                                <span><b>Description</b></span>
+                            </label>
+                            {{ render_field(form.description, type="text", placeholder="Describe your product",
+                            required=True)}}
+                        </div>
+                        <div class="w-100 mb-3">
+                            <label for="price">
+                                <span><b>Price</b></span>
+                            </label>
+                            {{ render_field(form.price, type="text", placeholder="Price of product", required=True)}}
+                        </div>
+                        <div id="popup-error" class="error mb-3"></div>
+                        <div id="popup-success" class="success mb-3"></div>
+                        <button class="btn primary-btn mt-3">
+                            <span>Update</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Popper JS -->
