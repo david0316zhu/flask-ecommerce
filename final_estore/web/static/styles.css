@@ -872,6 +872,9 @@ video {
     transition: transform 1s;
     text-align: center;
     font-weight: bold;
+    color: var(--medium-orange);
+    border: none;
+    width: 100%;
 }
 
 .digit-slide {

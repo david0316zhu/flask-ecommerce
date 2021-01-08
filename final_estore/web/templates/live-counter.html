@@ -68,7 +68,19 @@
             <div class="mb-5">
                 <h1 class="count-title">Live Counter</h1>
             </div>
-            <div id="odometer"></div>
+            <div class="odometer-wrapper mb-3">
+                <form class="odometer-face">
+                    <div class="digit" id="digit-hundred">
+                        <input type="number" class="digit-container digit-hundred" value="0">
+                    </div>
+                    <div class="digit" id="digit-ten">
+                        <input type="number" class="digit-container digit-ten" value="0">
+                    </div>
+                    <div class="digit" id="digit-one">
+                        <input type="number" class="digit-container digit-one" value="0">
+                    </div>
+                </form>
+            </div>
             <div class="odometer-info col-lg-4">
                 <div class="mb-1 text-center">
                     <span class="odometer-title">Number of Customers in Store</span>
@@ -100,16 +112,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="./static/odometer.js"></script>
-    <script>
-        $(document).ready(function () {
-            let count = 123;
-
-            // Set up odometer
-            $("#odometer").html(getOdometerHtml());
-            setCount(count);
-        });
-    </script>
 </body>
 
 </html>
