@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, FloatField, PasswordField, DecimalField
+from wtforms import StringField, SubmitField, TextAreaField, FloatField, PasswordField, DecimalField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 import shelve
 
@@ -36,3 +36,8 @@ class PriceForm(FlaskForm):
     price = DecimalField('price', validators=[DataRequired()])
     submit = SubmitField('Search')
     
+class AddForm(FlaskForm):
+    add = SelectField('add')
+
+class RemoveForm(FlaskForm):
+    remove = SelectField('add')

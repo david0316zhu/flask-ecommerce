@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, flash, redirect, session
-from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm
+from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm, AddForm, RemoveForm
 from models import Temp, User, Product
 import shelve
 from flask_bcrypt import Bcrypt
@@ -186,7 +186,44 @@ def staff_login():
 @app.route("/admin_home", methods=['GET', 'POST'])
 def staff_home():
     if session.get('logged_in'):
-        return render_template('staff-live-counter.html')
+        db = shelve.open('storage.db', 'c')
+        db["number"] = 0
+        add_form = AddForm()
+        remove_form = RemoveForm()
+        if add_form.validate_on_submit():
+            db["number"] +=1
+            if db["number"] > 999:
+                db["number"] = 0
+                hundred = "0"
+                ten = "0"
+                one = "0"
+                return render_template('staff-live-counter.html', add_form=add_form, remove_form=remove_form, hundred=hundred, ten=ten, one=one)
+            if db["number"] > 10 and db["number"] < 100:
+                hundred = "0"
+                num = str(db["Number"])
+                ten = num[0]
+                one = num[1]
+                return render_template('staff-live-counter.html', add_form=add_form, remove_form=remove_form, hundred=hundred, ten=ten, one=one)
+            if db["number"] > 99 and db["number"] < 1000:
+                num = str(db["Number"])
+                hundred = num[0]
+                ten = num[1]
+                one = num[2]
+                return render_template('staff-live-counter.html', add_form=add_form, remove_form=remove_form, hundred=hundred, ten=ten, one=one)
+            else: 
+                hundred = "0"
+                ten = "0"
+                one = str(db["Number"])
+                return render_template('staff-live-counter.html', add_form=add_form, remove_form=remove_form, hundred=hundred, ten=ten, one=one)
+            return render_template('staff-live-counter.html', add_form=add_form, remove_form=remove_form, hundred=hundred, ten=ten, one=one)
+        if remove_form.validate_on_submit():
+            db["number"] -= 1
+            if db["number"] < 0:
+                db["number"] = 999
+                return render_template('staff-live-counter.html', add_form=add_form, remove_form=remove_form)
+            return render_template('staff-live-counter.html', add_form=add_form, remove_form=remove_form)
+
+        return render_template('staff-live-counter.html', add_form=add_form, remove_form=remove_form, hundred=hundred, ten=ten, one=one)
     else:
         return redirect(url_for('staff_login'))
 

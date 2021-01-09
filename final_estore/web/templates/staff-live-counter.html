@@ -75,13 +75,13 @@
             </div>
             <form class="odometer-face">
                 <div class="digit" id="digit-hundred">
-                    <input type="number" class="digit-container digit-hundred" value="0">
+                    {{hundred(class="digit-container digit-hundred")}}
                 </div>
                 <div class="digit" id="digit-ten">
-                    <input type="number" class="digit-container digit-ten" value="0">
+                    {{ten(class="digit-container digit-ten")}}
                 </div>
                 <div class="digit" id="digit-one">
-                    <input type="number" class="digit-container digit-one" value="0">
+                    {{one(class="digit-container digit-one")}}
                 </div>
             </form>
             <div class="odometer-info col-lg-4">
@@ -106,12 +106,10 @@
                     </div>
                 </div>
                 <div class="w-100 d-flex justify-content-between">
-                    <button id="add-count-btn" class="btn primary-btn">
-                        <span>Add</span>
-                    </button>
-                    <button id="remove-count-btn" class="btn primary-btn">
-                        <span>Remove</span>
-                    </button>
+                    {{ add_form.hidden_tag() }}
+                        {{ add_form.add(id="add-count-btn", class="btn primary-btn") }}
+                    {{ remove_form.hidden_tag() }}
+                        {{ remove_form.add(id="remove-count-btn", class="btn primary-btn") }}
                 </div>
             </div>
         </div>
