@@ -113,6 +113,11 @@ a:hover {
     color: white;
 }
 
+.small-btn {
+    height: 40px;
+    padding: 5px 16px;
+}
+
 .secondary-btn {
     background-color: var(--medium-yellow);
     border-radius: 30px;
