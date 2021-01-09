@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, flash, redirect, session
-from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm, AddForm, RemoveForm
+from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm, ControlForm
 from models import Temp, User, Product
 import shelve
 from flask_bcrypt import Bcrypt
@@ -20,6 +20,7 @@ app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 def home():
     db = shelve.open('storage.db', 'c')
     
+
     db.close()
     session['logged_in'] = False
     session['customer'] = False
@@ -55,7 +56,31 @@ def temp_screen():
 @app.route("/")
 @app.route("/live_counter")
 def live_counter():
-    return render_template('live-counter.html')
+    db = shelve.open('storage.db', 'r')
+    if db["number"] > 999:
+        db["number"] = 0
+        hundred = "0"
+        ten = "0"
+        one = "0"
+        return render_template('live-counter.html', hundred=hundred, ten=ten, one=one)
+    elif db["number"] > 9 and db["number"] < 100:
+        hundred = "0"
+        num = str(db["number"])
+        ten = num[0]
+        one = num[1]
+        return render_template('staff-live-counter.html', hundred=hundred, ten=ten, one=one)
+    elif db["number"] > 99 and db["number"] < 1000:
+        num = str(db["number"])
+        hundred = num[0]
+        ten = num[1]
+        one = num[2]
+        return render_template('live-counter.html', hundred=hundred, ten=ten, one=one)
+    else: 
+        hundred = "0"
+        ten = "0"
+        one = str(db["number"])
+        return render_template('live-counter.html', hundred=hundred, ten=ten, one=one)
+    
 
 @app.route("/")
 @app.route("/estore", methods=['GET', 'POST'])
@@ -187,43 +212,91 @@ def staff_login():
 def staff_home():
     if session.get('logged_in'):
         db = shelve.open('storage.db', 'c')
-        db["number"] = 0
-        add_form = AddForm()
-        remove_form = RemoveForm()
-        if add_form.validate_on_submit():
-            db["number"] +=1
-            if db["number"] > 999:
-                db["number"] = 0
-                hundred = "0"
-                ten = "0"
-                one = "0"
-                return render_template('staff-live-counter.html', add_form=add_form, remove_form=remove_form, hundred=hundred, ten=ten, one=one)
-            if db["number"] > 10 and db["number"] < 100:
-                hundred = "0"
-                num = str(db["Number"])
-                ten = num[0]
-                one = num[1]
-                return render_template('staff-live-counter.html', add_form=add_form, remove_form=remove_form, hundred=hundred, ten=ten, one=one)
-            if db["number"] > 99 and db["number"] < 1000:
-                num = str(db["Number"])
-                hundred = num[0]
-                ten = num[1]
-                one = num[2]
-                return render_template('staff-live-counter.html', add_form=add_form, remove_form=remove_form, hundred=hundred, ten=ten, one=one)
-            else: 
-                hundred = "0"
-                ten = "0"
-                one = str(db["Number"])
-                return render_template('staff-live-counter.html', add_form=add_form, remove_form=remove_form, hundred=hundred, ten=ten, one=one)
-            return render_template('staff-live-counter.html', add_form=add_form, remove_form=remove_form, hundred=hundred, ten=ten, one=one)
-        if remove_form.validate_on_submit():
-            db["number"] -= 1
-            if db["number"] < 0:
-                db["number"] = 999
-                return render_template('staff-live-counter.html', add_form=add_form, remove_form=remove_form)
-            return render_template('staff-live-counter.html', add_form=add_form, remove_form=remove_form)
+        if db["number"] > 999:
+            db["number"] = 0
+            hundred = "0"
+            ten = "0"
+            one = "0"
+            
+        elif db["number"] > 9 and db["number"] < 100:
+            hundred = "0"
+            num = str(db["number"])
+            ten = num[0]
+            one = num[1]
+            
+        elif db["number"] > 99 and db["number"] < 1000:
+            num = str(db["number"])
+            hundred = num[0]
+            ten = num[1]
+            one = num[2]
+            
+        else: 
+            hundred = "0"
+            ten = "0"
+            one = str(db["number"])
+            
+        
+        
+        control_form = ControlForm()
+        
+        if control_form.validate_on_submit():
+            if control_form.add.data:
+                db["number "] = 0
+                db["number"] +=1
+                if db["number"] > 999:
+                    db["number"] = 0
+                    hundred = "0"
+                    ten = "0"
+                    one = "0"
+                    return render_template('staff-live-counter.html', control_form=control_form, hundred=hundred, ten=ten, one=one)
+                elif db["number"] > 9 and db["number"] < 100:
+                    hundred = "0"
+                    num = str(db["number"])
+                    ten = num[0]
+                    one = num[1]
+                    return render_template('staff-live-counter.html', control_form=control_form, hundred=hundred, ten=ten, one=one)
+                elif db["number"] > 99 and db["number"] < 1000:
+                    num = str(db["number"])
+                    hundred = num[0]
+                    ten = num[1]
+                    one = num[2]
+                    return render_template('staff-live-counter.html', control_form=control_form, hundred=hundred, ten=ten, one=one)
+                else: 
+                    hundred = "0"
+                    ten = "0"
+                    one = str(db["number"])
+                    return render_template('staff-live-counter.html', control_form=control_form, hundred=hundred, ten=ten, one=one)
+            
+            if control_form.remove.data:
+                db["number"] -= 1
+                if db["number"] < 0:
+                    db["number"] = 999
+                    num = str(db["number"])
+                    hundred = num[0]
+                    ten = num[1]
+                    one = num[2]
+                    return render_template('staff-live-counter.html', control_form=control_form, hundred=hundred, ten=ten, one=one)
+                elif db["number"] < 10:
+                    num = str(db["number"])
+                    hundred = "0"
+                    ten = "0"
+                    one = num[0]
+                    return render_template('staff-live-counter.html', control_form=control_form, hundred=hundred, ten=ten, one=one)
+                
+                elif db["number"] < 100:
+                    num = str(db["number"])
+                    hundred = "0"
+                    ten = num[0]
+                    one = num[1]
+                    return render_template('staff-live-counter.html', control_form=control_form, hundred=hundred, ten=ten, one=one)
+                elif db["number"] > 100 and db["number"] < 1000:
+                    num = str(db["number"])
+                    hundred = num[0]
+                    ten = num[1]
+                    one = num[2]
+                    return render_template('staff-live-counter.html', control_form=control_form, hundred=hundred, ten=ten, one=one)
 
-        return render_template('staff-live-counter.html', add_form=add_form, remove_form=remove_form, hundred=hundred, ten=ten, one=one)
+        return render_template('staff-live-counter.html', control_form=control_form, hundred=hundred, ten=ten, one=one)
     else:
         return redirect(url_for('staff_login'))
 

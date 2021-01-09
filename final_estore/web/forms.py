@@ -36,8 +36,6 @@ class PriceForm(FlaskForm):
     price = DecimalField('price', validators=[DataRequired()])
     submit = SubmitField('Search')
     
-class AddForm(FlaskForm):
-    add = SelectField('add')
-
-class RemoveForm(FlaskForm):
-    remove = SelectField('add')
+class ControlForm(FlaskForm):
+    add = SubmitField('Add')
+    remove = SubmitField('Remove')
