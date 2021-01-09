@@ -34,8 +34,12 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" href="./shop/menu.html">Menu</a>
+                        {% if session.get('customer') %}
                         <a class="dropdown-item" href="./shop/cart.html">Cart</a>
                         <a class="dropdown-item" href="./shop/orders.html">Orders</a>
+                        {% else %}
+                        <a class="dropdown-item" href="{{ url_for('e_store_login')}}">Login</a>
+                        {% endif %}
                     </div>
                 </div>
             </li>
