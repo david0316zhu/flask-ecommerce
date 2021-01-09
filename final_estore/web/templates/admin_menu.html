@@ -158,7 +158,7 @@
                 </ul>
                 {% endfor %}
             </div>
-            <button class="btn primary-btn mt-3 floating-btn">
+            <button class="btn primary-btn mt-3 floating-btn" id="new-product-btn">
                 <i class="material-icons mr-2">add</i>
                 <span>New Product</span>
             </button>
@@ -166,8 +166,8 @@
     </main>
 
     <!-- Popup -->
-    <div class="position-relative">
-        <div class="popup-wrapper" id="popup">
+    <div class="position-relative" id="popup">
+        <div class="popup-wrapper">
             <div class="overlay" id="popup-overlay">
                 <div class="popup">
                     <div class="mb-3">
@@ -190,7 +190,7 @@
                                     {% endfor %}
                                 </div>
                                 {% else %}
-                                {{ product_form.title(placeholder="Title")}}
+                                {{ product_form.title(class="form-input", placeholder="Title")}}
                                 {% endif %}
                             </div>
                             <div class="w-100 mb-3">
@@ -205,7 +205,7 @@
                                     {% endfor %}
                                 </div>
                                 {% else %}
-                                {{ product_form.info(placeholder="Description of Product")}}
+                                {{ product_form.info(class="form-input", placeholder="Description of Product")}}
                                 {% endif %}
                             </div>
                             <div class="w-100 mb-3">
@@ -220,7 +220,7 @@
                                     {% endfor %}
                                 </div>
                                 {% else %}
-                                {{ product_form.price(placeholder="Price")}}
+                                {{ product_form.price(class="form-input", placeholder="Price")}}
                                 {% endif %}
                             </div>
                             <div id="popup-error" class="error mb-3"></div>
@@ -241,6 +241,19 @@
     <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Hide popup on close button click
+            $("#close-btn").click(function() {
+                $("#popup").hide();
+            });
+
+            // Show popup on new product button click
+            $("#new-product-btn").click(function() {
+                $("#popup").show();
+            });
+        });
+    </script>
 </body>
 
 </html>
