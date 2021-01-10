@@ -111,9 +111,10 @@
                             </div>
                         </div>
                     </form>
-                    <button class="btn primary-btn small-btn ml-3">
-                        <span>Reset all</span>
-                    </button>
+                    <form method="POST" action="">
+                        {{ reset_form.hidden_tag() }}
+                            {{ reset_form.reset(class="btn primary-btn small-btn ml-3") }}
+                    </form>
                 </div>                
                 <table class="table">
                     <tr class="table-header">

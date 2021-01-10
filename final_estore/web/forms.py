@@ -39,3 +39,6 @@ class PriceForm(FlaskForm):
 class ControlForm(FlaskForm):
     add = SubmitField('Add')
     remove = SubmitField('Remove')
+
+class ResetForm(FlaskForm):
+    reset = SubmitField("Reset all")

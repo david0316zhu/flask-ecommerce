@@ -76,7 +76,7 @@
                     <div class="mb-5">
                         <h3>Filter</h3>
                     </div>
-                    <form id="filter-form">
+                    <form id="filter-form" method="POST" action="">
                         <div class="mb-3">
                             <div class="mb-2">
                                 <span><b>By Price</b></span>
@@ -96,7 +96,7 @@
                                 {{ price_form.price(placeholder="Search by Price", class="form-input")}}
                                 {% endif %}
                             <div id="form-error" class="error mb-3"></div>
-                                {{ price_form.submit(class="btn primary-btn")}}
+                            {{ price_form.submit(class="btn primary-btn")}}
                     </form>
                 </div>
                 <div class="white-card need-help">
@@ -134,7 +134,7 @@
                     <li class="products-item">
                         <div class="list-lg products-product">
                             <div class="products-img">
-                                <img src="./statics/assets/img/logo.png" alt="product">
+                                <img src="./static/assets/img/logo.png" alt="product">
                             </div>
                             <div class="products-title">
                                 <h4>{{ entry.get_title() }}</h4>
@@ -198,7 +198,7 @@
                                 {% if product_form.info.errors %}
                                 {{ product_form.info(class="form-input is-invalid") }}
                                 <div class="invalid-feedback">
-                                    {% for error in product_info.title.errors %}
+                                    {% for error in product_form.info.errors %}
                                     <span>{{ error }}</span>
                                     {% endfor %}
                                 </div>

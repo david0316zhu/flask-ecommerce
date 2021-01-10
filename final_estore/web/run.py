@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, flash, redirect, session
-from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm, ControlForm
+from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm, ControlForm, ResetForm
 from models import Temp, User, Product
 import shelve
 from flask_bcrypt import Bcrypt
@@ -305,23 +305,30 @@ def staff_home():
 def staff_records():
     if session.get('logged_in'):
         temp_dict = {}
-        db = shelve.open('storage.db', 'r')
+        db = shelve.open('storage.db', 'w')
         temp_dict = db['Temp']
         temp_list = []
-        db.close()
+        
         for key in temp_dict:
             entry = temp_dict.get(key)
             temp_list.append(entry)
         form = SearchForm()
+        reset_form = ResetForm()
         if form.validate_on_submit():
+            db.close()
             search_list = []
             for j in temp_list:
                 nric_check = j.get_ic_num()
                 if form.search.data.casefold() in nric_check.casefold():
                     search_list.append(j)
             temp_list = search_list
-            return render_template('temp-records.html', temp_list=temp_list, form=form)
-        return render_template('temp-records.html', temp_list=temp_list, form=form)
+            return render_template('temp-records.html', temp_list=temp_list, form=form, reset_form=reset_form)
+        if reset_form.validate_on_submit():
+            db["Temp"] = {}
+            temp_dict = db['Temp']
+            temp_list = []
+            return render_template('temp-records.html', temp_list=temp_list, form=form, reset_form=reset_form)
+        return render_template('temp-records.html', temp_list=temp_list, form=form, reset_form=reset_form)
     else:
         return redirect(url_for('staff_login'))
 
