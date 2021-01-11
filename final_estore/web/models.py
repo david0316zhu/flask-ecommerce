@@ -2,7 +2,7 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 from flask import current_app
 from datetime import datetime
-
+from random import randint
 
 
 
@@ -45,11 +45,10 @@ class User:
         return self.__password
 
 class Product:
-    count = 0
+    
     
     def __init__(self, title, info, price):
-        Product.count += 1
-        self.__product_id = Product.count
+        self.__product_id = "%0.12d" % randint(0,999999999999)
         self.__title = title
         self.__info = info
         self.__price = price
@@ -64,4 +63,13 @@ class Product:
         return self.__info
     
     def get_price(self):
+        return self.__price
+
+    def set_title(self, title):
+        return self.__title
+
+    def set_info(self, info):
+        return self.__info
+    
+    def set_price(self, price):
         return self.__price

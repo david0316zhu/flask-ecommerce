@@ -46,3 +46,5 @@ class ResetForm(FlaskForm):
 class TimeForm(FlaskForm):
     date = DateField('date', format='%Y-%m-%d')
     
+class DeleteForm(FlaskForm):
+    delete = SubmitField("delete")

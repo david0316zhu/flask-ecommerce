@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, flash, redirect, session
-from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm, ControlForm, ResetForm
+from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm, ControlForm, ResetForm, DeleteForm
 from models import Temp, User, Product
 import shelve
 from flask_bcrypt import Bcrypt
@@ -197,11 +197,14 @@ def staff_login():
     if form.validate_on_submit():
         print("validate")
         db = shelve.open('storage.db', 'r')
-        if db["Admin"][form.email.data] == form.password.data:
-            db.close()
-            print("pass")
-            session['logged_in'] = True
-            return redirect(url_for('staff_home'))
+        if form.email.data == "test@gmail.com":
+            if db["Admin"][form.email.data] == form.password.data:
+                db.close()
+                print("pass")
+                session['logged_in'] = True
+                return redirect(url_for('staff_home'))
+            else:
+                flash("Wrong email or Password!", 'danger')
         else:
             flash("Wrong email or Password!", 'danger')
     return render_template('login.html', form=form)
@@ -400,6 +403,34 @@ def staff_estore():
     else:
         return redirect(url_for('staff_login'))
 
+@app.route('/delete/<string:id>', methods=['POST'])
+def remove(id):
+    if session.get('logged_in'):
+        
+        db = shelve.open('storage.db', 'w')
+        product_dict = db["Product"]
+        
 
+        entry = product_dict.pop(id)
+        db["Product"] = product_dict
+        db.close()
+        
+        db.close()
+        return redirect(url_for('staff_estore'))
+
+@app.route('/updateProduct/<string:id>/', methods=['GET', 'POST'])
+def update_product(id):
+    if session.get('logged_in'):
+        update_form = ProductForm()
+        if update_form.validate_on_submit():
+            db = shelve.open('storage.db', 'w')
+            product_dict = db["Product"]
+            product = product_dict.get(id)
+            product.set_title(update_form.title.data)
+            product.set_info(update_form.info.data)
+            product.set_price(update_form.price.data)
+            db["Product"] = product_dict
+            db.close()
+            return redirect(url_for('staff_estore'))
 if __name__ == '__main__':
     app.run(debug=True)
