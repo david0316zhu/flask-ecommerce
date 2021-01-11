@@ -63,28 +63,54 @@
                     <div class="mb-5">
                         <h3>Filter</h3>
                     </div>
-                    <form id="filter-form">
-                        <div class="mb-3">
-                            <label class="mb-2">
-                                <span><b>By Date</b></span>
-                            </label>
-                            <input class="form-input" id="date" name="date" type="text" placeholder="YYYY-MM-DD" required />
-                            <div id="datepicker"></div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="start-time">
-                                <span><b>By Time</b></span>
-                            </label>
-                            <div class="timepicker">
-                                <input class="form-input" id="start-time" name="start-time" type="text" placeholder="HH:mm" required />
-                                <span>To</span>
-                                <input class="form-input" id="end-time" name="end-time" type="text" placeholder="HH:mm" required />
+                    <form id="filter-form" method="POST" action="">
+                        {{ time_form.hidden_tag() }}
+                            <div class="mb-3">
+                                <label class="mb-2">
+                                    <span><b>By Date</b></span>
+                                </label>
+                                {% if time_form.date.errors %}
+                                {{ time_form.date(class="form-input is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in time_form.date.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ time_form.date(class="form-input", placeholder="YYYY-MM-DD") }}
+                                {% endif %}
+                                <div id="datepicker"></div>
                             </div>
-                        </div>
-                        <div id="form-error" class="error mb-3"></div>
-                        <button class="btn primary-btn">
-                            <span>Submit</span>
-                        </button>
+                            <div class="mb-3">
+                                <label for="start-time">
+                                    <span><b>By Time</b></span>
+                                </label>
+                                <div class="timepicker">
+                                    {% if time_form.time1.errors %}
+                                    {{ time_form.time1(class="form-input is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in time_form.time1.errors %}
+                                        <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                    {{ time_form.time1(class="form-input", placeholder="HH:MM") }}
+                                    {% endif %}
+                                    <span>To</span>
+                                    {% if time_form.time2.errors %}
+                                    {{ time_form.time2(class="form-input is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in time_form.time2.errors %}
+                                        <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                    {{ time_form.time2(class="form-input", placeholder="HH:MM") }}
+                                    {% endif %}
+                                </div>
+                                {{ time_form.search(class="btn primary-btn") }}
+                            </div>
+                            
                     </form>
                 </div>
             </div>
@@ -146,44 +172,11 @@
     <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src=".static/js/validators.js"></script>
+    <script src="./static/validators.js"></script>
     <script>
         $(document).ready(function () {
             // Set up datepicker
             $("#datepicker").datepicker();
-
-            // Set up filter form
-            $("#filter-form").submit(function (e) {
-                e.preventDefault();
-
-                const date = $("#datepicker").datepicker("getDate");
-                const startTime = $(this).find("input[name='start-time']").val();
-                const endTime = $(this).find("input[name='end-time']").val();
-
-                // Check if all fields are valid
-                if (!validateDate(date)) {
-                    $("#form-error").text("Please choose a valid date.")
-                    $("#form-error").show();
-                    return;
-                }
-                if (!validateTimes(startTime, endTime)) {
-                    $("#form-error").text("Start time must be after end time")
-                    $("#form-error").show();
-                    return;
-                }
-
-                // Filter records and display table
-            });
-
-            $("#search").on("keyup", function () {
-                let value = this.value.toLowerCase().trim();
-                // Search records and show filtered records
-                $(".table tr").show().filter(function () {
-                    if ($(this).hasClass("table-header")) {
-                        return false;
-                    }
-                    return $(this).find(".nric").text().toLowerCase().trim().indexOf(value) == -1;
-                }).hide();
             });
         });
     </script>

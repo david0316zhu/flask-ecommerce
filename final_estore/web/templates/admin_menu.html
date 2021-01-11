@@ -148,9 +148,36 @@
                             <div class="list-btn mr-2">
                                 <i class="material-icons">create</i>
                             </div>
-                            <div class="list-btn">
-                                <i class="material-icons">delete</i>
-                            </div>
+                            <form method="POST" action="{{ url_for('remove', id=entry.get_product_id()) }}">
+                                <div class="list-btn">
+                                    <i class="material-icons" data-toggle="modal" data-target="#myModal_{{entry.get_product_id()}}">delete</i>
+                                </div>
+                                <div class="modal" id="myModal_{{ entry.get_product_id() }}">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+            
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Delete Confirmation</h4>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+            
+                                            <!-- Modal body -->
+                                            <div class="modal-body">
+                                                Are you sure you want to delete?
+                                            </div>
+            
+                                            <!-- Modal footer -->
+                                            <div class="modal-footer">
+                                                <input type="submit" value="Delete" class="btn btn-danger">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                            </div>
+            
+            
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </li>
                 </ul>

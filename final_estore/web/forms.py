@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, FloatField, PasswordField, DecimalField, SelectField, DateField
+from wtforms import StringField, SubmitField, TextAreaField, FloatField, PasswordField, DecimalField, SelectField, DateField, DateTimeField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 import shelve
 
@@ -44,5 +44,8 @@ class ResetForm(FlaskForm):
     reset = SubmitField("Reset all")
 
 class TimeForm(FlaskForm):
-    date = DateField('date', format='%Y-%m-%d')
+    date = DateField('date', validators=[DataRequired()], format='%Y-%m-%d')
+    time1 = DateTimeField('time1', validators=[DataRequired()], format='%H:%M')
+    time2 = DateTimeField('time2', validators=[DataRequired()], format='%H:%M')
+    search = SubmitField('Search')
     
