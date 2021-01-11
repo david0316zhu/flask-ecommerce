@@ -24,7 +24,7 @@ def home():
     db.close()
     session['logged_in'] = False
     session['customer'] = False
-    return render_template('index.html')
+    return render_template('update_product.html')
 
 
 @app.route("/")
