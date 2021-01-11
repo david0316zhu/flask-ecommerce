@@ -35,8 +35,9 @@ content%}
       <div class="w-100">
         <form method="POST" action="" class="d-flex justify-content-between">
           {{ control_form.hidden_tag() }} {{
-          control_form.add(id="add-count-btn", class="btn primary-btn") }} {{
-          control_form.remove(id="remove-count-btn", class="btn primary-btn") }}
+          control_form.add(id="add-count-btn", class="btn primary-btn
+          fit-content-btn") }} {{ control_form.remove(id="remove-count-btn",
+          class="btn primary-btn fit-content-btn") }}
         </form>
       </div>
     </div>

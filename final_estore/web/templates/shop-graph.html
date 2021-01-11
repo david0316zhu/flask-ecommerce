@@ -1,156 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "admin_layout.html" %} {% block title %}Shop Graph{% endblock %} {%
+block heading %}Shop Graph{% endblock %} {% block content%}
+<main>
+  <div class="container-fluid grey-container">
+    <div class="row">
+      <canvas id="myChart" width="500px" height="800px"></canvas>
+    </div>
+  </div>
+</main>
+{% endblock %}{% block scripts %} {{super()}}
+<!-- Chart js -->
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"
+  integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw=="
+  crossorigin="anonymous"
+></script>
+<script>
+  const setUpBarGraph = function () {
+    var ctx = document.getElementById("myChart");
+    var myChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["Delivered", "Undelivered"],
+        datasets: [
+          {
+            label: "# of Orders",
+            data: [12, 19],
+            backgroundColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"],
+            borderColor: ["rgba(255,99,132,1)", "rgba(54, 162, 235, 1)"],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        title: {
+          display: true,
+          text: "Orders in AUNTIE'S MAMA SHOP",
+        },
+        responsive: false,
+        scales: {
+          xAxes: [
+            {
+              ticks: {
+                maxRotation: 90,
+                minRotation: 80,
+              },
+              gridLines: {
+                offsetGridLines: true, // à rajouter
+              },
+            },
+            {
+              position: "top",
+              ticks: {
+                maxRotation: 90,
+                minRotation: 80,
+              },
+              gridLines: {
+                offsetGridLines: true, // et matcher pareil ici
+              },
+            },
+          ],
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
+    });
+    return myChart;
+  };
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop Graph</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@300;400;700&family=Suez+One&display=swap"
-        rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
-        rel="stylesheet">
-    <link rel="stylesheet" href="./static/styles.css">
-    <link rel="shortcut icon" type="image/png" href="./static/assets/img/logo.png" />
-</head>
-
-<body>
-    <nav class="navbar fixed-top home-nav justify-content-between">
-        <a class="navbar-brand" href="{{ url_for('staff_home') }}">
-            <h4>Auntie's <br />Mama Shop</h4>
-        </a>
-        <ul class="nav home-nav-list">
-            <li>
-                <a href="{{ url_for('staff_records') }}">Temperature Screening</a>
-            </li>
-            <li>
-                <div class="dropdown home-nav-dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Store Entry
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="{{ url_for('staff_graph') }}">Store Entry Graph</a>
-                        <a class="dropdown-item" href="{{ url_for('staff_home') }}">Live Count</a>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="dropdown home-nav-dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Shop
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="{{ url_for('staff_estore') }}">Menu</a>
-                        <a class="dropdown-item" href="orders.html">Orders</a>
-                        <a class="dropdown-item" href="{{ url_for('shop_graph') }}">Shop Graph</a>
-                    </div>
-                </div>
-            </li>
-        </ul>
-        <div class="home-nav-right">
-            <div class="phone">
-                <i class="material-icons-outlined yellow-text mr-2">call</i>
-                <span>+65 1234 5678</span>
-            </div>
-            <a class="d-flex align-items-center exit-btn" id="exit-btn" href="{{ url_for('home') }}">
-                <span class="mr-2">Exit</span>
-                <i class="material-icons">login</i>
-            </a>
-        </div>
-    </nav>
-    <header class="dark-header d-flex align-items-center justify-content-center">
-        <div>
-            <h1>Shop Graph</h1>
-        </div>
-    </header>
-    <main>
-        <div class="container-fluid grey-container">
-            <div class="row">
-                <canvas id="myChart" width="500px" height="800px"></canvas>
-            </div>
-        </div>
-    </main>
-
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- Popper JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- Chart js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"
-        integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw=="
-        crossorigin="anonymous"></script>
-
-    <script src="../js/odometer.js"></script>
-    <script>
-        const setUpBarGraph = function () {
-            var ctx = document.getElementById("myChart");
-            var myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ["Delivered", "Undelivered"],
-                    datasets: [{
-                        label: '# of Orders',
-                        data: [12, 19],
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                        ],
-                        borderColor: [
-                            'rgba(255,99,132,1)',
-                            'rgba(54, 162, 235, 1)',
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    title: {
-                        display: true,
-                        text: "Orders in AUNTIE'S MAMA SHOP"
-                    },
-                    responsive: false,
-                    scales: {
-                        xAxes: [{
-                            ticks: {
-                                maxRotation: 90,
-                                minRotation: 80
-                            },
-                            gridLines: {
-                                offsetGridLines: true // à rajouter
-                            }
-                        },
-                        {
-                            position: "top",
-                            ticks: {
-                                maxRotation: 90,
-                                minRotation: 80
-                            },
-                            gridLines: {
-                                offsetGridLines: true // et matcher pareil ici
-                            }
-                        }],
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    }
-                }
-            });
-            return myChart;
-        }
-
-        $(document).ready(function () {
-            // Set up bar graph
-            const chart = setUpBarGraph();
-        });
-    </script>
-</body>
-
-</html>
+  $(document).ready(function () {
+    // Set up bar graph
+    const chart = setUpBarGraph();
+  });
+</script>
+{% endblock %}

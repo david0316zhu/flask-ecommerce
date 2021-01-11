@@ -1,207 +1,111 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Temperature Records</title>
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@300;400;700&family=Suez+One&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css"
-    />
-    <link rel="stylesheet" href="./static/styles.css" />
-    <link
-      rel="shortcut icon"
-      type="image/png"
-      href="./static/assets/img/logo.png"
-    />
-  </head>
-
-  <body>
-    <nav class="navbar fixed-top home-nav justify-content-between">
-      <a class="navbar-brand" href="{{ url_for('staff_home') }}">
-        <h4>Auntie's <br />Mama Shop</h4>
-      </a>
-      <ul class="nav home-nav-list">
-        <li class="active-nav-item">
-          <a href="{{ url_for('staff_records') }}">Temperature Screening</a>
-        </li>
-        <li>
-          <div class="dropdown home-nav-dropdown">
-            <button
-              class="btn btn-secondary dropdown-toggle"
-              type="button"
-              id="dropdownMenuButton"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Store Entry
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="{{ url_for('staff_graph') }}"
-                >Store Entry Graph</a
-              >
-              <a class="dropdown-item" href="{{ url_for('staff_home') }}"
-                >Live Count</a
-              >
+{% extends "admin_layout.html" %} {% block title %}Temperature Screening
+Records{% endblock %} {% block heading %}Temperature Screening Records{%
+endblock %} {% block content%}
+<main>
+  <div class="container-fluid grey-container justify-content-between">
+    <div class="bootstrap-iso">
+      <div class="white-card filter-panel">
+        <div class="mb-5">
+          <h3>Filter</h3>
+        </div>
+        <form id="filter-form" method="POST" action="">
+          {{ time_form.hidden_tag() }}
+          <div class="mb-3">
+            <label class="mb-2">
+              <span><b>By Date</b></span>
+            </label>
+            {% if time_form.date.errors %} {{ time_form.date(class="form-input
+            is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in time_form.date.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %} {{ time_form.date(class="form-input",
+            placeholder="YYYY-MM-DD") }} {% endif %}
+            <div id="datepicker"></div>
+          </div>
+          <div class="mb-3">
+            <label for="start-time">
+              <span><b>By Time</b></span>
+            </label>
+            <div class="timepicker mb-3">
+              {% if time_form.time1.errors %} {{
+              time_form.time1(class="form-input is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in time_form.time1.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              {% else %} {{ time_form.time1(class="form-input",
+              placeholder="HH:MM") }} {% endif %}
+              <span>To</span>
+              {% if time_form.time2.errors %} {{
+              time_form.time2(class="form-input is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in time_form.time2.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              {% else %} {{ time_form.time2(class="form-input",
+              placeholder="HH:MM") }} {% endif %}
             </div>
           </div>
-        </li>
-      </ul>
-      <div class="home-nav-right">
-        <div class="phone">
-          <i class="material-icons-outlined yellow-text mr-2">call</i>
-          <span>+65 1234 5678</span>
-        </div>
-        <a
-          class="d-flex align-items-center exit-btn"
-          id="exit-btn"
-          href="{{ url_for('home') }}"
-        >
-          <span class="mr-2">Exit</span>
-          <i class="material-icons">login</i>
-        </a>
+          {{ time_form.search(class="btn primary-btn") }}
+        </form>
       </div>
-    </nav>
-    <header
-      class="dark-header d-flex align-items-center justify-content-center"
-    >
-      <div>
-        <h1>Temperature Screening Records</h1>
-      </div>
-    </header>
-    <main>
-      <div class="container-fluid grey-container justify-content-between">
-        <div class="bootstrap-iso">
-          <div class="white-card filter-panel">
-            <div class="mb-5">
-              <h3>Filter</h3>
+    </div>
+    <div class="row flex-column col-lg-8 main-panel">
+      {% if temp_list|length == 0 %}
+      <span><b>No data available.</b></span>
+      {% else %}
+      <div class="d-flex justify-content-end">
+        <form method="POST" action="">
+          {{ form.hidden_tag() }}
+          <div class="d-flex justify-content-end mb-5">
+            <div class="search-input">
+              {% if form.search.errors %} {{ form.search(class="form-input
+              is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.search.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              {% else %} {{ form.search(id="search", placeholder="Search by
+              NRIC")}} {% endif %} {{ form.submit(class="material-icons") }}
             </div>
-            <form id="filter-form" method="POST" action="">
-              {{ time_form.hidden_tag() }}
-              <div class="mb-3">
-                <label class="mb-2">
-                  <span><b>By Date</b></span>
-                </label>
-                {% if time_form.date.errors %} {{
-                time_form.date(class="form-input is-invalid") }}
-                <div class="invalid-feedback">
-                  {% for error in time_form.date.errors %}
-                  <span>{{ error }}</span>
-                  {% endfor %}
-                </div>
-                {% else %} {{ time_form.date(class="form-input",
-                placeholder="YYYY-MM-DD") }} {% endif %}
-                <div id="datepicker"></div>
-              </div>
-              <div class="mb-3">
-                <label for="start-time">
-                  <span><b>By Time</b></span>
-                </label>
-                <div class="timepicker mb-3">
-                  {% if time_form.time1.errors %} {{
-                  time_form.time1(class="form-input is-invalid") }}
-                  <div class="invalid-feedback">
-                    {% for error in time_form.time1.errors %}
-                    <span>{{ error }}</span>
-                    {% endfor %}
-                  </div>
-                  {% else %} {{ time_form.time1(class="form-input",
-                  placeholder="HH:MM") }} {% endif %}
-                  <span>To</span>
-                  {% if time_form.time2.errors %} {{
-                  time_form.time2(class="form-input is-invalid") }}
-                  <div class="invalid-feedback">
-                    {% for error in time_form.time2.errors %}
-                    <span>{{ error }}</span>
-                    {% endfor %}
-                  </div>
-                  {% else %} {{ time_form.time2(class="form-input",
-                  placeholder="HH:MM") }} {% endif %}
-                </div>
-                {{ time_form.search(class="btn primary-btn") }}
-              </div>
-            </form>
           </div>
-        </div>
-        <div class="row flex-column col-lg-8 main-panel">
-          {% if temp_list|length == 0 %}
-          <span><b>No data available.</b></span>
-          {% else %}
-          <div class="d-flex justify-content-end">
-            <form method="POST" action="">
-              {{ form.hidden_tag() }}
-              <div class="d-flex justify-content-end mb-5">
-                <div class="search-input">
-                  {% if form.search.errors %} {{ form.search(class="form-input
-                  is-invalid") }}
-                  <div class="invalid-feedback">
-                    {% for error in form.search.errors %}
-                    <span>{{ error }}</span>
-                    {% endfor %}
-                  </div>
-                  {% else %} {{ form.search(id="search", placeholder="Search by
-                  NRIC")}} {% endif %} {{ form.submit(class="material-icons") }}
-                </div>
-              </div>
-            </form>
-            <form method="POST" action="">
-              {{ reset_form.hidden_tag() }} {{ reset_form.reset(class="btn
-              primary-btn small-btn ml-3") }}
-            </form>
-          </div>
-          <table class="table">
-            <tr class="table-header">
-              <th>Last 4 digits of NRIC</th>
-              <th>Temperature</th>
-              <th>Date</th>
-              <th>Time</th>
-            </tr>
-            {% for entry in temp_list %}
-            <tr>
-              <td>{{ entry.get_ic_num() }}</td>
-              <td>{{ entry.get_temperature() }}</td>
-              <td>{{ entry.get_date() }}</td>
-              <td>{{ entry.get_time() }}</td>
-            </tr>
-            {% endfor %}
-          </table>
-          {% endif %}
-        </div>
+        </form>
+        <form method="POST" action="">
+          {{ reset_form.hidden_tag() }} {{ reset_form.reset(class="btn
+          primary-btn small-btn ml-3") }}
+        </form>
       </div>
-    </main>
-
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- Popper JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"
-    ></script>
-    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="./static/validators.js"></script>
-    <script>
-      $(document).ready(function () {
-          // Set up datepicker
-          $("#datepicker").datepicker();
-          });
-      });
-    </script>
-  </body>
-</html>
+      <table class="table">
+        <tr class="table-header">
+          <th>Last 4 digits of NRIC</th>
+          <th>Temperature</th>
+          <th>Date</th>
+          <th>Time</th>
+        </tr>
+        {% for entry in temp_list %}
+        <tr>
+          <td>{{ entry.get_ic_num() }}</td>
+          <td>{{ entry.get_temperature() }}</td>
+          <td>{{ entry.get_date() }}</td>
+          <td>{{ entry.get_time() }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+      {% endif %}
+    </div>
+  </div>
+</main>
+{% endblock %}{% block scripts %}{{super()}}
+<script>
+  $(document).ready(function () {
+    // Set up datepicker
+    $("#datepicker").datepicker();
+  });
+</script>
+{% endblock %}

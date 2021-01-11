@@ -1,121 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Counter</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@300;400;700&family=Suez+One&display=swap"
-        rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
-        rel="stylesheet">
-    <link rel="stylesheet" href="./static/styles.css">
-    <link rel="shortcut icon" type="image/png" href="./static/assets/img/logo.png" />
-</head>
-
-<body>
-    <nav class="navbar fixed-top home-nav justify-content-between">
-        <a class="navbar-brand" href="{{ url_for('home') }}">
-            <h4>Auntie's <br />Mama Shop</h4>
-        </a>
-        <ul class="nav home-nav-list">
-            <li class="active-nav-item">
-                <a href="{{ url_for('live_counter') }}">Live Counter</a>
-            </li>
-            <li>
-                <div class="dropdown home-nav-dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Shop
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="./shop/menu.html">Menu</a>
-                        {% if session.get('customer') %}
-                        <a class="dropdown-item" href="./shop/cart.html">Cart</a>
-                        <a class="dropdown-item" href="./shop/orders.html">Orders</a>
-                        {% else %}
-                        <a class="dropdown-item" href="{{ url_for('e_store_login')}}">Login</a>
-                        {% endif %}
-                    </div>
-                </div>
-            </li>
-        </ul>
-        <div class="home-nav-right">
-            <div class="phone">
-                <i class="material-icons-outlined yellow-text mr-2">call</i>
-                <span>+65 1234 5678</span>
-            </div>
-            <!-- <div class="home-nav-icon">
-                <i class="material-icons">search</i>
-            </div> -->
-            <a class="home-nav-icon position-relative" href="./shop/cart.html">
-                <div class="badge">3</div>
-                <i class="material-icons">shopping_cart</i>
-            </a>
-            <a class="d-flex align-items-center exit-btn" id="exit-btn" href="{{ url_for('home') }}">
-                <span class="mr-2">Exit</span>
-                <i class="material-icons">login</i>
-            </a>
+{% extends "customer_layout.html" %} {% block title %}Store Entry - Customer{%
+endblock %} {% block heading %}Store Entry - Customer{% endblock %} {% block
+content%}
+<main>
+  <div class="container-fluid count-container">
+    <div class="mb-5">
+      <h1 class="count-title">Live Counter</h1>
+    </div>
+    <div class="odometer-wrapper mb-3">
+      <div class="odometer-face">
+        <div class="digit" id="digit-hundred">{{hundred}}</div>
+        <div class="digit" id="digit-ten">{{ten}}</div>
+        <div class="digit" id="digit-one">{{one}}</div>
+      </div>
+    </div>
+    <div class="odometer-info col-lg-4">
+      <div class="mb-1 text-center">
+        <span class="odometer-title">Number of Customers in Store</span>
+      </div>
+      <div class="row mx-0 w-100 justify-content-between">
+        <div class="col-lg-4 col-md-4">
+          <div class="danger">
+            <span>10-12</span>
+          </div>
         </div>
-    </nav>
-    <header class="dark-header d-flex align-items-center justify-content-center">
-        <div>
-            <h1>Store Entry - Customer</h1>
+        <div class="col-lg-4 col-md-4">
+          <div class="warning">
+            <span>6-8</span>
+          </div>
         </div>
-    </header>
-    <main>
-        <div class="container-fluid count-container">
-            <div class="mb-5">
-                <h1 class="count-title">Live Counter</h1>
-            </div>
-            <div class="odometer-wrapper mb-3">
-                <div class="odometer-face">
-                    <div class="digit" id="digit-hundred">
-                        {{hundred}}
-                    </div>
-                    <div class="digit" id="digit-ten">
-                        {{ten}}
-                    </div>
-                    <div class="digit" id="digit-one">
-                        {{one}}
-                    </div>
-                </div>
-            </div>
-            <div class="odometer-info col-lg-4">
-                <div class="mb-1 text-center">
-                    <span class="odometer-title">Number of Customers in Store</span>
-                </div>
-                <div class="row mx-0 w-100 justify-content-between">
-                    <div class="col-lg-4 col-md-4">
-                        <div class="danger">
-                            <span>10-12</span>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-4">
-                        <div class="warning">
-                            <span>6-8</span>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-4">
-                        <div class="success">
-                            <span>Below 4</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="col-lg-4 col-md-4">
+          <div class="success">
+            <span>Below 4</span>
+          </div>
         </div>
-    </main>
-
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- Popper JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-
-</html>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
