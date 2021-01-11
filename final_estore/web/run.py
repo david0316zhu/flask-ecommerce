@@ -1,14 +1,13 @@
 from flask import Flask, render_template, url_for, flash, redirect, session
-from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm, ControlForm, ResetForm, DeleteForm
+from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm, ControlForm, ResetForm, TimeForm
 from models import Temp, User, Product
 import shelve
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, current_user, logout_user, login_required, LoginManager
-from datetime import datetime, date
+from datetime import datetime, date, time
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
-
 
 
 
@@ -37,7 +36,7 @@ def temp_screen():
         now = datetime.now()
         db = shelve.open('storage.db', 'c')
         dat = date.today()
-        current_time = now.strftime("%H:%M:%S")
+        current_time = now.strftime("%H:%M")
         try:
             temp_dict = db['Temp']
         except:
@@ -317,6 +316,21 @@ def staff_records():
             temp_list.append(entry)
         form = SearchForm()
         reset_form = ResetForm()
+        time_form = TimeForm()
+        if time_form.validate_on_submit():
+            db.close()
+            time_list = []
+            for t in temp_list:
+                time_check = t.get_date()
+                if time_form.date.data == time_check:
+                    time1 = datetime.strftime(time_form.time1.data, '%H:%M')
+                    time2 = datetime.strftime(time_form.time2.data, '%H:%M')
+                    time3  = t.get_time()
+                    
+                    if time3 >= time1 and time3 <= time2:
+                        time_list.append(t)
+            temp_list = time_list
+            return render_template('temp-records.html', temp_list=temp_list, form=form, reset_form=reset_form, time_form=time_form)
         if form.validate_on_submit():
             db.close()
             search_list = []
@@ -325,13 +339,13 @@ def staff_records():
                 if form.search.data.casefold() in nric_check.casefold():
                     search_list.append(j)
             temp_list = search_list
-            return render_template('temp-records.html', temp_list=temp_list, form=form, reset_form=reset_form)
+            return render_template('temp-records.html', temp_list=temp_list, form=form, reset_form=reset_form, time_form=time_form)
         if reset_form.validate_on_submit():
             db["Temp"] = {}
             temp_dict = db['Temp']
             temp_list = []
-            return render_template('temp-records.html', temp_list=temp_list, form=form, reset_form=reset_form)
-        return render_template('temp-records.html', temp_list=temp_list, form=form, reset_form=reset_form)
+            return render_template('temp-records.html', temp_list=temp_list, form=form, reset_form=reset_form, time_form=time_form)
+        return render_template('temp-records.html', temp_list=temp_list, form=form, reset_form=reset_form, time_form=time_form)
     else:
         return redirect(url_for('staff_login'))
 
@@ -379,7 +393,15 @@ def staff_estore():
             db['Product'] = new_product_dict
             db.close()
             return redirect(url_for('staff_estore'))
-        
+        if form.validate_on_submit():
+            db.close()
+            search_list = []
+            for i in product_list:
+                item = i.get_title()
+                if form.search.data.casefold() in item.casefold():
+                    search_list.append(i)
+            product_list = search_list
+            return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form, price_form=price_form)
         if price_form.validate_on_submit():
             db.close()
             price_list = []
@@ -390,15 +412,6 @@ def staff_estore():
             product_list = price_list
             return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form, price_form=price_form)
 
-        if form.validate_on_submit():
-            db.close()
-            search_list = []
-            for i in product_list:
-                item = i.get_title()
-                if form.search.data.casefold() in item.casefold():
-                    search_list.append(i)
-            product_list = search_list
-            return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form, price_form=price_form)
         return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form, price_form=price_form)
     else:
         return redirect(url_for('staff_login'))
