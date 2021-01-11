@@ -1,167 +1,108 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Store Entry Graph</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@300;400;700&family=Suez+One&display=swap"
-        rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
-        rel="stylesheet">
-    <link rel="stylesheet" href="./static/styles.css">
-    <link rel="shortcut icon" type="image/png" href="./static/assets/img/logo.png" />
-</head>
-
-<body>
-    <nav class="navbar fixed-top home-nav justify-content-between">
-        <a class="navbar-brand" href="{{ url_for('staff_home') }}">
-            <h4>Auntie's <br />Mama Shop</h4>
-        </a>
-        <ul class="nav home-nav-list">
-            <li>
-                <a href="{{ url_for('staff_records') }}">Temperature Screening</a>
-            </li>
-            <li>
-                <div class="dropdown home-nav-dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Store Entry
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="{{ url_for('staff_graph') }}">Store Entry Graph</a>
-                        <a class="dropdown-item" href="{{ url_for('staff_home') }}">Live Count</a>
-                    </div>
-                </div>
-            </li>
-        </ul>
-        <div class="home-nav-right">
-            <div class="phone">
-                <i class="material-icons-outlined yellow-text mr-2">call</i>
-                <span>+65 1234 5678</span>
+{% extends "admin_layout.html" %} {% block title %}Store Entry Graph{% endblock
+%} {% block heading %}Store Entry Graph{% endblock %} {% block content%}
+<main>
+  <div class="container-fluid grey-container justify-content-between">
+    <div class="white-card filter-panel mt-0">
+      <div class="mb-5">
+        <h3>Filter</h3>
+      </div>
+      <form id="filter-form">
+        <div class="mb-3">
+          <label for="start-time">
+            <span><b>By Time</b></span>
+          </label>
+          <div class="d-flex flex-column">
+            <div>
+              <input type="radio" id="day" name="time" value="day" />
+              <label for="day">Day</label>
             </div>
-            <a class="d-flex align-items-center exit-btn" id="exit-btn" href="{{ url_for('home') }}">
-                <span class="mr-2">Exit</span>
-                <i class="material-icons">login</i>
-            </a>
-        </div>
-    </nav>
-    <header class="dark-header d-flex align-items-center justify-content-center">
-        <div>
-            <h1>Store Entry Graph</h1>
-        </div>
-    </header>
-    <main>
-        <div class="container-fluid grey-container justify-content-between">
-            <div class="white-card filter-panel mt-0">
-                <div class="mb-5">
-                    <h3>Filter</h3>
-                </div>
-                <form id="filter-form">
-                    <div class="mb-3">
-                        <label for="start-time">
-                            <span><b>By Time</b></span>
-                        </label>
-                        <div class="d-flex flex-column">
-                            <div>
-                                <input type="radio" id="day" name="time" value="day">
-                                <label for="day">Day</label>
-                            </div>
-                            <div>
-                                <input type="radio" id="week" name="time" value="week">
-                                <label for="week">Week</label>
-                            </div>
-                            <div>
-                                <input type="radio" id="month" name="time" value="month">
-                                <label for="month">Month</label>
-                            </div>
-                            <div>
-                                <input type="radio" id="year" name="time" value="year">
-                                <label for="year">Year</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="form-error" class="error mb-3"></div>
-                    <button class="btn primary-btn">
-                        <span>Submit</span>
-                    </button>
-                </form>
+            <div>
+              <input type="radio" id="week" name="time" value="week" />
+              <label for="week">Week</label>
             </div>
-            <div class="row col-lg-8 main-panel">
-                <canvas id="myChart"></canvas>
+            <div>
+              <input type="radio" id="month" name="time" value="month" />
+              <label for="month">Month</label>
             </div>
+            <div>
+              <input type="radio" id="year" name="time" value="year" />
+              <label for="year">Year</label>
+            </div>
+          </div>
         </div>
-    </main>
+        <div id="form-error" class="error mb-3"></div>
+        <button class="btn primary-btn">
+          <span>Submit</span>
+        </button>
+      </form>
+    </div>
+    <div class="row col-lg-8 main-panel">
+      <canvas id="myChart"></canvas>
+    </div>
+  </div>
+</main>
+{% endblock %} {% block scripts %}{{super()}}
+<!-- Chart js -->
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"
+  integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw=="
+  crossorigin="anonymous"
+></script>
+<script>
+  $(document).ready(function () {
+    // Set up filter form
+    $("#filter-form").submit(function (e) {
+      e.preventDefault();
+      const day = $(this).find("input[name='day']").val();
+      const week = $(this).find("input[name='week']").val();
+      const month = $(this).find("input[name='month']").val();
+      const year = $(this).find("input[name='year']").val();
+    });
 
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- Popper JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- Chart js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"
-        integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw=="
-        crossorigin="anonymous"></script>
-
-    <script src="../js/odometer.js"></script>
-    <script>
-        $(document).ready(function () {
-            // Set up filter form
-            $("#filter-form").submit(function (e) {
-                e.preventDefault();
-                const day = $(this).find("input[name='day']").val();
-                const week = $(this).find("input[name='week']").val();
-                const month = $(this).find("input[name='month']").val();
-                const year = $(this).find("input[name='year']").val();
-            });
-
-            // Set up chart
-            let ctx = document.getElementById("myChart").getContext('2d');
-            const data = {
-                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-                datasets: [
-                    {
-                        label: '# of Votes',
-                        lineTension: 0,
-                        fill: false,
-                        data: [12, 19, 3, 5, 2, 3],
-                        borderColor: "#000",
-                        borderWidth: 1
-                    }
-                ]
-            };
-            const options = {
-                title: {
-                    display: true,
-                    text: "Visitors in AUNTIE'S MAMA SHOP"
-                },
-                scales: {
-                    yAxes: [{
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'probability'
-                        }
-                    }],
-                    xAxes: [{
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'probability1'
-                        }
-                    }]
-                },
-            }
-            var myLineChart = new Chart(ctx, {
-                type: 'line',
-                data: data,
-                options: options
-            });
-        });
-    </script>
-</body>
-
-</html>
+    // Set up chart
+    let ctx = document.getElementById("myChart").getContext("2d");
+    const data = {
+      labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+      datasets: [
+        {
+          label: "# of Votes",
+          lineTension: 0,
+          fill: false,
+          data: [12, 19, 3, 5, 2, 3],
+          borderColor: "#000",
+          borderWidth: 1,
+        },
+      ],
+    };
+    const options = {
+      title: {
+        display: true,
+        text: "Visitors in AUNTIE'S MAMA SHOP",
+      },
+      scales: {
+        yAxes: [
+          {
+            scaleLabel: {
+              display: true,
+              labelString: "probability",
+            },
+          },
+        ],
+        xAxes: [
+          {
+            scaleLabel: {
+              display: true,
+              labelString: "probability1",
+            },
+          },
+        ],
+      },
+    };
+    var myLineChart = new Chart(ctx, {
+      type: "line",
+      data: data,
+      options: options,
+    });
+  });
+</script>
+{% endblock %}

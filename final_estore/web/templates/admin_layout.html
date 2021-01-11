@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@300;400;700&family=Suez+One&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css"
+    />
+    <link rel="stylesheet" href="./static/styles.css" />
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="./static/assets/img/logo.png"
+    />
+  </head>
+
+  <body>
+    <nav class="navbar fixed-top home-nav justify-content-between">
+      <a class="navbar-brand" href="{{ url_for('staff_home') }}">
+        <h4>Auntie's <br />Mama Shop</h4>
+      </a>
+      <ul class="nav home-nav-list">
+        <li>
+          <a href="{{ url_for('staff_records') }}">Temperature Screening</a>
+        </li>
+        <li>
+          <div class="dropdown home-nav-dropdown">
+            <button
+              class="btn btn-secondary dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Store Entry
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="{{ url_for('staff_graph') }}"
+                >Store Entry Graph</a
+              >
+              <a class="dropdown-item" href="{{ url_for('staff_home') }}"
+                >Live Count</a
+              >
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="dropdown home-nav-dropdown">
+            <button
+              class="btn btn-secondary dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Shop
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="{{ url_for('staff_estore') }}"
+                >Menu</a
+              >
+              <a class="dropdown-item" href="orders.html">Orders</a>
+              <a class="dropdown-item" href="{{ url_for('shop_graph')}}"
+                >Shop Graph</a
+              >
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="home-nav-right">
+        <div class="phone">
+          <i class="material-icons-outlined yellow-text mr-2">call</i>
+          <span>+65 1234 5678</span>
+        </div>
+        <a
+          class="d-flex align-items-center exit-btn"
+          id="exit-btn"
+          href="{{ url_for('home') }}"
+        >
+          <span class="mr-2">Exit</span>
+          <i class="material-icons">login</i>
+        </a>
+      </div>
+    </nav>
+    <header
+      class="dark-header d-flex align-items-center justify-content-center"
+    >
+      <div>
+        <h1>{% block heading %}{% endblock %}</h1>
+      </div>
+    </header>
+    {% block content %}{% endblock %} {% block scripts %}
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"
+    ></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    {% endblock %}
+  </body>
+</html>
