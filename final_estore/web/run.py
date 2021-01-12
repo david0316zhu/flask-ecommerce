@@ -396,7 +396,7 @@ def staff_estore():
             db['Product'] = new_product_dict
             db.close()
             return redirect(url_for('staff_estore'))
-        if form.validate_on_submit():
+        elif form.validate_on_submit():
             db.close()
             search_list = []
             for i in product_list:
@@ -405,7 +405,7 @@ def staff_estore():
                     search_list.append(i)
             product_list = search_list
             return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form, price_form=price_form)
-        if price_form.validate_on_submit():
+        elif price_form.validate_on_submit():
             db.close()
             price_list = []
             for j in product_list:

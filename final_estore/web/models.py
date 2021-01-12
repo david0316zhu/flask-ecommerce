@@ -66,10 +66,10 @@ class Product:
         return self.__price
 
     def set_title(self, title):
-        return self.__title
+        self.__title = title
 
     def set_info(self, info):
-        return self.__info
+        self.__info = info
     
     def set_price(self, price):
-        return self.__price
+        self.__price = price
