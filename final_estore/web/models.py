@@ -34,6 +34,7 @@ class User:
         self.__user_id = User.count_id
         self.__email = email
         self.__password = password
+        
 
     def get_user_id(self):
         return self.__user_id
@@ -43,6 +44,8 @@ class User:
 
     def get_password(self):
         return self.__password
+    
+    
 
 class Product:
     

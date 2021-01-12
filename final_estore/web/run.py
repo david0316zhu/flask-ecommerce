@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, flash, redirect, session
-from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm, ControlForm, ResetForm, TimeForm
+from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm, ControlForm, ResetForm, TimeForm, UpdateForm
 from models import Temp, User, Product
 import shelve
 from flask_bcrypt import Bcrypt
@@ -18,11 +18,7 @@ app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 @app.route("/home")
 def home():
     db = shelve.open('storage.db', 'c')
-    db["Product"] = {}
-    db["number"] = 0
-    db["estore"] = {}
-    db["Temp"] = {}
-
+    db["customer"] = {}
     db.close()
     session['logged_in'] = False
     session['customer'] = False
@@ -157,13 +153,12 @@ def e_store_login():
     form = LoginForm()
     if form.validate_on_submit():
         estore_dict = {}
-        db = shelve.open('storage.db', 'r')
+        db = shelve.open('storage.db', 'w')
         try:
             estore_dict = db['estore']
         except:
             print("error")
         estore_dict = db['estore']
-        db.close()
         estore_list = []
         for key in estore_dict:
             entry = estore_dict.get(key)
@@ -175,6 +170,7 @@ def e_store_login():
                 if user_pass == form.password.data:
                     print("pass")
                     session["customer"] = True
+                    db["customer"] = i
                     return redirect(url_for('e_store'))
                 else:
                     flash("Wrong Password!", 'danger')
@@ -183,6 +179,16 @@ def e_store_login():
         flash("Email dont exist!", 'danger')
     return render_template('customer_login.html', form=form)
 
+
+@app.route("/")
+@app.route("/estore_cart", methods=['GET', 'POST'])
+def e_store_cart():
+    if session.get('customer'):
+        db = shelve.open('storage.db', 'r')
+        customer = db["customer"]
+        db.close()
+        print(customer.get_email())
+        return render_template("customer_cart.html")
 @app.route("/")
 @app.route("/admin_login", methods=['GET', 'POST'])
 def staff_login():
@@ -439,7 +445,7 @@ def remove(id):
 @app.route('/updateProduct/<string:id>/', methods=['GET', 'POST'])
 def update_product(id):
     if session.get('logged_in'):
-        update_form = ProductForm()
+        update_form = UpdateForm()
         if update_form.validate_on_submit():
             db = shelve.open('storage.db', 'w')
             product_dict = db["Product"]
@@ -458,8 +464,10 @@ def update_product(id):
             update_form.info.data = product.get_info()
             update_form.price.data = product.get_price()
 
-            return render_template('update_product.html', update_form=update_form)
+        return render_template('update_product.html', update_form=update_form)
     else:
         return redirect(url_for('staff_login'))
+
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -84,3 +84,8 @@ $("#temp-form").submit(function () {
                 }
             });
 {{ render_field(form.price, class="form-input", type="text", placeholder="E.g. 1")}}
+
+db["Product"] = {}
+    db["number"] = 0
+    db["estore"] = {}
+    db["Temp"] = {}

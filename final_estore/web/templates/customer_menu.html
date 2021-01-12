@@ -55,7 +55,9 @@
                 <div class="list-header">
                     <span class="list-lg">Item</span>
                     <span class="list-sm">Price</span>
+                    {% if session.get('customer') %}
                     <span class="list-sm">Order</span>
+                    {% endif %}
                 </div>
                 {% for entry in product_list %}
                 <ul class="products-list">
@@ -72,6 +74,7 @@
                         <div class="list-sm menu-products-price">
                             <span>${{entry.get_price() }}</span>
                         </div>
+                        {% if session.get('customer') %}
                         <div class="list-sm products-quantity">
                             <div>
                                 <i class="material-icons icon-btn">add</i>
@@ -79,6 +82,7 @@
                                 <i class="material-icons icon-btn">remove</i>
                             </div>
                         </div>
+                        {% endif %}
                     </li>
                 </ul>
                 {% endfor %}
