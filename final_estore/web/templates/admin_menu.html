@@ -71,7 +71,7 @@ block heading %}Menu - Staff{% endblock %} {% block content%}
             <span>${{ entry.get_price() }}</span>
           </div>
           <div class="list-sm d-flex">
-            <a class="list-btn mr-2" href="update_product.html">
+            <a class="list-btn mr-2" href='/updateProduct/{{entry.get_product_id()}}'>
               <i class="material-icons">create</i>
             </a>
             <form

@@ -433,6 +433,8 @@ def remove(id):
         
         db.close()
         return redirect(url_for('staff_estore'))
+    else:
+        return redirect(url_for('staff_login'))
 
 @app.route('/updateProduct/<string:id>/', methods=['GET', 'POST'])
 def update_product(id):
@@ -448,5 +450,16 @@ def update_product(id):
             db["Product"] = product_dict
             db.close()
             return redirect(url_for('staff_estore'))
+        else:
+            db = shelve.open('storage.db', 'w')
+            product_dict = db["Product"]
+            product = product_dict.get(id)
+            update_form.title.data = product.get_title()
+            update_form.info.data = product.get_info()
+            update_form.price.data = product.get_price()
+
+            return render_template('update_product.html', update_form=update_form)
+    else:
+        return redirect(url_for('staff_login'))
 if __name__ == '__main__':
     app.run(debug=True)
