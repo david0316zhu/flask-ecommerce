@@ -55,6 +55,7 @@ class Product:
         self.__title = title
         self.__info = info
         self.__price = price
+        
     
     def get_product_id(self):
         return self.__product_id

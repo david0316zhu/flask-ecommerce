@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, FloatField, PasswordField, DecimalField, SelectField, DateField, DateTimeField
+from wtforms import StringField, SubmitField, TextAreaField, FloatField, PasswordField, DecimalField, SelectField, DateField, DateTimeField, IntegerField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 import shelve
 
@@ -55,3 +55,7 @@ class UpdateForm(FlaskForm):
     info = StringField("info", validators=[DataRequired()])
     price = DecimalField("price", validators=[DataRequired()])
     submit = SubmitField("Update")
+
+class CartForm(FlaskForm):
+    quantity = IntegerField("quantity", validators=[DataRequired()])
+    submit = SubmitField("Add")

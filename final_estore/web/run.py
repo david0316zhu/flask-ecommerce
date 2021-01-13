@@ -1,5 +1,5 @@
-from flask import Flask, render_template, url_for, flash, redirect, session
-from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm, ControlForm, ResetForm, TimeForm, UpdateForm
+from flask import Flask, render_template, url_for, flash, redirect, session, request
+from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm, ControlForm, ResetForm, TimeForm, UpdateForm, CartForm
 from models import Temp, User, Product
 import shelve
 from flask_bcrypt import Bcrypt
@@ -18,7 +18,8 @@ app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 @app.route("/home")
 def home():
     db = shelve.open('storage.db', 'c')
-    db["customer"] = {}
+    db["online"] = {}
+    
     db.close()
     session['logged_in'] = False
     session['customer'] = False
@@ -83,16 +84,20 @@ def live_counter():
 @app.route("/")
 @app.route("/estore", methods=['GET', 'POST'])
 def e_store():
-    db = shelve.open('storage.db', 'r')
+    db = shelve.open('storage.db', 'w')
     product_dict = {}
     product_dict = db['Product']
     print(db["Product"])
     product_list = []
+    email = db["online"]
     for key in product_dict:
         entry = product_dict.get(key)
         product_list.append(entry)
     form = SearchForm()
     price_form = PriceForm()
+    cart_form = CartForm()
+    if cart_form.validate_on_submit():
+        return redirect(url_for('e_store_add'))
     if price_form.validate_on_submit():
         price_list = []
         for j in product_list:
@@ -100,7 +105,7 @@ def e_store():
             if price_form.price.data >= prices:
                 price_list.append(j)
         product_list = price_list
-        return render_template('customer_menu.html', product_list=product_list, form=form, price_form=price_form)
+        return render_template('customer_menu.html', product_list=product_list, form=form, price_form=price_form, cart_form=cart_form)
     if form.validate_on_submit():
         search_list = []
         for i in product_list:
@@ -108,9 +113,35 @@ def e_store():
             if form.search.data.casefold() in item.casefold():
                 search_list.append(i)
         product_list = search_list
-        return render_template('customer_menu.html', product_list=product_list, form=form, price_form=price_form)
-    return render_template('customer_menu.html', product_list=product_list, form=form, price_form=price_form)
+        return render_template('customer_menu.html', product_list=product_list, form=form, price_form=price_form, cart_form=cart_form)
+    return render_template('customer_menu.html', product_list=product_list, form=form, price_form=price_form, cart_form=cart_form)
+@app.route("/")
+@app.route("/estore_cart", methods=['GET', 'POST'])
+def e_store_cart():
+    return render_template("customer_cart.html")
 
+@app.route("/add/<string:id>", methods=["GET", 'POST'])
+def e_store_add(id):
+    if session.get('customer'):
+        db = shelve.open('storage.db', 'c')
+        customer_dict = {}
+        email = db["online"]
+        print(db["customer"])
+        print(db["customer"][email])
+        product_dict = db["Product"]
+        entry = product_dict.pop(id)
+        quantity_data = request.form['quantity']
+        customer_dict = db["customer"][email]["cart"]
+        customer_dict[id] ={quantity_data: entry}
+        print(customer_dict)
+        
+        db["customer"][email]["cart"] = customer_dict
+        db.close()
+        db = shelve.open('storage.db', 'c')
+        print(db["customer"][email]["cart"])
+        
+        
+        return redirect(url_for("e_store"))
 
 @app.route("/")
 @app.route("/estore_register", methods=['GET', 'POST'])
@@ -170,7 +201,12 @@ def e_store_login():
                 if user_pass == form.password.data:
                     print("pass")
                     session["customer"] = True
-                    db["customer"] = i
+                    db["customer"] = {}
+                    cus_email = i.get_email()
+                    db["customer"] = {cus_email:{"cart"}}
+                    db["customer"][cus_email]["cart"] = "lmao, thanks"
+                    db["online"] = cus_email
+                    print("exist")
                     return redirect(url_for('e_store'))
                 else:
                     flash("Wrong Password!", 'danger')
@@ -180,15 +216,10 @@ def e_store_login():
     return render_template('customer_login.html', form=form)
 
 
-@app.route("/")
-@app.route("/estore_cart", methods=['GET', 'POST'])
-def e_store_cart():
-    if session.get('customer'):
-        db = shelve.open('storage.db', 'r')
-        customer = db["customer"]
-        db.close()
-        print(customer.get_email())
-        return render_template("customer_cart.html")
+
+
+
+
 @app.route("/")
 @app.route("/admin_login", methods=['GET', 'POST'])
 def staff_login():
@@ -434,6 +465,7 @@ def remove(id):
         
 
         entry = product_dict.pop(id)
+        print(entry)
         db["Product"] = product_dict
         db.close()
         
