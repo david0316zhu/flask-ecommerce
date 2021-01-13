@@ -209,6 +209,10 @@ a:hover {
 
 /* Form */
 
+.small-form {
+  min-width: 500px;
+}
+
 .form-input {
   padding: 5px 16px;
   width: 100%;
@@ -421,6 +425,12 @@ a:hover {
   display: flex;
   width: fit-content;
   background-color: white;
+}
+
+.add-to-cart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .products-quantity span {

@@ -75,12 +75,15 @@
                             <span>${{entry.get_price() }}</span>
                         </div>
                         {% if session.get('customer') %}
-                        <div class="list-sm products-quantity">
-                            <div>
-                                <i class="material-icons icon-btn">add</i>
-                                <span>2</span>
-                                <i class="material-icons icon-btn">remove</i>
+                        <div class="list-sm products-quantity add-to-cart">
+                            <div class="mr-2">
+                                <i class="material-icons icon-btn add-btn">add</i>
+                                <span class="number">2</span>
+                                <i class="material-icons icon-btn remove-btn">remove</i>
                             </div>
+                            <a class="list-btn mr-2" href='/updateProduct/{{entry.get_product_id()}}'>
+                                <i class="material-icons">add_shopping_cart</i>
+                            </a>
                         </div>
                         {% endif %}
                     </li>
@@ -89,4 +92,14 @@
             </div>
         </div>
     </main>
+  {% endblock %}
+  {% block scripts %}{{super()}}
+  <!-- <script>
+      $(".add-btn").click(function() {
+          let count = $(this).closest('.number').val();
+          console.log($(this))
+          console.log($(this).closest('.number').val())
+          $(this).closest('.number').val(count + 1);
+      });
+  </script> -->
   {% endblock %}
