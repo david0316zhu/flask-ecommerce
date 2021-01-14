@@ -23,7 +23,6 @@ endblock %} {% block content%}
             </div>
             {% else %} {{ time_form.date(class="form-input",
             placeholder="YYYY-MM-DD") }} {% endif %}
-            <div id="datepicker"></div>
           </div>
           <div class="mb-3">
             <label for="start-time">
@@ -80,12 +79,12 @@ endblock %} {% block content%}
         <form method="POST" action="">
           <!-- {{ reset_form.hidden_tag() }} {{ reset_form.reset(class="btn
           primary-btn small-btn ml-3") }} -->
-          <a class="btn primary-btn small-btn ml-3">Select</a>
+          <a class="btn primary-btn small-btn ml-3" id="select-btn">Select</a>
         </form>
       </div>
       <table class="table">
         <tr class="table-header">
-          <th></th>
+          <th class="select-toggle"></th>
           <th class="small-width">Last 4 digits of NRIC</th>
           <th class="small-width">Temperature</th>
           <th class="small-width">Date</th>
@@ -95,7 +94,7 @@ endblock %} {% block content%}
         </tr>
         {% for entry in temp_list %}
         <tr>
-          <td><input type="checkbox" /></td>
+          <td class="select-toggle"><input type="checkbox" /></td>
           <td>{{ entry.get_ic_num() }}</td>
           <td>{{ entry.get_temperature() }}</td>
           <td>{{ entry.get_date() }}</td>
@@ -112,8 +111,12 @@ endblock %} {% block content%}
 {% endblock %}{% block scripts %}{{super()}}
 <script>
   $(document).ready(function () {
-    // Set up datepicker
-    $("#datepicker").datepicker();
+    $(".select-toggle").hide();
+
+    // Set up select button
+    $("#select-btn").click(function () {
+      $(".select-toggle").toggle();
+    });
   });
 </script>
 {% endblock %}

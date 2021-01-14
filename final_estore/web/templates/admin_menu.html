@@ -286,9 +286,7 @@ block heading %}Menu - Staff{% endblock %} {% block content%}
     });
 
     $(".edit-btn").click(function () {
-      $.get(`/admin_estore?id=${$(this).data("id")}`, function (data) {
-        $("#update-popup").show();
-      });
+      $("#update-popup").show();
     });
   });
 </script>
