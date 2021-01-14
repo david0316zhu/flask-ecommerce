@@ -47,24 +47,27 @@ html {
 /* Typography */
 
 h1 {
-  font-family: "Suez One", Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   font-size: 4.7rem;
+  font-weight: bold;
 }
 
 h2 {
-  font-family: "Suez One", Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   font-size: 4rem;
 }
 
 h3 {
-  font-family: "Suez One", Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   font-size: 3.5rem;
 }
 
 h4 {
   text-transform: uppercase;
-  font-family: "Oswald", Helvetica, Arial, sans-serif;
+  letter-spacing: 0.2rem;
+  font-family: "Roboto", Helvetica, Arial, sans-serif;
   font-size: 2.5rem;
+  font-weight: bold;
 }
 
 a:hover {
@@ -112,6 +115,7 @@ a:hover {
   display: block;
   text-align: center;
   margin-bottom: 5px;
+  min-width: 100px;
 }
 
 .primary-btn:hover {
@@ -132,14 +136,21 @@ a:hover {
   color: white;
 }
 
+.red-btn {
+  background-color: var(--medium-red);
+}
+
+.red-btn:hover {
+  background-color: #d64439;
+}
+
 .small-btn {
-  /* height: 40px; */
   padding: 5px 16px;
 }
 
 .secondary-btn {
   background-color: var(--medium-yellow);
-  border-radius: 30px;
+  border-radius: 3px;
   padding: 10px 24px;
   min-width: 150px;
   width: fit-content;
@@ -216,6 +227,24 @@ a:hover {
   color: var(--dark-orange);
 }
 
+/* Modal */
+
+.modal {
+  height: 100vh;
+}
+
+.modal-center {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: 100%;
+}
+
+.modal-data {
+  max-width: 500px;
+  position: relative;
+}
+
 /* Form */
 
 .small-form {
@@ -256,16 +285,16 @@ ul.radio-input li:not(:last-child) {
 }
 
 .form-input-outline {
-  border-radius: 30px;
+  border-radius: 3px;
   border: 3px solid var(--medium-grey);
   padding: 10px 16px;
   background-color: white;
 }
 
 .form-input-dark {
-  border-radius: 30px;
+  border-radius: 3px;
   border: 1px solid var(--medium-grey);
-  padding: 10px 16px;
+  padding: 5px 16px;
   background-color: rgb(53, 53, 53);
   color: var(--light-grey);
 }
@@ -647,6 +676,8 @@ ul.radio-input li:not(:last-child) {
 .home-nav a h4 {
   color: white;
   text-align: center;
+  font-size: 1.3rem;
+  font-weight: lighter;
 }
 
 .home-nav .phone {
@@ -730,7 +761,7 @@ ul.radio-input li:not(:last-child) {
 }
 
 .footer-title {
-  font-family: "Oswald", Helvetica, Arial, sans-serif;
+  font-family: "Roboto", Helvetica, Arial, sans-serif;
   font-size: 2rem;
   text-transform: uppercase;
   text-align: center;
@@ -747,7 +778,7 @@ ul.radio-input li:not(:last-child) {
 /* Header */
 
 .dark-header {
-  margin-top: 80px;
+  margin-top: 55px;
   background-color: var(--dark-grey);
   color: white;
   text-align: center;
@@ -785,7 +816,7 @@ ul.radio-input li:not(:last-child) {
   min-height: 100vh;
   padding: 32px 64px !important;
   padding: 0;
-  margin-top: 80px;
+  margin-top: 55px;
   background-color: var(--light-grey);
   overflow: hidden;
   display: flex;
@@ -803,7 +834,7 @@ ul.radio-input li:not(:last-child) {
 .home-container {
   min-height: 100vh;
   padding: 0;
-  margin-top: 80px;
+  margin-top: 55px;
   background-color: var(--dark-grey);
   overflow: hidden;
   display: flex;

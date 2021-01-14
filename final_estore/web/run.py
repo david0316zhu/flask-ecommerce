@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, flash, redirect, session, request
+from flask import Flask, render_template, url_for, flash, redirect, session, request, jsonify
 from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm, ControlForm, ResetForm, TimeForm, UpdateForm, CartForm
 from models import Temp, User, Product
 import shelve
@@ -427,7 +427,15 @@ def staff_estore():
         form = SearchForm()
         product_form = ProductForm()
         price_form = PriceForm()
-        if product_form.validate_on_submit():
+
+        id = request.args.get('id')
+        if (id):
+            product = product_dict.get(id)
+            update_form.title.data = product.get_title()
+            update_form.info.data = product.get_info()
+            update_form.price.data = product.get_price()
+            return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form, price_form=price_form, update_form=update_form)
+        elif product_form.validate_on_submit():
             new_product_dict = db["Product"]
             new_product = Product(product_form.title.data, product_form.info.data, product_form.price.data)
             new_product_dict[new_product.get_product_id()] = new_product
