@@ -53,6 +53,15 @@
                         </div>
                     </div>
                 </form>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+                {% endfor%}
+                {% endif %}
+                {% endwith %}
                 <div class="list-header">
                     <span class="list-lg">Item</span>
                     <span class="list-sm">Price</span>
@@ -82,16 +91,16 @@
                         >
                         {{cart_form.hidden_tag()}}
                             <div class="products-quantity add-to-cart">
-                                <div class="mr-2">
+                                <div class="mr-2 form-input">
                                     {% if cart_form.quantity.errors %}
-                                    {{ cart_form.quantity(class="form-input is-invalid") }}
-                                    <div class="invalid-feedback">
-                                        {% for error in cart_form.quantity.errors %}
-                                        <span>{{ error }}</span>
-                                        {% endfor %}
-                                    </div>
+                                        {{ cart_form.quantity(class="form-input is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in cart_form.quantity.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
                                     {% else %}
-                                    {{ cart_form.quantity}}
+                                        {{ cart_form.quantity }}
                                     {% endif %}
                                 </div>
                                 <div class="mr-2">

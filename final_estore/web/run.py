@@ -1,6 +1,6 @@
-from flask import Flask, render_template, url_for, flash, redirect, session, request, jsonify
+from flask import Flask, render_template, url_for, flash, redirect, session, request
 from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm, ControlForm, ResetForm, TimeForm, UpdateForm, CartForm
-from models import Temp, User, Product
+from models import Temp, User, Product, Cart
 import shelve
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, current_user, logout_user, login_required, LoginManager
@@ -19,7 +19,8 @@ app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 def home():
     db = shelve.open('storage.db', 'c')
     db["online"] = {}
-    
+    db["cart"] = {}
+    db["error"] = {}
     db.close()
     session['logged_in'] = False
     session['customer'] = False
@@ -85,6 +86,11 @@ def live_counter():
 @app.route("/estore", methods=['GET', 'POST'])
 def e_store():
     db = shelve.open('storage.db', 'w')
+    if db["error"] == "Integer only":
+        flash("Integer only!", "danger")
+        db["error"] = {}
+    else:
+        pass
     product_dict = {}
     product_dict = db['Product']
     print(db["Product"])
@@ -97,8 +103,8 @@ def e_store():
     price_form = PriceForm()
     cart_form = CartForm()
     if cart_form.validate_on_submit():
-        return redirect(url_for('e_store_add'))
-    if price_form.validate_on_submit():
+        pass
+    elif price_form.validate_on_submit():
         price_list = []
         for j in product_list:
             prices = j.get_price()
@@ -106,7 +112,7 @@ def e_store():
                 price_list.append(j)
         product_list = price_list
         return render_template('customer_menu.html', product_list=product_list, form=form, price_form=price_form, cart_form=cart_form)
-    if form.validate_on_submit():
+    elif form.validate_on_submit():
         search_list = []
         for i in product_list:
             item = i.get_title()
@@ -118,7 +124,14 @@ def e_store():
 @app.route("/")
 @app.route("/estore_cart", methods=['GET', 'POST'])
 def e_store_cart():
-    return render_template("customer_cart.html")
+    db = shelve.open('storage.db', 'c')
+    cart = {}
+    cart_list = []
+    cart = db["cart"]
+    for key in cart:
+        entry = cart.get(key)
+        cart_list.append(entry)
+    return render_template("customer_cart.html", cart_list=cart_list)
 
 @app.route("/add/<string:id>", methods=["GET", 'POST'])
 def e_store_add(id):
@@ -126,21 +139,24 @@ def e_store_add(id):
         db = shelve.open('storage.db', 'c')
         customer_dict = {}
         email = db["online"]
-        print(db["customer"])
-        print(db["customer"][email])
+        try:
+            customer_dict = db['cart']
+        except:
+            print("error") 
+        
         product_dict = db["Product"]
         entry = product_dict.pop(id)
         quantity_data = request.form['quantity']
-        customer_dict = db["customer"][email]["cart"]
-        customer_dict[id] ={quantity_data: entry}
-        print(customer_dict)
-        
-        db["customer"][email]["cart"] = customer_dict
+        try:
+            quantity_data = int(quantity_data)
+        except ValueError:
+            db["error"] = "Integer only"
+            return redirect(url_for("e_store"))  
+        cart = Cart(entry, quantity_data)
+        customer_dict[id] = cart
+        db["cart"] = customer_dict
         db.close()
-        db = shelve.open('storage.db', 'c')
-        print(db["customer"][email]["cart"])
-        
-        
+        print(customer_dict)
         return redirect(url_for("e_store"))
 
 @app.route("/")
@@ -201,10 +217,7 @@ def e_store_login():
                 if user_pass == form.password.data:
                     print("pass")
                     session["customer"] = True
-                    db["customer"] = {}
                     cus_email = i.get_email()
-                    db["customer"] = {cus_email:{"cart"}}
-                    db["customer"][cus_email]["cart"] = "lmao, thanks"
                     db["online"] = cus_email
                     print("exist")
                     return redirect(url_for('e_store'))
@@ -423,19 +436,10 @@ def staff_estore():
             entry = product_dict.get(key)
             product_list.append(entry)
         product_form = ProductForm()
-        update_form = UpdateForm()
         form = SearchForm()
         product_form = ProductForm()
         price_form = PriceForm()
-
-        id = request.args.get('id')
-        if (id):
-            product = product_dict.get(id)
-            update_form.title.data = product.get_title()
-            update_form.info.data = product.get_info()
-            update_form.price.data = product.get_price()
-            return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form, price_form=price_form, update_form=update_form)
-        elif product_form.validate_on_submit():
+        if product_form.validate_on_submit():
             new_product_dict = db["Product"]
             new_product = Product(product_form.title.data, product_form.info.data, product_form.price.data)
             new_product_dict[new_product.get_product_id()] = new_product
@@ -450,7 +454,7 @@ def staff_estore():
                 if form.search.data.casefold() in item.casefold():
                     search_list.append(i)
             product_list = search_list
-            return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form, price_form=price_form, update_form=update_form)
+            return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form, price_form=price_form)
         elif price_form.validate_on_submit():
             db.close()
             price_list = []
@@ -459,9 +463,9 @@ def staff_estore():
                 if price_form.price.data >= prices:
                     price_list.append(j)
             product_list = price_list
-            return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form, price_form=price_form, update_form=update_form)
+            return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form, price_form=price_form)
 
-        return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form, price_form=price_form, update_form=update_form)
+        return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form, price_form=price_form)
     else:
         return redirect(url_for('staff_login'))
 

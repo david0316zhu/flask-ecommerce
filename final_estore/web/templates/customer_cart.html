@@ -34,8 +34,8 @@
                         Shop
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="menu.html">Menu</a>
-                        <a class="dropdown-item" href="cart.html">Cart</a>
+                        <a class="dropdown-item" href="{{ url_for('e_store')}}">Menu</a>
+                        <a class="dropdown-item" href="{{ url_for('e_store_cart')}}">Cart</a>
                         <a class="dropdown-item" href="orders.html">Orders</a>
                     </div>
                 </div>
@@ -46,11 +46,11 @@
                 <i class="material-icons-outlined yellow-text mr-2">call</i>
                 <span>+65 1234 5678</span>
             </div>
-            <a class="home-nav-icon position-relative" href="cart.html">
+            <a class="home-nav-icon position-relative" href="{{ url_for('e_store_cart')}}">
                 <div class="badge">3</div>
                 <i class="material-icons">shopping_cart</i>
             </a>
-            <a class="d-flex align-items-center exit-btn" id="exit-btn" href="../index.html">
+            <a class="d-flex align-items-center exit-btn" id="exit-btn" href="{{ url_for('home')}}">
                 <span class="mr-2">Exit</span>
                 <i class="material-icons">login</i>
             </a>
@@ -70,6 +70,7 @@
                     <span class="list-sm">Price</span>
                     <span class="list-sm">Subtotal</span>
                 </div>
+                {% for entry in cart_list %}
                 <ul class="products-list">
                     <li class="products-item">
                         <div class="list-md products-product">
@@ -77,51 +78,25 @@
                                 <img src="./static/assets/img/logo.png" alt="product">
                             </div>
                             <div class="products-title">
-                                <h4>Nongshim Shrimp Shin Ramyun Noodles</h4>
-                                <span>5 Count/ 120 grams</span>
+                                <h4>{{(entry.get_product()).get_title()}}</h4>
+                                <span>{{(entry.get_product()).get_info()}}</span>
                             </div>
                         </div>
                         <div class="list-sm products-quantity">
                             <div>
-                                <i class="material-icons icon-btn">add</i>
-                                <span>2</span>
-                                <i class="material-icons icon-btn">remove</i>
+                                <span>{{entry.get_quantity()}}</span>
                             </div>
                         </div>
                         <div class="list-sm">
-                            <span>$4.35</span>
+                            <span>${{(entry.get_product()).get_price()}}</span>
                         </div>
                         <div class="list-sm cart-products-subtotal">
-                            <span><b>$8.70</b></span>
-                            <i class="material-icons icon-btn">close</i>
-                        </div>
-                    </li>
-                    <li class="products-item">
-                        <div class="list-md products-product">
-                            <div class="products-img">
-                                <img src="./static/assets/img/logo.png" alt="product">
-                            </div>
-                            <div class="products-title">
-                                <h4>Nongshim Shrimp Shin Ramyun Noodles</h4>
-                                <span>5 Count/ 120 grams</span>
-                            </div>
-                        </div>
-                        <div class="list-sm products-quantity">
-                            <div>
-                                <i class="material-icons icon-btn">add</i>
-                                <span>2</span>
-                                <i class="material-icons icon-btn">remove</i>
-                            </div>
-                        </div>
-                        <div class="list-sm">
-                            <span>$4.35</span>
-                        </div>
-                        <div class="list-sm cart-products-subtotal">
-                            <span><b>$8.70</b></span>
+                            <span><b>{{(entry.get_product()).get_price()}}</b></span>
                             <i class="material-icons icon-btn">close</i>
                         </div>
                     </li>
                 </ul>
+                {% endfor%}
                 <form class="coupon-form mb-5" id="coupon-form">
                     <div class="d-flex align-items-center">
                         <i class="material-icons icon-btn yellow-text mr-2">cached</i>
