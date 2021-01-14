@@ -71,7 +71,10 @@ block heading %}Menu - Staff{% endblock %} {% block content%}
             <span>${{ entry.get_price() }}</span>
           </div>
           <div class="list-sm d-flex">
-            <a class="list-btn mr-2" href='/updateProduct/{{entry.get_product_id()}}'>
+            <a
+              class="list-btn mr-2 create-btn"
+              data-id="{{entry.get_product_id()}}"
+            >
               <i class="material-icons">create</i>
             </a>
             <form
@@ -133,15 +136,15 @@ block heading %}Menu - Staff{% endblock %} {% block content%}
   </div>
 </main>
 
-<!-- Popup -->
-<div class="position-relative" id="popup">
+<!-- Add Popup -->
+<div class="position-relative" id="add-popup">
   <div class="popup-wrapper">
     <div class="overlay" id="popup-overlay">
       <div class="popup">
         <div class="mb-3">
-          <span class="popup-title">Update Product</span>
+          <span class="popup-title">Add Product</span>
         </div>
-        <div class="close-btn" id="close-btn">
+        <div class="close-btn">
           <i class="material-icons">close</i>
         </div>
         <form
@@ -200,19 +203,92 @@ block heading %}Menu - Staff{% endblock %} {% block content%}
     </div>
   </div>
 </div>
+
+<!-- Update Popup -->
+<div class="position-relative" id="update-popup">
+  <div class="popup-wrapper">
+    <div class="overlay" id="popup-overlay">
+      <div class="popup">
+        <div class="mb-3">
+          <span class="popup-title">Update Product</span>
+        </div>
+        <div class="close-btn">
+          <i class="material-icons">close</i>
+        </div>
+        <form
+          class="form d-flex flex-column justify-content-center align-items-center"
+          method="POST"
+          action=""
+        >
+          {{ update_form.hidden_tag() }}
+          <div class="w-100 mb-3">
+            <label for="title">
+              <span><b>Title</b></span>
+            </label>
+            {% if update_form.title.errors %} {{
+            update_form.title(class="form-input is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in update_form.title.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %} {{ update_form.title(class="form-input",
+            placeholder="Title")}} {% endif %}
+          </div>
+          <div class="w-100 mb-3">
+            <label for="description">
+              <span><b>Description</b></span>
+            </label>
+            {% if update_form.info.errors %} {{
+            update_form.info(class="form-input is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in update_form.info.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %} {{ update_form.info(class="form-input",
+            placeholder="Description of Product")}} {% endif %}
+          </div>
+          <div class="w-100 mb-3">
+            <label for="price">
+              <span><b>Price</b></span>
+            </label>
+            {% if update_form.price.errors %} {{
+            update_form.price(class="form-input is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in update_form.price.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %} {{ update_form.price(class="form-input",
+            placeholder="Price")}} {% endif %}
+          </div>
+          <div id="popup-error" class="error mb-3"></div>
+          <div id="popup-success" class="success mb-3"></div>
+          {{ update_form.submit(class="btn primary-btn")}}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %} {% block scripts %} {{super()}}
 <script>
   $(document).ready(function () {
-    $("#popup").hide();
+    $("#add-popup").hide();
 
     // Hide popup on close button click
-    $("#close-btn").click(function () {
-      $("#popup").hide();
+    $(".close-btn").click(function () {
+      $("#add-popup").hide();
+      $("#update-popup").hide();
     });
 
     // Show popup on new product button click
     $("#new-product-btn").click(function () {
-      $("#popup").show();
+      $("#add-popup").show();
+    });
+
+    $(".create-btn").click(function () {
+      console.log($(this).data("id"));
     });
   });
 </script>

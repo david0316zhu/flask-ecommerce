@@ -59,10 +59,10 @@ endblock %} {% block content%}
       {% if temp_list|length == 0 %}
       <span><b>No data available.</b></span>
       {% else %}
-      <div class="d-flex justify-content-end">
+      <div class="d-flex justify-content-end align-items-center mb-5">
         <form method="POST" action="">
           {{ form.hidden_tag() }}
-          <div class="d-flex justify-content-end mb-5">
+          <div class="d-flex justify-content-end">
             <div class="search-input">
               {% if form.search.errors %} {{ form.search(class="form-input
               is-invalid") }}
@@ -71,29 +71,37 @@ endblock %} {% block content%}
                 <span>{{ error }}</span>
                 {% endfor %}
               </div>
-              {% else %} {{ form.search(id="search", placeholder="Search by
-              NRIC")}} {% endif %} {{ form.submit(class="material-icons") }}
+              {% else %} {{ form.search(placeholder="Search by NRIC",
+              id="search")}} {% endif %} {{ form.submit(class="material-icons")
+              }}
             </div>
           </div>
         </form>
         <form method="POST" action="">
-          {{ reset_form.hidden_tag() }} {{ reset_form.reset(class="btn
-          primary-btn small-btn ml-3") }}
+          <!-- {{ reset_form.hidden_tag() }} {{ reset_form.reset(class="btn
+          primary-btn small-btn ml-3") }} -->
+          <a class="btn primary-btn small-btn ml-3">Select</a>
         </form>
       </div>
       <table class="table">
         <tr class="table-header">
-          <th>Last 4 digits of NRIC</th>
-          <th>Temperature</th>
-          <th>Date</th>
-          <th>Time</th>
+          <th></th>
+          <th class="small-width">Last 4 digits of NRIC</th>
+          <th class="small-width">Temperature</th>
+          <th class="small-width">Date</th>
+          <th class="small-width">Time</th>
+          <th class="small-width">Any symptoms</th>
+          <th class="small-width">Been in contact with Covid-19 patients</th>
         </tr>
         {% for entry in temp_list %}
         <tr>
+          <td><input type="checkbox" /></td>
           <td>{{ entry.get_ic_num() }}</td>
           <td>{{ entry.get_temperature() }}</td>
           <td>{{ entry.get_date() }}</td>
           <td>{{ entry.get_time() }}</td>
+          <td>{{ 'Yes' }}</td>
+          <td>{{ 'Yes' }}</td>
         </tr>
         {% endfor %}
       </table>

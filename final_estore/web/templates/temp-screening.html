@@ -1,146 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Temperature Screening</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
     <link
-        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@300;400;700&family=Suez+One&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="./static/styles.css">
-    <link rel="shortcut icon" type="image/png" href="./static/assets/img/logo.png" />
-</head>
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@300;400;700&family=Suez+One&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link rel="stylesheet" href="./static/styles.css" />
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="./static/assets/img/logo.png"
+    />
+  </head>
 
-<body>
+  <body>
     <nav class="navbar fixed-top home-nav justify-content-between">
-        <a class="navbar-brand" href="{{ url_for('home') }}">
-            <h4>Auntie's <br />Mama Shop</h4>
-        </a>
-        <ul class="nav home-nav-list">
-            <li class="active-nav-item">
-                <a href="{{ url_for('temp_screen') }}">Temperature Screening</a>
-            </li>
-            <li>
-                <a href="{{ url_for('live_counter') }}">Live Counter</a>
-            </li>
-        </ul>
+      <a class="navbar-brand" href="{{ url_for('home') }}">
+        <h4>Auntie's <br />Mama Shop</h4>
+      </a>
+      <ul class="nav home-nav-list">
+        <li class="active-nav-item">
+          <a href="{{ url_for('temp_screen') }}">Temperature Screening</a>
+        </li>
+        <li>
+          <a href="{{ url_for('live_counter') }}">Live Counter</a>
+        </li>
+      </ul>
     </nav>
-    <header class="dark-header d-flex align-items-center justify-content-center">
-        <div>
-            <h1>Temperature Screening</h1>
-        </div>
+    <header
+      class="dark-header d-flex align-items-center justify-content-center"
+    >
+      <div>
+        <h1>Temperature Screening</h1>
+      </div>
     </header>
     <main>
-        <div class="container-fluid grey-container">
-            <div class="col-lg-6 text-center py-5" id="temp-success">
-                <div class="temp-icon mb-5">
-                    <i class="material-icons green-text">check_circle_outline</i>
-                </div>
-                <div class="mb-5">
-                    <h3>Successful Entry!</h3>
-                </div>
-                <div class="temp-subtitle">
-                    <span>Welcome to Auntie's Mama Shop!</span>
-                    <span>Happy Shopping!</span>
-                </div>
-            </div>
-            <div class="col-lg-6 text-center py-5" id="temp-error">
-                <div class="temp-icon mb-5">
-                    <i class="material-icons red-text">not_interested</i>
-                </div>
-                <div class="mb-5">
-                    <h3>Unsuccessful Entry!</h3>
-                </div>
-                <div class="temp-subtitle">
-                    <span class="red-text"><b>*Temperatures above 37.5 degrees, will be denied entry into the store to
-                            provide a safe shopping environment for customers</b></span>
-                </div>
-            </div>
-            <div class="col-lg-6" id="temp-info">
-                <form id="temp-form" class="mb-5" method="POST" action="">
-                    {{ form.hidden_tag() }}
-                    <div class="mb-5">
-                        <b>Your Information:</b>
-                    </div>
-                    <div class="row mb-5">
-                        <div class="form-group col-lg-6">
-                            {% if form.nric.errors %}
-                            {{ form.nric(class="form-input is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.nric.errors %}
-                                <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                            {{ form.nric(class="form-input", placeholder="Last 4 NRIC Number")}}
-                            {% endif %}
-                        </div>
-                        <div class="col-lg-6">
-                            {% if form.temperature.errors %}
-                            {{ form.temperature(class="form-input is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.temperature.errors %}
-                                <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                            {{ form.temperature(class="form-input", placeholder="Temperature")}}
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div id="form-error" class="error"></div>
-                    <div class="row justify-content-end">
-                        {{ form.submit(class="btn primary-btn") }}
-                    </div>
-                </form>
-                <div class="qr-wrapper mb-5">
-                    <div class="qr">
-                        <img src="static/assets/img/qr-code.png" alt="QR" />
-                    </div>
-                </div>
-                <div class="text-center mb-5">
-                    <a href="https://www.safeentry.gov.sg/AUNTIESMAMASHOP" class="link"
-                        target="_blank">https://www.safeentry.gov.sg/AUNTIESMAMASHOPs</a>
-                </div>
-                <div class="row justify-content-center">
-                    <a class="btn secondary-btn d-flex align-items-center" href="{{ url_for('home') }}">
-                        <span><b>Back To Home</b></span>
-                        <i class="material-icons">home</i>
-                    </a>
-                </div>
-            </div>
+      <div class="container-fluid grey-container">
+        <div class="col-lg-6 text-center py-5" id="temp-success">
+          <div class="temp-icon mb-5">
+            <i class="material-icons green-text">check_circle_outline</i>
+          </div>
+          <div class="mb-5">
+            <h3>Successful Entry!</h3>
+          </div>
+          <div class="temp-subtitle">
+            <span>Welcome to Auntie's Mama Shop!</span>
+            <span>Happy Shopping!</span>
+          </div>
         </div>
+        <div class="col-lg-6 text-center py-5" id="temp-error">
+          <div class="temp-icon mb-5">
+            <i class="material-icons red-text">not_interested</i>
+          </div>
+          <div class="mb-5">
+            <h3>Unsuccessful Entry!</h3>
+          </div>
+          <div class="temp-subtitle">
+            <span class="red-text"
+              ><b
+                >*Temperatures above 37.5 degrees, will be denied entry into the
+                store to provide a safe shopping environment for customers</b
+              ></span
+            >
+          </div>
+        </div>
+        <div class="col-lg-6" id="temp-info">
+          <form id="temp-form" class="mb-5" method="POST" action="">
+            {{ form.hidden_tag() }}
+            <div class="mb-5">
+              <h3>Your Information:</h3>
+            </div>
+            <div class="mb-3">
+              {{form.nric.label(class="bold-text capitalise")}} {% if
+              form.nric.errors %} {{ form.nric(class="form-input is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.nric.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              {% else %} {{ form.nric(placeholder="E.g. 123A",
+              class="form-input")}} {% endif %}
+            </div>
+            <div class="mb-3">
+              {{form.temperature.label(class="bold-text")}} {% if
+              form.temperature.errors %} {{ form.temperature(class="form-input
+              is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.temperature.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              {% else %} {{ form.temperature(class="form-input",
+              placeholder="E.g. 36.0")}} {% endif %}
+            </div>
+            <div class="mb-3">
+              <b>
+                Do you have any of the following symptoms now or within the last
+                14 days: Cough, smell/taste impairment, fever, breathing
+                difficulties, body aches, headaches, fatigue, sore throat,
+                diarrhoea, and / or runny nose (even if your symptoms are mild)?
+              </b>
+              {% if form.symptoms.errors %} {{ form.symptoms(class="form-input
+              is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.symptoms.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              {% else %} {{ form.symptoms(class="radio-input")}} {% endif %}
+            </div>
+            <div class="mb-5">
+              <b>
+                Have you been in contact with anyone who is suspected to have
+                or/has been diagnosed with Covid-19 within the last 14 days?
+              </b>
+              {% if form.contact.errors %} {{ form.contact(class="form-input
+              is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.contact.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              {% else %} {{ form.contact(class="radio-input")}} {% endif %}
+            </div>
+            <div class="mb-5 d-flex align-items-start">
+              {{form.check(class="mr-2")}} {{form.check.label}}
+            </div>
+            <div class="justify-content-start">
+              {{ form.submit(class="btn primary-btn small-btn") }}
+            </div>
+          </form>
+          <div class="qr-wrapper mb-5">
+            <div class="qr">
+              <img src="static/assets/img/qr-code.png" alt="QR" />
+            </div>
+          </div>
+          <div class="text-center mb-5">
+            <a
+              href="https://www.safeentry.gov.sg/AUNTIESMAMASHOP"
+              class="link"
+              target="_blank"
+              >https://www.safeentry.gov.sg/AUNTIESMAMASHOPs</a
+            >
+          </div>
+          <div class="row justify-content-center">
+            <a
+              class="btn secondary-btn d-flex align-items-center"
+              href="{{ url_for('home') }}"
+            >
+              <span><b>Back To Home</b></span>
+              <i class="material-icons">home</i>
+            </a>
+          </div>
+        </div>
+      </div>
     </main>
     <footer class="dark-footer">
-        <div class="footer-top">
-            <div class="footer-info">
-                <div class="mb-3">
-                    <span class="footer-title">Auntie's Mama Shop</span>
-                </div>
-                <div class="mb-3">
-                    <span class="footer-subtitle">Operating Hours</span>
-                </div>
-                <div>
-                    <div>
-                        <b>Mon - Sat:</b>
-                        <span>9.00 am - 10.00 pm</span>
-                    </div>
-                    <div>
-                        <b>Sun:</b>
-                        <span>10.00 am - 8.00 pm</span>
-                    </div>
-                </div>
+      <div class="footer-top">
+        <div class="footer-info">
+          <div class="mb-3">
+            <span class="footer-title">Auntie's Mama Shop</span>
+          </div>
+          <div class="mb-3">
+            <span class="footer-subtitle">Operating Hours</span>
+          </div>
+          <div>
+            <div>
+              <b>Mon - Sat:</b>
+              <span>9.00 am - 10.00 pm</span>
             </div>
-        </div>
-        <div class="footer-bottom">
-            <div class="footer-copyright">
-                <span>&copy; All Rights Reserved AUNTIE'S MAMA SHOP 2020</span>
+            <div>
+              <b>Sun:</b>
+              <span>10.00 am - 8.00 pm</span>
             </div>
+          </div>
         </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copyright">
+          <span>&copy; All Rights Reserved AUNTIE'S MAMA SHOP 2020</span>
+        </div>
+      </div>
     </footer>
 
     <!-- jQuery library -->
@@ -151,14 +203,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="./static/validators.js"></script>
     <script>
-        $(document).ready(function () {
-            $("#temp-success").hide();
-            $("#temp-error").hide();
-
-
-        });
+      $(document).ready(function () {
+        $("#temp-success").hide();
+        $("#temp-error").hide();
+      });
     </script>
-
-</body>
-
+  </body>
 </html>
