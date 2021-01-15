@@ -23,8 +23,9 @@ block heading %}Menu - Staff{% endblock %} {% block content%}
           </div>
           {% else %} {{ price_form.price(placeholder="Search by Price",
           class="form-input")}} {% endif %}
-          <div id="form-error" class="error mb-3"></div>
-          {{ price_form.submit(class="btn primary-btn")}}
+          <div class="mb-3 w-100">
+            {{ price_form.submit(class="btn primary-btn w-100")}}
+          </div>
         </form>
       </div>
       <div class="white-card need-help">

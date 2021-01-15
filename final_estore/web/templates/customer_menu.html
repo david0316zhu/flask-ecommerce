@@ -20,8 +20,10 @@ block heading %}Menu{% endblock %} {% block content%}
               {% endfor %}
             </div>
             {% else %} {{ price_form.price(class="form-input",
-            placeholder="Search by Price")}} {% endif %} {{
-            price_form.submit(class="btn primary-btn")}}
+            placeholder="Search by Price")}} {% endif %}
+            <div class="mt-3 w-100">
+              {{ price_form.submit(class="btn primary-btn w-100")}}
+            </div>
           </div>
         </form>
       </div>

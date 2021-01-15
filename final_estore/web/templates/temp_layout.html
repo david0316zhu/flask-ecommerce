@@ -15,6 +15,10 @@
     />
     <link
       rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
     />
     <link rel="stylesheet" href="./static/styles.css" />
@@ -47,30 +51,118 @@
       </div>
     </header>
     {% block content %}{% endblock %}
-    <footer class="light-footer">
-      <div class="footer-top">
-        <div class="footer-info">
-          <div class="mb-3">
-            <span class="footer-title">Auntie's Mama Shop</span>
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            <h3>Secure payments with</h3>
+            <p>
+              <img
+                src="./static/assets/img/cards.png"
+                alt=""
+                class="img-fluid"
+              />
+            </p>
           </div>
-          <div class="mb-3">
-            <span class="footer-subtitle">Operating Hours</span>
-          </div>
-          <div>
-            <div>
-              <b>Mon - Sat:</b>
-              <span>9.00 am - 10.00 pm</span>
+          <div class="col-md-3 footer-top">
+            <div class="footer-info">
+              <div class="mb-3">
+                <h3>Operating Hours</h3>
+              </div>
+              <div>
+                <div>
+                  <b>Mon - Sat:</b>
+                  <span>9.00 am - 10.00 pm</span>
+                </div>
+                <div>
+                  <b>Sun:</b>
+                  <span>10.00 am - 8.00 pm</span>
+                </div>
+              </div>
             </div>
-            <div>
-              <b>Sun:</b>
-              <span>10.00 am - 8.00 pm</span>
+          </div>
+          <div class="col-md-3" id="newsletter">
+            <h3>Newsletter</h3>
+            <div class="mb-2">
+              <span
+                >Join our newsletter to keep be informed about offers and
+                news.</span
+              >
+            </div>
+            <div id="message-newsletter_2"></div>
+            <form
+              method="post"
+              action="#"
+              name="newsletter_2"
+              id="newsletter_2"
+            >
+              <div class="form-group">
+                <input
+                  name="email_newsletter_2"
+                  id="email_newsletter_2"
+                  type="email"
+                  value=""
+                  placeholder="Your mail"
+                  class="form-control"
+                />
+              </div>
+              <input
+                type="submit"
+                value="Subscribe"
+                class="btn primary-btn small-btn"
+                id="submit-newsletter_2"
+              />
+            </form>
+          </div>
+          <div class="col-md-2">
+            <h3>Settings</h3>
+            <div class="styled-select">
+              <select name="lang" id="lang">
+                <option value="English" selected="">English</option>
+                <option value="French">French</option>
+                <option value="Spanish">Spanish</option>
+                <option value="Russian">Russian</option>
+              </select>
+            </div>
+            <div class="styled-select">
+              <select name="currency" id="currency">
+                <option value="USD" selected="">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+                <option value="RUB">RUB</option>
+              </select>
             </div>
           </div>
         </div>
-      </div>
-      <div class="footer-bottom">
-        <div class="footer-copyright">
-          <span>&copy; All Rights Reserved AUNTIE'S MAMA SHOP 2020</span>
+        <div class="row">
+          <div class="col-md-12">
+            <div id="social_footer">
+              <ul>
+                <li>
+                  <a href="#0"><i class="fa fa-youtube-square"></i></a>
+                </li>
+                <li>
+                  <a href="#0"><i class="fa fa-facebook"></i></a>
+                </li>
+                <li>
+                  <a href="#0"><i class="fa fa-twitter"></i></a>
+                </li>
+                <li>
+                  <a href="#0"><i class="fa fa-instagram"></i></a>
+                </li>
+                <li>
+                  <a href="#0"><i class="fa fa-pinterest"></i></a>
+                </li>
+                <li>
+                  <a href="#0"><i class="fa fa-linkedin"></i></a>
+                </li>
+                <li>
+                  <a href="#0"><i class="fa fa-medium"></i></a>
+                </li>
+              </ul>
+              <p>© Auntie's Mama Shop 2020</p>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
@@ -81,6 +173,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="./static/index.js"></script>
   </body>
 </html>
