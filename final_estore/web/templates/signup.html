@@ -1,116 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Temperature Screening</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@300;400;700&family=Suez+One&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="./static/styles.css">
-    <link rel="shortcut icon" type="image/png" href="./static/assets/img/logo.png" />
-</head>
-
-<body>
-    <nav class="navbar fixed-top home-nav justify-content-between">
-        <a class="navbar-brand" href="{{ url_for('home') }}">
-            <h4>Auntie's <br />Mama Shop</h4>
+{% extends "plain_layout.html" %} {% block title %}Sign up{% endblock %}{% block
+content%}
+<main>
+  <div class="container-fluid login-container">
+    <div
+      class="blue-card d-flex flex-column justify-content-center align-items-center"
+    >
+      <div class="logo">
+        <a href="{{ url_for('home') }}" class="login-lock">
+          <i class="material-icons">lock</i>
         </a>
-    </nav>
-    <main>
-        <div class="container-fluid login-container">
-            <div class="dark-grey-card d-flex flex-column justify-content-center align-items-center">
-                <div class="logo">
-                    <a href="{{ url_for('home') }}">
-                        <img src="static/assets/img/logo.png" alt="itrack" />
-                    </a>
-                </div>
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">
-                    {{ message }}
-                </div>
-                {% endfor%}
-                {% endif %}
-                {% endwith %}
-                <form class="form w-100 mb-3 d-flex flex-column justify-content-center align-items-center"
-                    id="signup-form" method="POST" action="">
-                    {{ form.hidden_tag() }}
-                    <div class="form-input-wrapper w-100">
-                        {% if form.email.errors %}
-                        {{ form.email(class="form-input is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.email.errors %}
-                            <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                        {% else %}
-                        {{ form.email(class="form-input-dark w-100", placeholder="Email") }}
-                        {% endif %}
-                    </div>
-                    <div class="form-input-wrapper w-100">
-                        {% if form.password.errors %}
-                        {{ form.password(class="form-input is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.password.errors %}
-                            <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                        {% else %}
-                        {{ form.password(class="form-input-dark w-100", placeholder="Password") }}
-                        {% endif %}
-                    </div>
-                    <div id="error" class="error mb-3"></div>
-                    <div class="form-group">
-                        {{ form.submit(class="btn primary-btn") }}
-                    </div>
-                </form>
-                <div>
-                    <span>Already have an account?</span>&nbsp;
-                    <a href="{{ url_for('e_store_login') }}" class="inline-btn">Login</a>
-                </div>
-            </div>
+      </div>
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %} {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor%} {% endif %} {% endwith %}
+      <form
+        class="form w-100 mb-3 d-flex flex-column justify-content-center align-items-center"
+        id="signup-form"
+        method="POST"
+        action=""
+      >
+        {{ form.hidden_tag() }}
+        <div class="form-input-wrapper w-100">
+          {% if form.email.errors %} {{ form.email(class="form-input
+          is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.email.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.email(class="form-input-outline w-100",
+          placeholder="Email") }} {% endif %}
         </div>
-    </main>
-    <footer class="dark-footer">
-        <div class="footer-top">
-            <div class="footer-info">
-                <div class="mb-3">
-                    <span class="footer-title">Auntie's Mama Shop</span>
-                </div>
-                <div class="mb-3">
-                    <span class="footer-subtitle">Operating Hours</span>
-                </div>
-                <div>
-                    <div>
-                        <b>Mon - Sat:</b>
-                        <span>9.00 am - 10.00 pm</span>
-                    </div>
-                    <div>
-                        <b>Sun:</b>
-                        <span>10.00 am - 8.00 pm</span>
-                    </div>
-                </div>
-            </div>
+        <div class="form-input-wrapper w-100">
+          {% if form.password.errors %} {{ form.password(class="form-input
+          is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.password.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.password(class="form-input-outline w-100",
+          placeholder="Password") }} {% endif %}
         </div>
-        <div class="footer-bottom">
-            <div class="footer-copyright">
-                <span>&copy; All Rights Reserved AUNTIE'S MAMA SHOP 2020</span>
-            </div>
-        </div>
-    </footer>
-
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- Popper JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-
-</html>
+        {{ form.submit(class="btn white-btn w-100") }}
+      </form>
+      <div>
+        <span>Already have an account?</span>&nbsp;
+        <a href="{{ url_for('e_store_login') }}" class="inline-btn">Login</a>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

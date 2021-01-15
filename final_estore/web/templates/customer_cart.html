@@ -1,146 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cart</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@300;400;700&family=Suez+One&display=swap"
-        rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
-        rel="stylesheet">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" href="./static/styles.css">
-    <link rel="shortcut icon" type="image/png" href="./static/assets/img/logo.png" />
-</head>
-
-<body>
-    <nav class="navbar fixed-top home-nav justify-content-between">
-        <a class="navbar-brand" href="../index.html">
-            <h4>Auntie's <br />Mama Shop</h4>
-        </a>
-        <ul class="nav home-nav-list">
-            <li>
-                <a href="{{ url_for('live_counter')}}">Live Counter</a>
-            </li>
-            <li>
-                <div class="dropdown home-nav-dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Shop
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="{{ url_for('e_store')}}">Menu</a>
-                        <a class="dropdown-item" href="{{ url_for('e_store_cart')}}">Cart</a>
-                        <a class="dropdown-item" href="orders.html">Orders</a>
-                    </div>
-                </div>
-            </li>
-        </ul>
-        <div class="home-nav-right">
-            <div class="phone">
-                <i class="material-icons-outlined yellow-text mr-2">call</i>
-                <span>+65 1234 5678</span>
+{% extends "customer_layout.html" %} {% block title %}Menu{% endblock %} {%
+block heading %}Cart{% endblock %} {% block content%}
+<main>
+  <div class="container-fluid grey-container">
+    <div class="row flex-column col-lg-8 main-panel">
+      <div class="list-header">
+        <span class="list-md">Item</span>
+        <span class="list-sm">Quantity</span>
+        <span class="list-sm">Price</span>
+        <span class="list-sm">Subtotal</span>
+      </div>
+      {% for entry in cart_list %}
+      <ul class="products-list">
+        <li class="products-item">
+          <div class="list-md products-product">
+            <div class="products-img">
+              <img src="./static/assets/img/logo.png" alt="product" />
             </div>
-            <a class="home-nav-icon position-relative" href="{{ url_for('e_store_cart')}}">
-                <div class="badge">3</div>
-                <i class="material-icons">shopping_cart</i>
-            </a>
-            <a class="d-flex align-items-center exit-btn" id="exit-btn" href="{{ url_for('home')}}">
-                <span class="mr-2">Exit</span>
-                <i class="material-icons">login</i>
-            </a>
+            <div class="products-title">
+              <h4>{{(entry.get_product()).get_title()}}</h4>
+              <span>{{(entry.get_product()).get_info()}}</span>
+            </div>
+          </div>
+          <div class="list-sm products-quantity">
+            <div>
+              <span>{{entry.get_quantity()}}</span>
+            </div>
+          </div>
+          <div class="list-sm">
+            <span>${{(entry.get_product()).get_price()}}</span>
+          </div>
+          <div class="list-sm cart-products-subtotal">
+            <span><b>{{(entry.get_product()).get_price()}}</b></span>
+            <i class="material-icons icon-btn">close</i>
+          </div>
+        </li>
+      </ul>
+      {% endfor%}
+      <form class="coupon-form mb-5" id="coupon-form">
+        <div class="d-flex align-items-center">
+          <i class="material-icons icon-btn yellow-text mr-2">cached</i>
+          <span><b>Update</b></span>
         </div>
-    </nav>
-    <header class="dark-header d-flex align-items-center justify-content-center">
         <div>
-            <h1>Cart</h1>
+          <input />
+          <button class="btn primary-btn">
+            <span>Apply</span>
+          </button>
         </div>
-    </header>
-    <main>
-        <div class="container-fluid grey-container">
-            <div class="row flex-column col-lg-8 main-panel">
-                <div class="list-header">
-                    <span class="list-md">Item</span>
-                    <span class="list-sm">Quantity</span>
-                    <span class="list-sm">Price</span>
-                    <span class="list-sm">Subtotal</span>
-                </div>
-                {% for entry in cart_list %}
-                <ul class="products-list">
-                    <li class="products-item">
-                        <div class="list-md products-product">
-                            <div class="products-img">
-                                <img src="./static/assets/img/logo.png" alt="product">
-                            </div>
-                            <div class="products-title">
-                                <h4>{{(entry.get_product()).get_title()}}</h4>
-                                <span>{{(entry.get_product()).get_info()}}</span>
-                            </div>
-                        </div>
-                        <div class="list-sm products-quantity">
-                            <div>
-                                <span>{{entry.get_quantity()}}</span>
-                            </div>
-                        </div>
-                        <div class="list-sm">
-                            <span>${{(entry.get_product()).get_price()}}</span>
-                        </div>
-                        <div class="list-sm cart-products-subtotal">
-                            <span><b>{{(entry.get_product()).get_price()}}</b></span>
-                            <i class="material-icons icon-btn">close</i>
-                        </div>
-                    </li>
-                </ul>
-                {% endfor%}
-                <form class="coupon-form mb-5" id="coupon-form">
-                    <div class="d-flex align-items-center">
-                        <i class="material-icons icon-btn yellow-text mr-2">cached</i>
-                        <span><b>Update</b></span>
-                    </div>
-                    <div>
-                        <input> 
-                        <button class="btn primary-btn">
-                            <span>Apply</span>
-                        </button>
-                    </div>
-                </form>
-                <div class="d-flex justify-content-end">
-                    <div class="cart-summary-card">
-                        <div class="cart-summary-item">
-                            <span><b>Subtotal</b></span>
-                            <span><b>$16.70</b></span>
-                        </div>
-                        <div class="cart-summary-item">
-                            <span>Delivery</span>
-                            <span>$3.00</span>
-                        </div>
-                        <div class="cart-summary-item summary-total">
-                            <span>Total</span>
-                            <span>$19.70</span>
-                        </div>
-                        <button class="btn primary-btn w-100" id="checkout-btn">
-                            <span>Checkout</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
+      </form>
+      <div class="d-flex justify-content-end">
+        <div class="cart-summary-card">
+          <div class="cart-summary-item">
+            <span><b>Subtotal</b></span>
+            <span><b>$16.70</b></span>
+          </div>
+          <div class="cart-summary-item">
+            <span>Delivery</span>
+            <span>$3.00</span>
+          </div>
+          <div class="cart-summary-item summary-total">
+            <span>Total</span>
+            <span>$19.70</span>
+          </div>
+          <button class="btn primary-btn w-100" id="checkout-btn">
+            <span>Checkout</span>
+          </button>
         </div>
-    </main>
-
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- Popper JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-</body>
-
-</html>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

@@ -1,118 +1,104 @@
 {% extends "customer_layout.html" %} {% block title %}Menu{% endblock %} {%
-    block heading %}Menu{% endblock %} {% block content%}
-    <main>
-        <div class="container-fluid grey-container justify-content-between">
-            <div>
-                <div class="white-card filter-panel mb-5">
-                    <div class="mb-5">
-                        <h3>Filter</h3>
-                    </div>
-                    <form id="filter-form" method="POST" action="">
-                        <div class="d-flex flex-column mb-3">
-                            <label class="mb-2" for="price">
-                                <span><b>By Price</b></span>
-                            </label>
-                            {{ price_form.hidden_tag() }}
-                                    {% if price_form.price.errors %}
-                                    {{ price_form.price(class="form-input is-invalid") }}
-                                    <div class="invalid-feedback">
-                                        {% for error in price_form.price.errors %}
-                                        <span>{{ error }}</span>
-                                        {% endfor %}
-                                    </div>
-                                    {% else %}
-                                    {{ price_form.price(class="form-input", placeholder="Search by Price")}}
-                                    {% endif %}
-                                <div id="form-error" class="error mb-3"></div>
-                                {{ price_form.submit(class="btn primary-btn")}}
-                        </div>
-                    </form>
-                </div>
-                <div class="white-card need-help">
-                    <i class="material-icons">support</i>
-                    <h4>Need Help?</h4>
-                    <span>Call +65 1234 5678</span>
-                </div>
-            </div>
-            <div class="row flex-column col-lg-8 main-panel">
-                <form method="POST" action="">
-                    {{ form.hidden_tag() }}
-                    <div class="d-flex justify-content-end  mb-5">
-                        <div class="search-input">
-                            {% if form.search.errors %}
-                            {{ form.search(class="form-input is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.search.errors %}
-                                <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                            {{ form.search(placeholder="Search by title")}}
-                            {% endif %}
-                            {{ form.submit(class="material-icons") }}
-                        </div>
-                    </div>
-                </form>
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">
-                    {{ message }}
-                </div>
-                {% endfor%}
-                {% endif %}
-                {% endwith %}
-                <div class="list-header">
-                    <span class="list-lg">Item</span>
-                    <span class="list-sm">Price</span>
-                    {% if session.get('customer') %}
-                    <span class="list-sm">Order</span>
-                    {% endif %}
-                </div>
-                {% for entry in product_list %}
-                <ul class="products-list">
-                    <li class="products-item">
-                        <div class="list-lg products-product">
-                            <div class="products-img">
-                                <img src="./static/assets/img/logo.png" alt="product">
-                            </div>
-                            <div class="products-title">
-                                <h4>{{ entry.get_title() }}</h4>
-                                <span>{{ entry.get_info() }}</span>
-                            </div>
-                        </div>
-                        <div class="list-sm menu-products-price">
-                            <span>${{entry.get_price() }}</span>
-                        </div>
-                        {% if session.get('customer') %}
-                        <form
-                        method="POST" 
-                        action="{{ url_for('e_store_add', id=entry.get_product_id()) }}"
-                        >
-                        {{cart_form.hidden_tag()}}
-                            <div class="products-quantity add-to-cart">
-                                <div class="mr-2 form-input">
-                                    {% if cart_form.quantity.errors %}
-                                        {{ cart_form.quantity(class="form-input is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for error in cart_form.quantity.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        {{ cart_form.quantity }}
-                                    {% endif %}
-                                </div>
-                                <div class="mr-2">
-                                    {{ cart_form.submit(class="btn primary-btn")}}
-                                </div>
-                            </div>
-                        </form>
-                        {% endif %}
-                    </li>
-                </ul>
-                {% endfor %}
-            </div>
+block heading %}Menu{% endblock %} {% block content%}
+<main>
+  <div class="container-fluid grey-container justify-content-between">
+    <div>
+      <div class="white-card filter-panel mb-5">
+        <div class="mb-5">
+          <h3>Filter</h3>
         </div>
-    </main>
-  {% endblock %}
+        <form id="filter-form" method="POST" action="">
+          <div class="d-flex flex-column mb-3">
+            <label class="mb-2" for="price">
+              <span><b>By Price</b></span>
+            </label>
+            {{ price_form.hidden_tag() }} {% if price_form.price.errors %} {{
+            price_form.price(class="form-input is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in price_form.price.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %} {{ price_form.price(class="form-input",
+            placeholder="Search by Price")}} {% endif %} {{
+            price_form.submit(class="btn primary-btn")}}
+          </div>
+        </form>
+      </div>
+      <div class="white-card need-help">
+        <i class="material-icons">support</i>
+        <h4>Need Help?</h4>
+        <span>Call +65 1234 5678</span>
+      </div>
+    </div>
+    <div class="row flex-column col-lg-8 main-panel">
+      <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <div class="d-flex justify-content-end mb-5">
+          <div class="search-input">
+            {% if form.search.errors %} {{ form.search(class="form-input
+            is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.search.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %} {{ form.search(placeholder="Search by title")}} {% endif
+            %} {{ form.submit(class="material-icons") }}
+          </div>
+        </div>
+      </form>
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %} {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor%} {% endif %} {% endwith %}
+      <div class="list-header">
+        <span class="list-lg">Item</span>
+        <span class="list-sm">Price</span>
+        {% if session.get('customer') %}
+        <span class="list-sm">Quantity</span>
+        <span class="list-sm">Order</span>
+        {% endif %}
+      </div>
+      {% for entry in product_list %}
+      <ul class="products-list">
+        <li class="products-item">
+          <div class="list-lg products-product">
+            <div class="products-img">
+              <img src="./static/assets/img/logo.png" alt="product" />
+            </div>
+            <div class="products-title">
+              <h4>{{ entry.get_title() }}</h4>
+              <span>{{ entry.get_info() }}</span>
+            </div>
+          </div>
+          <div class="list-sm menu-products-price">
+            <span>${{entry.get_price() }}</span>
+          </div>
+          {% if session.get('customer') %}
+          <form
+            class="d-flex"
+            method="POST"
+            action="{{ url_for('e_store_add', id=entry.get_product_id()) }}"
+          >
+            <div class="mr-3">
+              {{cart_form.hidden_tag()}} {% if cart_form.quantity.errors %} {{
+              cart_form.quantity(class="form-input is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in cart_form.quantity.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              {% else %} {{ cart_form.quantity(class="form-input small-input
+              w-100") }} {% endif %}
+            </div>
+            <div>{{ cart_form.submit(class="btn primary-btn small-btn")}}</div>
+          </form>
+          {% endif %}
+        </li>
+      </ul>
+      {% endfor %}
+    </div>
+  </div>
+</main>
+{% endblock %}

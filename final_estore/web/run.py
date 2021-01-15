@@ -21,6 +21,7 @@ def home():
     db["online"] = {}
     db["cart"] = {}
     db["error"] = {}
+
     db.close()
     session['logged_in'] = False
     session['customer'] = False
@@ -259,7 +260,7 @@ def staff_login():
                 flash("Wrong email or Password!", 'danger')
         else:
             flash("Wrong email or Password!", 'danger')
-    return render_template('login.html', form=form)
+    return render_template('admin_login.html', form=form)
 
 
 @app.route("/")
@@ -439,6 +440,7 @@ def staff_estore():
         form = SearchForm()
         product_form = ProductForm()
         price_form = PriceForm()
+        update_form = UpdateForm()
         if product_form.validate_on_submit():
             new_product_dict = db["Product"]
             new_product = Product(product_form.title.data, product_form.info.data, product_form.price.data)
@@ -454,7 +456,7 @@ def staff_estore():
                 if form.search.data.casefold() in item.casefold():
                     search_list.append(i)
             product_list = search_list
-            return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form, price_form=price_form)
+            return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form, price_form=price_form, update_form=update_form)
         elif price_form.validate_on_submit():
             db.close()
             price_list = []
@@ -463,9 +465,9 @@ def staff_estore():
                 if price_form.price.data >= prices:
                     price_list.append(j)
             product_list = price_list
-            return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form, price_form=price_form)
+            return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form, price_form=price_form,  update_form=update_form)
 
-        return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form, price_form=price_form)
+        return render_template('admin_menu.html', product_list=product_list, form=form, product_form=product_form, price_form=price_form,  update_form=update_form)
     else:
         return redirect(url_for('staff_login'))
 

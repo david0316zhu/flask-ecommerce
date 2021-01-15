@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, FloatField, PasswordField, DecimalField, SelectField, DateField, DateTimeField, IntegerField
+from wtforms import StringField, SubmitField, BooleanField, RadioField, TextAreaField, FloatField, PasswordField, DecimalField, SelectField, DateField, DateTimeField, IntegerField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, NumberRange
 import shelve
 
@@ -7,6 +7,9 @@ import shelve
 class Tempform(FlaskForm):
     nric = StringField("nric", validators=[DataRequired(),Length(min=4, max=4)])
     temperature = FloatField("Temperature", validators=[DataRequired()])
+    symptoms = RadioField("Symptoms", validators=[DataRequired()], choices=[('yes','Yes'), ('no', 'No')])
+    contact = RadioField("Contact", validators=[DataRequired()], choices=[('yes','Yes'), ('no', 'No')])
+    check = BooleanField("I hereby declare that I have answered the above questions truthfully. I understand that a false declaration is equivalent to an attempt to wilfully deceive Singapore Government officials and cause harm to public safety, and that I may be prosecuted for such offences.", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
 class RegistrationForm(FlaskForm):
