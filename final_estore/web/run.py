@@ -44,7 +44,7 @@ def temp_screen():
         except:
             print("Error")
 
-        temp = Temp(form.nric.data, form.temperature.data, dat, current_time)
+        temp = Temp(form.nric.data, form.temperature.data, dat, current_time, form.symptoms.data, form.contact.data)
         temp_dict[temp.get_count_id()] = temp
         db['Temp'] = temp_dict
         db.close()
@@ -385,7 +385,7 @@ def staff_records():
                         time_list.append(t)
             temp_list = time_list
             return render_template('temp-records.html', temp_list=temp_list, form=form, reset_form=reset_form, time_form=time_form)
-        if form.validate_on_submit():
+        elif form.validate_on_submit():
             db.close()
             search_list = []
             for j in temp_list:
@@ -394,11 +394,16 @@ def staff_records():
                     search_list.append(j)
             temp_list = search_list
             return render_template('temp-records.html', temp_list=temp_list, form=form, reset_form=reset_form, time_form=time_form)
-        if reset_form.validate_on_submit():
+        elif reset_form.validate_on_submit():
             db["Temp"] = {}
             temp_dict = db['Temp']
             temp_list = []
             return render_template('temp-records.html', temp_list=temp_list, form=form, reset_form=reset_form, time_form=time_form)
+        elif request.method == "POST":
+            for checked in request.form.getlist('mycheckbox'):
+                print(checked)
+                return render_template('temp-records.html', temp_list=temp_list, form=form, reset_form=reset_form, time_form=time_form)
+
         return render_template('temp-records.html', temp_list=temp_list, form=form, reset_form=reset_form, time_form=time_form)
     else:
         return redirect(url_for('staff_login'))
@@ -441,6 +446,8 @@ def staff_estore():
         product_form = ProductForm()
         price_form = PriceForm()
         update_form = UpdateForm()
+        if update_form.validate_on_submit():
+            pass
         if product_form.validate_on_submit():
             new_product_dict = db["Product"]
             new_product = Product(product_form.title.data, product_form.info.data, product_form.price.data)
@@ -489,29 +496,18 @@ def remove(id):
     else:
         return redirect(url_for('staff_login'))
 
-@app.route('/updateProduct/<string:id>/', methods=['GET', 'POST'])
-def update_product(id):
+@app.route('/updateProduct/<string:id>/', methods=['POST'])
+def update(id):
     if session.get('logged_in'):
-        update_form = UpdateForm()
-        if update_form.validate_on_submit():
-            db = shelve.open('storage.db', 'w')
-            product_dict = db["Product"]
-            product = product_dict.get(id)
-            product.set_title(update_form.title.data)
-            product.set_info(update_form.info.data)
-            product.set_price(update_form.price.data)
-            db["Product"] = product_dict
-            db.close()
-            return redirect(url_for('staff_estore'))
-        else:
-            db = shelve.open('storage.db', 'w')
-            product_dict = db["Product"]
-            product = product_dict.get(id)
-            update_form.title.data = product.get_title()
-            update_form.info.data = product.get_info()
-            update_form.price.data = product.get_price()
-
-        return render_template('update_product.html', update_form=update_form)
+        db = shelve.open('storage.db', 'w')
+        product_dict = db["Product"]
+        product = product_dict.get(id)
+        product.set_title(request.form["title"])
+        product.set_info(request.form["info"])
+        product.set_price(request.form["price"])
+        db["Product"] = product_dict
+        db.close()
+        return redirect(url_for('staff_estore'))
     else:
         return redirect(url_for('staff_login'))
 

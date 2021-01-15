@@ -77,11 +77,10 @@ endblock %} {% block content%}
           </div>
         </form>
         <form method="POST" action="">
-          <!-- {{ reset_form.hidden_tag() }} {{ reset_form.reset(class="btn
-          primary-btn small-btn ml-3") }} -->
-          <a class="btn primary-btn small-btn ml-3" id="select-btn">Select</a>
-        </form>
+          {{ reset_form.hidden_tag() }} {{ reset_form.reset(class="btn
+          primary-btn small-btn ml-3") }}
       </div>
+      <form method="POST" action="/">  
       <table class="table">
         <tr class="table-header">
           <th class="select-toggle"></th>
@@ -94,22 +93,24 @@ endblock %} {% block content%}
         </tr>
         {% for entry in temp_list %}
         <tr>
-          <td class="select-toggle"><input type="checkbox" /></td>
+          <td class="select-toggle"><input type="checkbox" name="mycheckbox"/></td>
           <td>{{ entry.get_ic_num() }}</td>
           <td>{{ entry.get_temperature() }}</td>
           <td>{{ entry.get_date() }}</td>
           <td>{{ entry.get_time() }}</td>
-          <td>{{ 'Yes' }}</td>
-          <td>{{ 'Yes' }}</td>
+          <td>{{ entry.get_symptoms() }}</td>
+          <td>{{ entry.get_contact() }}</td>
         </tr>
         {% endfor %}
       </table>
+      <input type="submit" class="btn btn-primary">
+      </form> 
       {% endif %}
     </div>
   </div>
 </main>
 {% endblock %}{% block scripts %}{{super()}}
-<script>
+<!--<script>
   $(document).ready(function () {
     $(".select-toggle").hide();
 
@@ -118,5 +119,5 @@ endblock %} {% block content%}
       $(".select-toggle").toggle();
     });
   });
-</script>
+</script>-->
 {% endblock %}

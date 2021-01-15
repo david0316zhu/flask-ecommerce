@@ -8,13 +8,15 @@ from random import randint
 
 class Temp:
     counter = 0
-    def __init__(self, ic_num, temperature, date, time):
+    def __init__(self, ic_num, temperature, date, time, symptoms, contact):
         Temp.counter +=1
         self.__count = Temp.counter
         self.__temperature = temperature
         self.__ic_num = ic_num
         self.__date = date
         self.__time = time
+        self.__symptoms = symptoms
+        self.__contact = contact
     def get_count_id(self):
         return self.__count
     def get_ic_num(self):
@@ -25,6 +27,10 @@ class Temp:
         return self.__date
     def get_time(self):
         return self.__time
+    def get_symptoms(self):
+        return self.__symptoms
+    def get_contact(self):
+        return self.__contact
 
 class User:
     count_id = 0
