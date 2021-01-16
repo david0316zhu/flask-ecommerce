@@ -94,3 +94,6 @@ class Cart:
     
     def get_quantity(self):
         return self.__quantity
+    
+    def get_subtotal(self):
+        return "{:.2f}".format(self.__quantity * (float(self.__product.get_price())))

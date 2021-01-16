@@ -62,3 +62,7 @@ class UpdateForm(FlaskForm):
 class CartForm(FlaskForm):
     quantity = IntegerField("quantity", validators=[DataRequired()])
     submit = SubmitField("add")
+
+class DiscountForm(FlaskForm):
+    code = StringField("code", validators=[DataRequired()])
+    submit = SubmitField("Apply")

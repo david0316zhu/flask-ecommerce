@@ -79,8 +79,9 @@ endblock %} {% block content%}
         <form method="POST" action="">
           {{ reset_form.hidden_tag() }} {{ reset_form.reset(class="btn
           primary-btn small-btn ml-3") }}
+        </form>
       </div>
-      <form method="POST" action="/">  
+      <form method="POST" action="{{url_for('delete')}}">  
       <table class="table">
         <tr class="table-header">
           <th class="select-toggle"></th>
@@ -93,7 +94,7 @@ endblock %} {% block content%}
         </tr>
         {% for entry in temp_list %}
         <tr>
-          <td class="select-toggle"><input type="checkbox" name="mycheckbox"/></td>
+          <td class="select-toggle"><input type="checkbox" name="mycheckbox" value="{{entry.get_count_id()}}"/></td>
           <td>{{ entry.get_ic_num() }}</td>
           <td>{{ entry.get_temperature() }}</td>
           <td>{{ entry.get_date() }}</td>
@@ -103,7 +104,7 @@ endblock %} {% block content%}
         </tr>
         {% endfor %}
       </table>
-      <input type="submit" class="btn btn-primary">
+      <input type="submit" value="Delete selected records" class="btn btn-primary">
       </form> 
       {% endif %}
     </div>

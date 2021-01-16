@@ -9,6 +9,10 @@ block heading %}Cart{% endblock %} {% block content%}
         <span class="list-sm">Price</span>
         <span class="list-sm">Subtotal</span>
       </div>
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %} {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor%} {% endif %} {% endwith %}
       {% for entry in cart_list %}
       <ul class="products-list">
         <li class="products-item">
@@ -30,40 +34,44 @@ block heading %}Cart{% endblock %} {% block content%}
             <span>${{(entry.get_product()).get_price()}}</span>
           </div>
           <div class="list-sm cart-products-subtotal">
-            <span><b>{{(entry.get_product()).get_price()}}</b></span>
+            <span><b>${{(entry.get_subtotal())}}</b></span>
             <i class="material-icons icon-btn">close</i>
           </div>
         </li>
       </ul>
       {% endfor%}
-      <form class="coupon-form mb-5" id="coupon-form">
-        <div class="d-flex align-items-center">
-          <i class="material-icons icon-btn pink-text mr-2">cached</i>
-          <span><b>Update</b></span>
-        </div>
+      <form method="POST" action="" class="coupon-form mb-5" id="coupon-form">
+        {{ form.hidden_tag() }}
         <div>
-          <input />
-          <button class="btn primary-btn">
-            <span>Apply</span>
-          </button>
-        </div>
+            {% if form.code.errors %} {{ form.code(class="form-input
+            is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.code.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %} {{ form.code(placeholder="Discount Code")}} {% endif %}
+            {{ form.submit(class="btn primary-btn") }}
+          </div>
       </form>
       <div class="d-flex justify-content-end">
         <div class="cart-summary-card">
           <div class="cart-summary-item">
             <span><b>Subtotal</b></span>
-            <span><b>$16.70</b></span>
+            <span><b>${{ total_sub }}</b></span>
           </div>
           <div class="cart-summary-item">
-            <span>Delivery</span>
-            <span>$3.00</span>
+            <span><b>Delivery</b></span>
+            <span><b>$3.00</b></span>
           </div>
           <div class="cart-summary-item summary-total">
             <span>Total</span>
-            <span>$19.70</span>
+            <span>${{ total }}</span>
           </div>
           <button class="btn primary-btn w-100" id="checkout-btn">
+            <a href="{{ url_for('checkout1')}}">
             <span>Checkout</span>
+            </a>
           </button>
         </div>
       </div>

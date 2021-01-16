@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, flash, redirect, session, request
-from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm, ControlForm, ResetForm, TimeForm, UpdateForm, CartForm
+from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm, ControlForm, ResetForm, TimeForm, UpdateForm, CartForm, DiscountForm
 from models import Temp, User, Product, Cart
 import shelve
 from flask_bcrypt import Bcrypt
@@ -122,6 +122,14 @@ def e_store():
         product_list = search_list
         return render_template('customer_menu.html', product_list=product_list, form=form, price_form=price_form, cart_form=cart_form)
     return render_template('customer_menu.html', product_list=product_list, form=form, price_form=price_form, cart_form=cart_form)
+
+
+@app.route("/")
+@app.route("/checkout1", methods=['GET', 'POST'])
+def checkout1():
+    return render_template('checkout_one.html')
+
+
 @app.route("/")
 @app.route("/estore_cart", methods=['GET', 'POST'])
 def e_store_cart():
@@ -132,7 +140,23 @@ def e_store_cart():
     for key in cart:
         entry = cart.get(key)
         cart_list.append(entry)
-    return render_template("customer_cart.html", cart_list=cart_list)
+    total = 0
+    for prod in cart_list:
+        sub = prod.get_subtotal()
+        total += float(sub)
+    total_sub = "{:.2f}".format(total)
+    total += 3
+    total = "{:.2f}".format(total)
+    form = DiscountForm()
+    if form.validate_on_submit():
+        print("hi")
+        if form.code.data.upper() == "CODEHERO20":
+            total_sub = "{:.2f}".format(float(total_sub) * 0.8)
+            total = "{:.2f}".format(float(total_sub) + 3)
+            return render_template("customer_cart.html", cart_list=cart_list, total=total, total_sub=total_sub, form=form)
+        else:
+            flash("Discount Code not Applicable!", 'danger')
+    return render_template("customer_cart.html", cart_list=cart_list, total=total, total_sub=total_sub, form=form)
 
 @app.route("/add/<string:id>", methods=["GET", 'POST'])
 def e_store_add(id):
@@ -399,15 +423,26 @@ def staff_records():
             temp_dict = db['Temp']
             temp_list = []
             return render_template('temp-records.html', temp_list=temp_list, form=form, reset_form=reset_form, time_form=time_form)
-        elif request.method == "POST":
-            for checked in request.form.getlist('mycheckbox'):
-                print(checked)
-                return render_template('temp-records.html', temp_list=temp_list, form=form, reset_form=reset_form, time_form=time_form)
 
         return render_template('temp-records.html', temp_list=temp_list, form=form, reset_form=reset_form, time_form=time_form)
     else:
         return redirect(url_for('staff_login'))
 
+
+@app.route("/")
+@app.route("/delete_record", methods=['GET', 'POST'])
+def delete():
+    if session.get('logged_in'):
+        if request.method == 'POST':
+            print("hi")
+            db = shelve.open('storage.db', 'c')
+            temp_dict = db["Temp"]
+            for getid in request.form.getlist('mycheckbox'):
+                print(getid)
+                entry = temp_dict.pop(int(getid))
+                print(entry)
+            db["Temp"] = temp_dict
+            return redirect(url_for('staff_records'))
 
 @app.route("/")
 @app.route("/admin_graph", methods=['GET', 'POST'])
