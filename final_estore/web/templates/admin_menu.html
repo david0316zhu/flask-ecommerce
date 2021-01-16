@@ -84,25 +84,20 @@ block heading %}Menu - Staff{% endblock %} {% block content%}
                   >edit</i
                 >
               </div>
-              <div
-                class="modal fade"
-                id="updateModal_{{ entry.get_product_id() }}"
-                tabindex="-1"
-                role="dialog"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
+              <div class="modal" id="updateModal_{{ entry.get_product_id() }}">
                 <div class="modal-center" role="document">
                   <div class="modal-data white-card">
-                    <div class="">
-                      <h5 class="mb-3 text-center" id="exampleModalLabel">
-                        <b>Update Product</b>
-                      </h5>
+                    <div>
+                      <div class="mb-3 text-center">
+                        <span class="popup-title" id="exampleModalLabel"
+                          >Update product
+                        </span>
+                      </div>
                       <div class="close-btn" data-dismiss="modal">
                         <i class="material-icons">close</i>
                       </div>
                     </div>
-                    <div>
+                    <div class="mb-5">
                       {{ update_form.hidden_tag() }}
                       <div class="w-100 mb-3">
                         <label for="title">
@@ -178,7 +173,7 @@ block heading %}Menu - Staff{% endblock %} {% block content%}
               <div class="modal" id="myModal_{{ entry.get_product_id() }}">
                 <div class="modal-center">
                   <div class="modal-data white-card">
-                    <div class="">
+                    <div>
                       <div class="mb-3 text-center">
                         <span class="popup-title">Delete Confirmation</span>
                       </div>
