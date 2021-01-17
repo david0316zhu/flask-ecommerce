@@ -483,22 +483,18 @@ ul.radio-input li:not(:last-child) {
   position: relative;
 }
 
+.products-list .products-item:not(:last-child) {
+  border-bottom: 1px solid #f9f9f9;
+}
+
 .products-item {
   display: flex;
   align-items: center;
   padding: 8px 16px;
 }
 
-.products-list li {
-  border-bottom: 1px solid #dee2e6;
-}
-
-.products-list li:nth-child(even) {
+.products-list .products-item:nth-child(even) {
   background-color: #f9f9f9;
-}
-
-.products-list li.products-item:not(:last-child) {
-  border-bottom: 1px solid var(--medium-grey);
 }
 
 .orders-list li.orders-item:not(:last-child) {

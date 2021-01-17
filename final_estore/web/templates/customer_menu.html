@@ -62,8 +62,8 @@ block heading %}Menu{% endblock %} {% block content%}
         <span class="list-sm">Order</span>
         {% endif %}
       </div>
-      {% for entry in product_list %}
       <ul class="products-list">
+        {% for entry in product_list %}
         <li class="products-item">
           <div class="list-lg products-product">
             <div class="products-img">
@@ -98,8 +98,8 @@ block heading %}Menu{% endblock %} {% block content%}
           </form>
           {% endif %}
         </li>
+        {% endfor %}
       </ul>
-      {% endfor %}
     </div>
   </div>
 </main>

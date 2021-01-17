@@ -56,8 +56,8 @@ block heading %}Menu - Staff{% endblock %} {% block content%}
         <span class="list-sm">Price</span>
         <span class="list-sm">Action</span>
       </div>
-      {% for entry in product_list %}
       <ul class="products-list">
+        {% for entry in product_list %}
         <li class="products-item">
           <div class="list-lg products-product">
             <div class="products-img">
@@ -204,8 +204,8 @@ block heading %}Menu - Staff{% endblock %} {% block content%}
             </form>
           </div>
         </li>
+        {% endfor %}
       </ul>
-      {% endfor %}
     </div>
     <button class="btn primary-btn mt-3 floating-btn" id="new-product-btn">
       <i class="material-icons mr-2">add</i>

@@ -10,11 +10,12 @@ block heading %}Cart{% endblock %} {% block content%}
         <span class="list-sm">Subtotal</span>
       </div>
       {% with messages = get_flashed_messages(with_categories=true) %} {% if
-        messages %} {% for category, message in messages %}
-        <div class="alert alert-{{ category }}">{{ message }}</div>
-        {% endfor%} {% endif %} {% endwith %}
-      {% for entry in cart_list %}
+      messages %} {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">{{ message }}</div>
+
+      {% endfor%} {% endif %} {% endwith %}
       <ul class="products-list">
+        {% for entry in cart_list %}
         <li class="products-item">
           <div class="list-md products-product">
             <div class="products-img">
@@ -25,7 +26,7 @@ block heading %}Cart{% endblock %} {% block content%}
               <span>{{(entry.get_product()).get_info()}}</span>
             </div>
           </div>
-          <div class="list-sm products-quantity">
+          <div class="list-sm">
             <div>
               <span>{{entry.get_quantity()}}</span>
             </div>
@@ -38,21 +39,24 @@ block heading %}Cart{% endblock %} {% block content%}
             <i class="material-icons icon-btn">close</i>
           </div>
         </li>
+        {% endfor%}
       </ul>
-      {% endfor%}
       <form method="POST" action="" class="coupon-form mb-5" id="coupon-form">
         {{ form.hidden_tag() }}
         <div>
-            {% if form.code.errors %} {{ form.code(class="form-input
-            is-invalid") }}
-            <div class="invalid-feedback">
-              {% for error in form.code.errors %}
-              <span>{{ error }}</span>
-              {% endfor %}
-            </div>
-            {% else %} {{ form.code(placeholder="Discount Code")}} {% endif %}
-            {{ form.submit(class="btn primary-btn") }}
+          {% if form.code.errors %} {{ form.code(class="form-input is-invalid")
+          }}
+          <div class="invalid-feedback">
+            {% for error in form.code.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
           </div>
+          {% else %}
+          <div class="mb-3">
+            {{ form.code(placeholder="Discount Code")}} {% endif %}
+          </div>
+          <div>{{ form.submit(class="btn primary-btn") }}</div>
+        </div>
       </form>
       <div class="d-flex justify-content-end">
         <div class="cart-summary-card">
@@ -70,7 +74,7 @@ block heading %}Cart{% endblock %} {% block content%}
           </div>
           <button class="btn primary-btn w-100" id="checkout-btn">
             <a href="{{ url_for('checkout1')}}">
-            <span>Checkout</span>
+              <span>Checkout</span>
             </a>
           </button>
         </div>
