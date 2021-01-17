@@ -31,12 +31,12 @@
 
   <body>
     <nav class="navbar fixed-top home-nav justify-content-between">
-      <a class="navbar-brand" href="../index.html">
+      <a class="navbar-brand" href="{{ url_for('home') }}">
         <h4>Auntie's <br />Mama Shop</h4>
       </a>
       <ul class="nav home-nav-list">
         <li>
-          <a href="../live-counter.html">Live Counter</a>
+          <a href="{{ url_for('live_counter') }}">Live Counter</a>
         </li>
         <li>
           <div class="dropdown home-nav-dropdown">
@@ -51,8 +51,8 @@
               Shop
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="menu.html">Menu</a>
-              <a class="dropdown-item" href="cart.html">Cart</a>
+              <a class="dropdown-item" href="{{ url_for('e_store') }}">Menu</a>
+              <a class="dropdown-item" href="{{ url_for('e_store_cart') }}">Cart</a>
               <a class="dropdown-item" href="orders.html">Orders</a>
             </div>
           </div>
@@ -70,7 +70,7 @@
         <a
           class="d-flex align-items-center exit-btn"
           id="exit-btn"
-          href="../index.html"
+          href="{{ url_for('home') }}"
         >
           <span class="mr-2">Exit</span>
           <i class="material-icons">login</i>

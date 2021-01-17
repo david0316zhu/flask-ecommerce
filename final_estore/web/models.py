@@ -97,3 +97,63 @@ class Cart:
     
     def get_subtotal(self):
         return "{:.2f}".format(self.__quantity * (float(self.__product.get_price())))
+
+
+
+class Detail:
+    def __init__(self, name, address, date, time):
+        self.__name = name
+        self.__address = address
+        self.__date = date
+        self.__time = time
+
+    def get_name(self):
+        return self.__name
+
+    def get_address(self):
+        return self.__address
+    
+    def get_date(self):
+        return self.__date
+
+    def get_time(self):
+        return self.__time
+
+class Order:
+    def __init__(self, name1, address1, date1, time1, card, number, expire, code):
+        self.__order_id = "%0.12d" % randint(0,999999999999)
+        self.__name1 = name1
+        self.__address1 = address1
+        self.__date1 = date1
+        self.__time1 = time1
+        self.__card = card
+        self.__number = number
+        self.__expire = expire
+        self.__code = code
+
+    def get_order_id(self):
+        return self.__order_id
+
+    def get_name1(self):
+        return self.__name1
+
+    def get_address1(self):
+        return self.__address1
+    
+    def get_date1(self):
+        return self.__date1
+
+    def get_time1(self):
+        return self.__time1
+
+    def get_card(self):
+        return self.__card
+
+    def get_number(self):
+        return self.__number
+
+    def get_expire(self):
+        return self.__expire
+    
+    def get_code(self):
+        return self.__code

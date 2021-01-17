@@ -66,3 +66,15 @@ class CartForm(FlaskForm):
 class DiscountForm(FlaskForm):
     code = StringField("code", validators=[DataRequired()])
     submit = SubmitField("Apply")
+
+class DetailsForm(FlaskForm):
+    name = StringField("name", validators=[DataRequired()])
+    address = StringField("address", validators=[DataRequired()])
+    submit = SubmitField("Submit")
+
+class PaymentForm(FlaskForm):
+    name = StringField("name", validators=[DataRequired()])
+    card = StringField("card", validators=[DataRequired()])
+    date = StringField("date", validators=[DataRequired()])
+    code = StringField("code", validators=[DataRequired()])
+    submit = SubmitField("Submit")

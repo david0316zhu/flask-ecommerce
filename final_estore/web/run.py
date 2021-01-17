@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, flash, redirect, session, request
-from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm, ControlForm, ResetForm, TimeForm, UpdateForm, CartForm, DiscountForm
-from models import Temp, User, Product, Cart
+from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm, ControlForm, ResetForm, TimeForm, UpdateForm, CartForm, DiscountForm, DetailsForm, PaymentForm
+from models import Temp, User, Product, Cart, Detail, Order
 import shelve
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, current_user, logout_user, login_required, LoginManager
@@ -127,37 +127,98 @@ def e_store():
 @app.route("/")
 @app.route("/checkout1", methods=['GET', 'POST'])
 def checkout1():
-    return render_template('checkout_one.html')
+    if session.get('customer'):
+        form = DetailsForm()
+        if form.validate_on_submit():
+            db = shelve.open('storage.db', 'c')
+            detail_dict = {}
+            dat = date.today()
+            now = datetime.now()
+            current_time = now.strftime("%H:%M")
+            try:
+                detail_dict = db['Detail']
+            except:
+                print("Error")
+            detail = Detail(form.name.data, form.address.data, dat, current_time)
+            detail_dict = detail
+            db["Detail"] = detail_dict
+            print(detail_dict)
+            return redirect(url_for('checkout2'))
 
+        return render_template('checkout_one.html', form=form)
+
+
+@app.route("/")
+@app.route("/checkout2", methods=['GET', 'POST'])
+def checkout2():
+    if session.get('customer'):
+        form = PaymentForm()
+        if form.validate_on_submit():
+            db = shelve.open('storage.db', 'c')
+            email = db["online"]
+            detail = db["Detail"]
+            order_dict = {}
+            user_dict = {}
+            try:
+                order_dict = db['Order']
+                user_dict = db[email]
+            except:
+                print("Error")
+            order = Order(detail.get_name(), detail.get_address(), detail.get_date(), detail.get_time(), form.name.data, form.card.data, form.date.data, form.code.data)
+            order_dict[order.get_order_id()] = order
+            user_dict[order.get_order_id()] = order
+            db['Order'] = order_dict
+            db[email] = user_dict
+            print(db[email])
+            print(db['Order'])
+            db.close()
+            return redirect(url_for('checkout3'))
+
+        return render_template('checkout_two.html', form=form)
+    else:
+        return redirect(url_for("e_store"))
+
+
+@app.route("/")
+@app.route("/checkout3", methods=['GET', 'POST'])
+def checkout3():
+    if session.get('customer'):
+        db = shelve.open('storage.db', 'c')
+        db["cart"] = {}
+        return render_template('checkout_three.html')
+    else:
+        return redirect(url_for("e_store"))
 
 @app.route("/")
 @app.route("/estore_cart", methods=['GET', 'POST'])
 def e_store_cart():
-    db = shelve.open('storage.db', 'c')
-    cart = {}
-    cart_list = []
-    cart = db["cart"]
-    for key in cart:
-        entry = cart.get(key)
-        cart_list.append(entry)
-    total = 0
-    for prod in cart_list:
-        sub = prod.get_subtotal()
-        total += float(sub)
-    total_sub = "{:.2f}".format(total)
-    total += 3
-    total = "{:.2f}".format(total)
-    form = DiscountForm()
-    if form.validate_on_submit():
-        print("hi")
-        if form.code.data.upper() == "CODEHERO20":
-            total_sub = "{:.2f}".format(float(total_sub) * 0.8)
-            total = "{:.2f}".format(float(total_sub) + 3)
-            return render_template("customer_cart.html", cart_list=cart_list, total=total, total_sub=total_sub, form=form)
-        else:
-            flash("Discount Code not Applicable!", 'danger')
-    return render_template("customer_cart.html", cart_list=cart_list, total=total, total_sub=total_sub, form=form)
-
+    if session.get('customer'):
+        db = shelve.open('storage.db', 'c')
+        cart = {}
+        cart_list = []
+        cart = db["cart"]
+        for key in cart:
+            entry = cart.get(key)
+            cart_list.append(entry)
+        total = 0
+        for prod in cart_list:
+            sub = prod.get_subtotal()
+            total += float(sub)
+        total_sub = "{:.2f}".format(total)
+        total += 3
+        total = "{:.2f}".format(total)
+        form = DiscountForm()
+        if form.validate_on_submit():
+            print("hi")
+            if form.code.data.upper() == "CODEHERO20":
+                total_sub = "{:.2f}".format(float(total_sub) * 0.8)
+                total = "{:.2f}".format(float(total_sub) + 3)
+                return render_template("customer_cart.html", cart_list=cart_list, total=total, total_sub=total_sub, form=form)
+            else:
+                flash("Discount Code not Applicable!", 'danger')
+        return render_template("customer_cart.html", cart_list=cart_list, total=total, total_sub=total_sub, form=form)
+    else:
+        return redirect(url_for("e_store"))
 @app.route("/add/<string:id>", methods=["GET", 'POST'])
 def e_store_add(id):
     if session.get('customer'):

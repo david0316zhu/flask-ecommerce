@@ -31,12 +31,12 @@
 
   <body>
     <nav class="navbar fixed-top home-nav justify-content-between">
-      <a class="navbar-brand" href="../index.html">
+      <a class="navbar-brand" href="{{ url_for('home') }}">
         <h4>Auntie's <br />Mama Shop</h4>
       </a>
       <ul class="nav home-nav-list">
         <li>
-          <a href="../live-counter.html">Live Counter</a>
+          <a href="{{ url_for('live_counter')}}">Live Counter</a>
         </li>
         <li>
           <div class="dropdown home-nav-dropdown">
@@ -51,8 +51,8 @@
               Shop
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="menu.html">Menu</a>
-              <a class="dropdown-item" href="cart.html">Cart</a>
+              <a class="dropdown-item" href="{{ url_for('e_store')}}">Menu</a>
+              <a class="dropdown-item" href="{{ url_for('e_store_cart')}}">Cart</a>
               <a class="dropdown-item" href="orders.html">Orders</a>
             </div>
           </div>
@@ -63,14 +63,14 @@
           <i class="material-icons-outlined pink-text mr-2">call</i>
           <span>+65 1234 5678</span>
         </div>
-        <a class="home-nav-icon position-relative" href="cart.html">
+        <a class="home-nav-icon position-relative" href="{{ url_for('e_store_cart')}} ">
           <div class="badge">3</div>
           <i class="material-icons">shopping_cart</i>
         </a>
         <a
           class="d-flex align-items-center exit-btn"
           id="exit-btn"
-          href="../index.html"
+          href="{{ url_for('home')}}"
         >
           <span class="mr-2">Exit</span>
           <i class="material-icons">login</i>
@@ -119,36 +119,48 @@
                 <h2>Your Order Details</h2>
               </div>
               <div>
+                <form method="POST" action="">
                 <div class="d-flex flex-column mb-3">
+                  {{ form.hidden_tag() }}
                   <label class="mb-2" for="price">
                     <span><b>Name</b></span>
+                      <div class="d-flex justify-content-end">
+                        <div class="form-input">
+                          {% if form.name.errors %} {{ form.name(class="form-input
+                          is-invalid") }}
+                          <div class="invalid-feedback">
+                            {% for error in form.name.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                          </div>
+                          {% else %} {{ form.name(placeholder="Name")}} {% endif %}
+                        </div>
+                      </div>
                   </label>
                 </div>
                 <div class="d-flex flex-column mb-3">
                   <label class="mb-2" for="price">
-                    <span><b>Address</b></span>
+                    <div class="form-input">
+                      {% if form.address.errors %} {{ form.address(class="form-input
+                      is-invalid") }}
+                      <div class="invalid-feedback">
+                        {% for error in form.address.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                      {% else %} {{ form.address(placeholder="Address")}} {% endif %}
+                    </div>
                   </label>
                 </div>
-                <div class="d-flex flex-column mb-3">
-                  <div class="mb-2">
-                    <span><b>Date</b></span>
-                  </div>
-                </div>
-                <div class="d-flex flex-column mb-3">
-                  <label for="start-time">
-                    <span><b>Time</b></span>
-                  </label>
-                  <div class="timepicker"></div>
-                </div>
+                
                 <div id="form-error" class="error mb-3"></div>
                 <div id="form-error" class="error mb-3"></div>
                 <div
                   class="w-100 d-flex align-items-center justify-content-center"
                 >
-                  <button class="btn primary-btn">
-                    <span>Submit</span>
-                  </button>
+                  {{ form.submit(class="btn primary-btn") }}
                 </div>
+                </form>
               </div>
             </div>
           </div>
