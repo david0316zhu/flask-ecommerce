@@ -175,33 +175,28 @@
                 <i class="material-icons ml-2">receipt</i>
                 <hr />
               </div>
+              {% for entry in order_list %}
               <div class="checkout-item">
                 <div class="mr-2">
-                  <span><b>2x</b></span>
-                  <span>Aglio Olio Packet</span>
+                  <span><b>{{entry.get_quantity()}}</b></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                  <span>{{entry.get_product().get_title()}}</span>
                 </div>
-                <span>$11.00</span>
+                <span>${{entry.get_subtotal()}}</span>
               </div>
-              <div class="checkout-item">
-                <div class="mr-2">
-                  <span><b>2x</b></span>
-                  <span>Aglio Olio Packet</span>
-                </div>
-                <span>$11.00</span>
-              </div>
+              {% endfor %}
               <hr />
               <div class="checkout-item">
                 <span><b>Subtotal</b></span>
-                <span>$11.00</span>
+                <span>${{"{:.2f}".format(total - 3)}}</span>
               </div>
               <div class="checkout-item">
                 <span><b>Delivery fee</b></span>
-                <span>$11.00</span>
+                <span>$3.00</span>
               </div>
               <hr />
               <div class="checkout-item checkout-total mt-2">
                 <span><b>Total</b></span>
-                <span>$11.00</span>
+                <span>${{"{:.2f}".format((total))}}</span>
               </div>
             </div>
           </div>

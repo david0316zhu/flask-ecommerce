@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, flash, redirect, session, request
+from flask import Flask, render_template, url_for, flash, redirect, session, request, jsonify
 from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm, ControlForm, ResetForm, TimeForm, UpdateForm, CartForm, DiscountForm, DetailsForm, PaymentForm
 from models import Temp, User, Product, Cart, Detail, Order
 import shelve
@@ -21,6 +21,9 @@ def home():
     db["online"] = {}
     db["cart"] = {}
     db["error"] = {}
+    db["total"] = {}
+    
+    
 
     db.close()
     session['logged_in'] = False
@@ -128,24 +131,35 @@ def e_store():
 @app.route("/checkout1", methods=['GET', 'POST'])
 def checkout1():
     if session.get('customer'):
+        db = shelve.open('storage.db', 'c')
+        order_dict = {}
+        order_list = []
+        order_dict = db["cart"]
+        for key in order_dict:
+                entry = order_dict.get(key)
+                order_list.append(entry)
+        
         form = DetailsForm()
+        total = db["total"]
+        total = float(total)
         if form.validate_on_submit():
-            db = shelve.open('storage.db', 'c')
             detail_dict = {}
             dat = date.today()
             now = datetime.now()
             current_time = now.strftime("%H:%M")
             try:
                 detail_dict = db['Detail']
+
             except:
                 print("Error")
+            
             detail = Detail(form.name.data, form.address.data, dat, current_time)
             detail_dict = detail
             db["Detail"] = detail_dict
             print(detail_dict)
             return redirect(url_for('checkout2'))
 
-        return render_template('checkout_one.html', form=form)
+        return render_template('checkout_one.html', form=form, order_list=order_list, total=total)
 
 
 @app.route("/")
@@ -153,8 +167,18 @@ def checkout1():
 def checkout2():
     if session.get('customer'):
         form = PaymentForm()
+        db = shelve.open('storage.db', 'c')
+        cart = db["cart"]
+        receipt_dict={}
+        receipt_list = []
+        receipt_dict = cart
+        for key in receipt_dict:
+            entry = receipt_dict.get(key)
+            receipt_list.append(entry)
+        total = db["total"]
+        total = float(total)
         if form.validate_on_submit():
-            db = shelve.open('storage.db', 'c')
+            
             email = db["online"]
             detail = db["Detail"]
             order_dict = {}
@@ -164,7 +188,7 @@ def checkout2():
                 user_dict = db[email]
             except:
                 print("Error")
-            order = Order(detail.get_name(), detail.get_address(), detail.get_date(), detail.get_time(), form.name.data, form.card.data, form.date.data, form.code.data)
+            order = Order(detail.get_name(), detail.get_address(), detail.get_date(), detail.get_time(), form.name.data, form.card.data, form.date.data, form.code.data, cart, total, email)
             order_dict[order.get_order_id()] = order
             user_dict[order.get_order_id()] = order
             db['Order'] = order_dict
@@ -174,7 +198,7 @@ def checkout2():
             db.close()
             return redirect(url_for('checkout3'))
 
-        return render_template('checkout_two.html', form=form)
+        return render_template('checkout_two.html', form=form, receipt_list=receipt_list, total=total)
     else:
         return redirect(url_for("e_store"))
 
@@ -185,6 +209,7 @@ def checkout3():
     if session.get('customer'):
         db = shelve.open('storage.db', 'c')
         db["cart"] = {}
+        db["total"] = {}
         return render_template('checkout_three.html')
     else:
         return redirect(url_for("e_store"))
@@ -213,12 +238,38 @@ def e_store_cart():
             if form.code.data.upper() == "CODEHERO20":
                 total_sub = "{:.2f}".format(float(total_sub) * 0.8)
                 total = "{:.2f}".format(float(total_sub) + 3)
+                db["total"] = total
                 return render_template("customer_cart.html", cart_list=cart_list, total=total, total_sub=total_sub, form=form)
             else:
                 flash("Discount Code not Applicable!", 'danger')
+        db["total"] = total
         return render_template("customer_cart.html", cart_list=cart_list, total=total, total_sub=total_sub, form=form)
     else:
         return redirect(url_for("e_store"))
+
+
+@app.route("/")
+@app.route("/estore_order", methods=['GET', 'POST'])
+def e_store_order():
+    if session.get('customer'):
+        db = shelve.open('storage.db', 'c')
+        email = db['online']
+        order_dict = {}
+        order_list = []
+        try:
+            order_dict = db[email]
+        except:
+            print("error")
+        for key in order_dict:
+            entry = order_dict.get(key)
+            order_list.append(entry)
+        return render_template("customer_orders.html", order_list=order_list, email=email)
+        
+    else:
+        return redirect(url_for("e_store"))
+
+
+
 @app.route("/add/<string:id>", methods=["GET", 'POST'])
 def e_store_add(id):
     if session.get('customer'):
@@ -505,6 +556,16 @@ def delete():
             db["Temp"] = temp_dict
             return redirect(url_for('staff_records'))
 
+
+@app.route("/")
+@app.route("/stuff", methods=['GET'])
+def stuff():
+    if session.get('logged_in'):
+        db = shelve.open('storage.db', 'c')
+        num = db["number"]
+        return jsonify(result=num)
+
+
 @app.route("/")
 @app.route("/admin_graph", methods=['GET', 'POST'])
 def staff_graph():
@@ -520,6 +581,29 @@ def shop_graph():
         return render_template('shop-graph.html')
     else:
         return redirect(url_for('staff_login'))
+
+@app.route("/")
+@app.route("/admin_order", methods=['GET', 'POST'])
+def shop_order():
+    if session.get('logged_in'):
+        db = shelve.open('storage.db', 'c')
+        order_dict = {}
+        order_list = []
+        try:
+            order_dict = db['Order']
+        except:
+            print("error")
+        
+        for key in order_dict:
+            entry = order_dict.get(key)
+            order_list.append(entry)
+        
+        return render_template('admin_orders.html', order_list=order_list)
+    else:
+        return redirect(url_for('staff_login'))
+    
+
+
 
 
 @app.route("/")
@@ -606,6 +690,7 @@ def update(id):
         return redirect(url_for('staff_estore'))
     else:
         return redirect(url_for('staff_login'))
+
 
 
 if __name__ == '__main__':

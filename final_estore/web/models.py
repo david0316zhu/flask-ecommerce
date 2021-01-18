@@ -97,6 +97,8 @@ class Cart:
     
     def get_subtotal(self):
         return "{:.2f}".format(self.__quantity * (float(self.__product.get_price())))
+    
+    
 
 
 
@@ -120,7 +122,7 @@ class Detail:
         return self.__time
 
 class Order:
-    def __init__(self, name1, address1, date1, time1, card, number, expire, code):
+    def __init__(self, name1, address1, date1, time1, card, number, expire, code, order, total, email):
         self.__order_id = "%0.12d" % randint(0,999999999999)
         self.__name1 = name1
         self.__address1 = address1
@@ -130,6 +132,9 @@ class Order:
         self.__number = number
         self.__expire = expire
         self.__code = code
+        self.__order = order
+        self.__total = total
+        self.__email = email
 
     def get_order_id(self):
         return self.__order_id
@@ -157,3 +162,12 @@ class Order:
     
     def get_code(self):
         return self.__code
+
+    def get_order(self):
+        return self.__order
+
+    def get_total(self):
+        return self.__total
+
+    def get_email(self):
+        return self.__email

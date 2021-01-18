@@ -36,28 +36,23 @@ block heading %}Orders{% endblock %} {% block content%}
     <div class="row flex-column col-lg-8 main-panel">
       <div class="d-flex justify-content-end mb-5">
         <div class="search-input">
-          {{ render_field(form.search, type="text", placeholder="Search order
-          no.")}}
+          <input>
           <i class="material-icons">search</i>
         </div>
       </div>
+      <h3>{{ email }}'s Order History</h3>
+      {% for entry in order_list %}
       <ul class="orders-list">
         <li class="orders-item">
           <div class="orders-header">
             <div>
               <div class="d-flex align-items-center">
-                <h3>Order #1</h3>
-                <div class="list-btn ml-2" id="edit-order-btn">
-                  <i class="material-icons">create</i>
-                </div>
+                <h3>Order #{{ entry.get_order_id()}}</h3>
               </div>
-              <span class="grey-text">12-01-2020</span>
+              <span class="grey-text">{{ entry.get_date1()}}</span>
             </div>
             <div>
-              <span class="orders-price">$8.70</span>
-              <div class="chip green-chip">
-                <span>Completed</span>
-              </div>
+              <span class="orders-price">${{ entry.get_total() }}</span>
             </div>
           </div>
           <div class="orders-list-header mb-3">
@@ -65,100 +60,28 @@ block heading %}Orders{% endblock %} {% block content%}
             <span class="list-sm">Price</span>
             <span class="list-sm">Quantity</span>
           </div>
+          {% for product in entry.get_order() %}
           <div class="products-item products-product">
             <div class="list-lg products-product">
               <div class="products-img">
-                <img src="../assets/img/logo.png" alt="product" />
+                <img src="./static/assets/img/logo.png" alt="product" />
               </div>
               <div class="products-title">
-                <h4>Nongshim Shrimp Shin Ramyun Noodles</h4>
-                <span>5 Count/ 120 grams</span>
+                <h4>{{((entry.get_order().get(product)).get_product()).get_title()}}</h4>
+                <span>{{entry.get_order().get(product).get_product().get_info()}}</span>
               </div>
             </div>
             <div class="list-sm">
-              <span>$4.35</span>
+              <span>${{entry.get_order().get(product).get_subtotal()}}</span>
             </div>
             <div class="list-sm">
-              <span>x 5</span>
+              <span>{{entry.get_order().get(product).get_quantity()}}</span>
             </div>
           </div>
-          <div class="products-item products-product">
-            <div class="list-lg products-product">
-              <div class="products-img">
-                <img src="../assets/img/logo.png" alt="product" />
-              </div>
-              <div class="products-title">
-                <h4>Nongshim Shrimp Shin Ramyun Noodles</h4>
-                <span>5 Count/ 120 grams</span>
-              </div>
-            </div>
-            <div class="list-sm">
-              <span>$4.35</span>
-            </div>
-            <div class="list-sm">
-              <span>x 2</span>
-            </div>
-          </div>
-        </li>
-        <li class="orders-item">
-          <div class="orders-header">
-            <div>
-              <div class="d-flex align-items-center">
-                <h3>Order #1</h3>
-                <div class="list-btn ml-2" id="edit-order-btn">
-                  <i class="material-icons">create</i>
-                </div>
-              </div>
-              <span class="grey-text">12-01-2020</span>
-            </div>
-            <div>
-              <span class="orders-price">$8.70</span>
-              <div class="chip green-chip">
-                <span>Completed</span>
-              </div>
-            </div>
-          </div>
-          <div class="orders-list-header mb-3">
-            <span class="list-lg">Items</span>
-            <span class="list-sm">Price</span>
-            <span class="list-sm">Quantity</span>
-          </div>
-          <div class="products-item products-product">
-            <div class="list-lg products-product">
-              <div class="products-img">
-                <img src="../assets/img/logo.png" alt="product" />
-              </div>
-              <div class="products-title">
-                <h4>Nongshim Shrimp Shin Ramyun Noodles</h4>
-                <span>5 Count/ 120 grams</span>
-              </div>
-            </div>
-            <div class="list-sm">
-              <span>$4.35</span>
-            </div>
-            <div class="list-sm">
-              <span>x 5</span>
-            </div>
-          </div>
-          <div class="products-item products-product">
-            <div class="list-lg products-product">
-              <div class="products-img">
-                <img src="../assets/img/logo.png" alt="product" />
-              </div>
-              <div class="products-title">
-                <h4>Nongshim Shrimp Shin Ramyun Noodles</h4>
-                <span>5 Count/ 120 grams</span>
-              </div>
-            </div>
-            <div class="list-sm">
-              <span>$4.35</span>
-            </div>
-            <div class="list-sm">
-              <span>x 2</span>
-            </div>
-          </div>
+          {% endfor %}
         </li>
       </ul>
+      {% endfor %}
     </div>
   </div>
 </main>
