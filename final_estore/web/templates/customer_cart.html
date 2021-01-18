@@ -53,7 +53,8 @@ block heading %}Cart{% endblock %} {% block content%}
           </div>
           {% else %}
           <div class="mb-3">
-            {{ form.code(placeholder="Discount Code")}} {% endif %}
+            {{ form.code(placeholder="Discount Code", class=" form-input")}} {%
+            endif %}
           </div>
           <div>{{ form.submit(class="btn primary-btn") }}</div>
         </div>

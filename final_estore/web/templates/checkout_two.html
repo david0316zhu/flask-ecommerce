@@ -52,7 +52,9 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item" href="{{ url_for('e_store')}}">Menu</a>
-              <a class="dropdown-item" href="{{ url_for('e_store_cart')}}">Cart</a>
+              <a class="dropdown-item" href="{{ url_for('e_store_cart')}}"
+                >Cart</a
+              >
               <a class="dropdown-item" href="orders.html">Orders</a>
             </div>
           </div>
@@ -63,7 +65,10 @@
           <i class="material-icons-outlined pink-text mr-2">call</i>
           <span>+65 1234 5678</span>
         </div>
-        <a class="home-nav-icon position-relative" href="{{ url_for('e_store_cart')}}">
+        <a
+          class="home-nav-icon position-relative"
+          href="{{ url_for('e_store_cart')}}"
+        >
           <div class="badge">3</div>
           <i class="material-icons">shopping_cart</i>
         </a>
@@ -119,84 +124,80 @@
                 <h2>Your Payment Details</h2>
               </div>
               <form method="POST" action="">
-              <div>
-                {{ form.hidden_tag() }}
-                <div class="d-flex flex-column mb-3">
-                  <label class="mb-2" for="price">
-                    <span><b>Name on Card</b></span>
+                <div>
+                  {{ form.hidden_tag() }}
+                  <div class="d-flex flex-column mb-3">
+                    <label class="mb-2" for="price">
+                      <span><b>Name on Card</b></span>
+                    </label>
                     <div class="d-flex justify-content-end">
-                      <div class="form-input">
-                        {% if form.name.errors %} {{ form.name(class="form-input
-                        is-invalid") }}
-                        <div class="invalid-feedback">
-                          {% for error in form.name.errors %}
-                          <span>{{ error }}</span>
-                          {% endfor %}
-                        </div>
-                        {% else %} {{ form.name(placeholder="Name on Card")}} {% endif %}
+                      {% if form.name.errors %} {{ form.name(class="form-input
+                      w-100 is-invalid") }}
+                      <div class="invalid-feedback">
+                        {% for error in form.name.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
                       </div>
-                    </div>
-                  </label>
-                </div>
-                <div class="d-flex flex-column mb-3">
-                  <label class="mb-2" for="price">
-                    <span><b>Card Number</b></span>
-                    <div class="d-flex justify-content-end">
-                      <div class="form-input">
-                        {% if form.card.errors %} {{ form.card(class="form-input
-                        is-invalid") }}
-                        <div class="invalid-feedback">
-                          {% for error in form.card.errors %}
-                          <span>{{ error }}</span>
-                          {% endfor %}
-                        </div>
-                        {% else %} {{ form.card(placeholder="Card Number")}} {% endif %}
-                      </div>
-                    </div>
-                  </label>
-                </div>
-                <div class="d-flex flex-column mb-3">
-                  <div class="mb-2">
-                    <span><b>Expiration Date</b></span>
-                    <div class="d-flex justify-content-end">
-                      <div class="form-input">
-                        {% if form.date.errors %} {{ form.date(class="form-input
-                        is-invalid") }}
-                        <div class="invalid-feedback">
-                          {% for error in form.date.errors %}
-                          <span>{{ error }}</span>
-                          {% endfor %}
-                        </div>
-                        {% else %} {{ form.date(placeholder="Security Code")}} {% endif %}
-                      </div>
+                      {% else %} {{ form.name(placeholder="Name on Card",
+                      class="form-input w-100")}} {% endif %}
                     </div>
                   </div>
-                </div>
-                <div class="d-flex flex-column mb-3">
-                  <label for="start-time">
-                    <span><b>Security Code</b></span>
+                  <div class="d-flex flex-column mb-3">
+                    <label class="mb-2" for="price">
+                      <span><b>Card Number</b></span>
+                    </label>
                     <div class="d-flex justify-content-end">
-                      <div class="form-input">
-                        {% if form.code.errors %} {{ form.code(class="form-input
-                        is-invalid") }}
-                        <div class="invalid-feedback">
-                          {% for error in form.code.errors %}
-                          <span>{{ error }}</span>
-                          {% endfor %}
-                        </div>
-                        {% else %} {{ form.code(placeholder="Security Code")}} {% endif %}
+                      {% if form.card.errors %} {{ form.card(class="form-input
+                      w-100 is-invalid") }}
+                      <div class="invalid-feedback">
+                        {% for error in form.card.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
                       </div>
+                      {% else %} {{ form.card(placeholder="Card Number",
+                      class="form-input w-100")}} {% endif %}
                     </div>
-                  </label>
-                  <div class="timepicker"></div>
+                  </div>
+                  <div class="d-flex flex-column mb-3">
+                    <label class="mb-2">
+                      <span><b>Expiration Date</b></span>
+                    </label>
+                    <div class="d-flex justify-content-end">
+                      {% if form.date.errors %} {{ form.date(class="form-input
+                      w-100 is-invalid") }}
+                      <div class="invalid-feedback">
+                        {% for error in form.date.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                      {% else %} {{ form.date(placeholder="Security Code",
+                      class="form-input w-100")}} {% endif %}
+                    </div>
+                  </div>
+                  <div class="d-flex flex-column mb-3">
+                    <label for="start-time">
+                      <span><b>Security Code</b></span>
+                    </label>
+                    <div class="d-flex justify-content-end">
+                      {% if form.code.errors %} {{ form.code(class="form-input
+                      w-100 is-invalid") }}
+                      <div class="invalid-feedback">
+                        {% for error in form.code.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                      {% else %} {{ form.code(placeholder="Security Code",
+                      class="form-input w-100")}} {% endif %}
+                    </div>
+                    <div class="timepicker"></div>
+                  </div>
+                  <div id="form-error" class="error mb-3"></div>
+                  <div
+                    class="w-100 d-flex align-items-center justify-content-center"
+                  >
+                    {{ form.submit(class="btn primary-btn") }}
+                  </div>
                 </div>
-                <div id="form-error" class="error mb-3"></div>
-                <div
-                  class="w-100 d-flex align-items-center justify-content-center"
-                >
-                {{ form.submit(class="btn primary-btn") }}
-                </div>
-              </div>
               </form>
             </div>
           </div>
