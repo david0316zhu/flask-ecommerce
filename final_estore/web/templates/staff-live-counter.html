@@ -11,22 +11,22 @@ content%}
       <div class="digit" id="digit-ten">{{ten}}</div>
       <div class="digit" id="digit-one">{{one}}</div>
     </form>
-    <div class="odometer-info col-lg-4">
+    <div class="odometer-info">
       <div class="mb-1 text-center">
         <span class="odometer-title">Number of Customers in Store</span>
       </div>
-      <div class="row mx-0 w-100 justify-content-between mb-5">
-        <div class="col-lg-4 col-md-4">
+      <div class="odometer-legend">
+        <div>
           <div class="danger">
             <span>10-12</span>
           </div>
         </div>
-        <div class="col-lg-4 col-md-4">
+        <div>
           <div class="warning">
             <span>6-8</span>
           </div>
         </div>
-        <div class="col-lg-4 col-md-4">
+        <div>
           <div class="success">
             <span>Below 4</span>
           </div>
@@ -40,6 +40,14 @@ content%}
           class="btn primary-btn fit-content-btn") }}
         </form>
       </div>
+    </div>
+    <div class="store-wrapper mt-5">
+      <input
+        type="number"
+        class="form-input"
+        placeholder="Enter no. of customers for the day"
+      />
+      <input type="submit" class="btn primary-btn" value="Store" />
     </div>
   </div>
 </main>

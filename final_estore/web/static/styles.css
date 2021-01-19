@@ -1084,6 +1084,17 @@ video {
 
 /* live-counter.html */
 
+.store-wrapper {
+  width: 500px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.store-wrapper input[type="number"] {
+  margin-right: 2rem;
+}
+
 .count-container {
   background-color: var(--light-grey);
   padding: 0;
@@ -1111,6 +1122,16 @@ video {
   border-radius: 10px;
   font-size: 8rem;
   position: relative;
+}
+
+.odometer-info {
+  width: 500px;
+}
+
+.odometer-legend {
+  display: flex;
+  margin: 2rem 0;
+  justify-content: space-between;
 }
 
 .odometer-face::before {
