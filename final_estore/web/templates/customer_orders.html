@@ -36,20 +36,23 @@ block heading %}Orders{% endblock %} {% block content%}
     <div class="row flex-column col-lg-8 main-panel">
       <div class="d-flex justify-content-end mb-5">
         <div class="search-input">
-          <input>
+          <input type="text" />
           <i class="material-icons">search</i>
         </div>
       </div>
-      <h3>{{ email }}'s Order History</h3>
+      <h3 class="mb-5"><b>{{ email }}'s Order History</b></h3>
       {% for entry in order_list %}
       <ul class="orders-list">
         <li class="orders-item">
+          <div class="close-btn">
+            <i class="material-icons">close</i>
+          </div>
           <div class="orders-header">
             <div>
               <div class="d-flex align-items-center">
-                <h3>Order #{{ entry.get_order_id()}}</h3>
+                <h4>Order #{{ entry.get_order_id()}}</h4>
               </div>
-              <span class="grey-text">{{ entry.get_date1()}}</span>
+              <small class="grey-text">{{ entry.get_date1()}}</small>
             </div>
             <div>
               <span class="orders-price">${{ entry.get_total() }}</span>
@@ -67,8 +70,12 @@ block heading %}Orders{% endblock %} {% block content%}
                 <img src="./static/assets/img/logo.png" alt="product" />
               </div>
               <div class="products-title">
-                <h4>{{((entry.get_order().get(product)).get_product()).get_title()}}</h4>
-                <span>{{entry.get_order().get(product).get_product().get_info()}}</span>
+                <h4>
+                  {{((entry.get_order().get(product)).get_product()).get_title()}}
+                </h4>
+                <span
+                  >{{entry.get_order().get(product).get_product().get_info()}}</span
+                >
               </div>
             </div>
             <div class="list-sm">

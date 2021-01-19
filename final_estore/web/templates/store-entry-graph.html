@@ -62,13 +62,17 @@
     // Set up chart
     let ctx = document.getElementById("myChart").getContext("2d");
     const data = {
-      labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+      labels: [{% for item in labels %}
+             "{{item}}",
+            {% endfor %}],
       datasets: [
         {
-          label: "# of Votes",
+          label: "{{legend}}",
           lineTension: 0,
           fill: false,
-          data: [12, 19, 3, 5, 2, 3],
+          data: [{% for item in values %}
+             {{item}},
+            {% endfor %}],
           borderColor: "#000",
           borderWidth: 1,
         },

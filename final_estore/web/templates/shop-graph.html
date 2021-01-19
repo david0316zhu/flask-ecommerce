@@ -20,14 +20,22 @@ block heading %}Shop Graph{% endblock %} {% block content%}
     var myChart = new Chart(ctx, {
       type: "bar",
       data: {
-        labels: ["Delivered", "Undelivered"],
+        labels: [{% for item in labels %}
+             "{{item}}",
+            {% endfor %}],
         datasets: [
           {
-            label: "# of Orders",
-            data: [12, 19],
-            backgroundColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"],
-            borderColor: ["rgba(255,99,132,1)", "rgba(54, 162, 235, 1)"],
-            borderWidth: 1,
+            label: "{{legend}}",
+            data: [{% for item in values %}
+                {{item}},
+              {% endfor %}],
+            backgroundColor: [{% for item in backgroundColor %}
+                "{{item}}",
+              {% endfor %}],
+            borderColor: [{% for item in borderColor %}
+                "{{item}}",
+              {% endfor %}],
+            borderWidth: 1
           },
         ],
       },
@@ -45,7 +53,7 @@ block heading %}Shop Graph{% endblock %} {% block content%}
                 minRotation: 80,
               },
               gridLines: {
-                offsetGridLines: true, // à rajouter
+                offsetGridLines: true,
               },
             },
             {
@@ -55,7 +63,7 @@ block heading %}Shop Graph{% endblock %} {% block content%}
                 minRotation: 80,
               },
               gridLines: {
-                offsetGridLines: true, // et matcher pareil ici
+                offsetGridLines: true,
               },
             },
           ],

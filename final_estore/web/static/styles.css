@@ -554,7 +554,7 @@ ul.radio-input li:not(:last-child) {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--medium-grey);
-  border-radius: 20px;
+  border-radius: 3px;
   background-color: white;
 }
 
@@ -566,14 +566,15 @@ ul.radio-input li:not(:last-child) {
 }
 
 .orders-header .orders-price {
-  font-size: 4rem;
+  font-size: 3.5rem;
   font-weight: lighter;
 }
 
 .orders-list-header {
-  background-color: var(--dark-grey);
+  background-color: #dee2e6;
   padding: 8px 24px;
-  color: white;
+  color: var(--dark-grey);
+  font-weight: bold;
   display: flex;
   align-items: center;
 }
