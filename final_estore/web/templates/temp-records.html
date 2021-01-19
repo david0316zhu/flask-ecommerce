@@ -60,18 +60,18 @@ endblock %} {% block content%}
       {% else %}
       <div class="d-flex justify-content-end align-items-center mb-5">
         <form method="POST" action="">
-          {{ form.hidden_tag() }}
+          {{ search_form.hidden_tag() }}
           <div class="d-flex justify-content-end">
             <div class="search-input">
-              {% if form.search.errors %} {{ form.search(class="form-input
+              {% if search_form.search.errors %} {{ search_form.search(class="form-input
               is-invalid") }}
               <div class="invalid-feedback">
-                {% for error in form.search.errors %}
+                {% for error in search_form.search.errors %}
                 <span>{{ error }}</span>
                 {% endfor %}
               </div>
-              {% else %} {{ form.search(placeholder="Search by NRIC",
-              id="search")}} {% endif %} {{ form.submit(class="material-icons")
+              {% else %} {{ search_form.search(placeholder="Search by NRIC",
+              id="search")}} {% endif %} {{ search_form.submit(class="material-icons")
               }}
             </div>
           </div>

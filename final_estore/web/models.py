@@ -133,7 +133,7 @@ class Order:
         self.__expire = expire
         self.__code = code
         self.__order = order
-        self.__total = total
+        self.__total = "{:.2f}".format(total)
         self.__email = email
 
     def get_order_id(self):

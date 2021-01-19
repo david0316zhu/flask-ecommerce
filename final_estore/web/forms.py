@@ -52,6 +52,9 @@ class TimeForm(FlaskForm):
     time2 = DateTimeField('time2', validators=[DataRequired()], format='%H:%M')
     search = SubmitField('Search')
     
+class TimeForm1(FlaskForm):
+    date = DateField('date', validators=[DataRequired()], format='%Y-%m-%d')
+    search = SubmitField('Search')
 
 class UpdateForm(FlaskForm):
     title = StringField("title", validators=[DataRequired()])

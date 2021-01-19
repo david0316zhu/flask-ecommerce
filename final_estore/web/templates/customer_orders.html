@@ -7,23 +7,25 @@ block heading %}Orders{% endblock %} {% block content%}
         <div class="mb-5">
           <h3>Filter</h3>
         </div>
-        <form id="filter-form">
+        <form id="filter-form" method="POST" action="" >
+          {{ time_form.hidden_tag() }}
           <div class="mb-3">
             <label class="mb-2">
               <span><b>By Date</b></span>
             </label>
-            <input
-              class="form-input"
-              id="date"
-              name="date"
-              type="text"
-              placeholder="YYYY-MM-DD"
-              required
-            />
+            {% if time_form.date.errors %} {{ time_form.date(class="form-input
+            is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in time_form.date.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %} {{ time_form.date(class="form-input",
+            placeholder="YYYY-MM-DD") }} {% endif %}
           </div>
           <div id="form-error" class="error mb-3"></div>
           <button class="btn primary-btn">
-            <span>Submit</span>
+            {{ time_form.search(class="btn primary-btn") }}
           </button>
         </form>
       </div>
@@ -34,19 +36,68 @@ block heading %}Orders{% endblock %} {% block content%}
       </div>
     </div>
     <div class="row flex-column col-lg-8 main-panel">
-      <div class="d-flex justify-content-end mb-5">
-        <div class="search-input">
-          <input type="text" />
-          <i class="material-icons">search</i>
+      <form method="POST" action="">
+        {{ search_form.hidden_tag() }}
+        <div class="d-flex justify-content-end mb-5">
+          <div class="search-input">
+            {% if search_form.search.errors %} {{ search_form.search(class="form-input
+            is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in search_form.search.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %} {{ search_form.search(placeholder="Search by Order Number")}} {% endif %} {{ search_form.submit(class="material-icons")
+            }}
+          </div>
         </div>
-      </div>
+      </form>
       <h3 class="mb-5"><b>{{ email }}'s Order History</b></h3>
       {% for entry in order_list %}
       <ul class="orders-list">
         <li class="orders-item">
-          <div class="close-btn">
-            <i class="material-icons">close</i>
-          </div>
+          <form
+          method="POST"
+          action="{{ url_for('remove_customer_order', id=entry.get_order_id()) }}"
+          >
+            <div class="close-btn">
+              <i  class="material-icons"
+                  data-toggle="modal"
+                  data-target="#myModal_{{entry.get_order_id()}}"
+                  >close</i>
+            </div>
+            <div class="modal" id="myModal_{{ entry.get_order_id() }}">
+              <div class="modal-center">
+                <div class="modal-data white-card">
+                  <div>
+                    <div class="mb-3 text-center">
+                      <span class="popup-title">Delete Confirmation</span>
+                    </div>
+                    <div class="close-btn" data-dismiss="modal">
+                      <i class="material-icons">close</i>
+                    </div>
+                  </div>
+                  <div class="mb-5">Are you sure you want to delete?</div>
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <input
+                      type="submit"
+                      value="Delete"
+                      class="btn primary-btn red-btn"
+                    />
+                    <button
+                      type="button"
+                      class="btn primary-btn"
+                      data-dismiss="modal"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
           <div class="orders-header">
             <div>
               <div class="d-flex align-items-center">
@@ -55,7 +106,7 @@ block heading %}Orders{% endblock %} {% block content%}
               <small class="grey-text">{{ entry.get_date1()}}</small>
             </div>
             <div>
-              <span class="orders-price">${{ entry.get_total() }}</span>
+              <span class="orders-price">${{ "{:.2f}".format(entry.get_total()) }}</span>
             </div>
           </div>
           <div class="orders-list-header mb-3">

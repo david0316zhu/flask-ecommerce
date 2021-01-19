@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, flash, redirect, session, request, jsonify
-from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm, ControlForm, ResetForm, TimeForm, UpdateForm, CartForm, DiscountForm, DetailsForm, PaymentForm
+from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm, ControlForm, ResetForm, TimeForm, UpdateForm, CartForm, DiscountForm, DetailsForm, PaymentForm, TimeForm1
 from models import Temp, User, Product, Cart, Detail, Order
 import shelve
 from flask_bcrypt import Bcrypt
@@ -27,6 +27,7 @@ def home():
     # db["number"]=0
     # db["estore"]={}
     # db["Temp"]={}
+    # db["Order"] = {}
 
     db.close()
     session['logged_in'] = False
@@ -259,6 +260,10 @@ def e_store_order():
         email = db['online']
         order_dict = {}
         order_list = []
+        time_form = TimeForm1()
+        search_form = SearchForm()
+        time_list = []
+        search_list = []
         try:
             order_dict = db[email]
         except:
@@ -266,16 +271,43 @@ def e_store_order():
         for key in order_dict:
             entry = order_dict.get(key)
             order_list.append(entry)
-        return render_template("customer_orders.html", order_list=order_list, email=email)
+        if search_form.validate_on_submit():
+            for s in order_list:
+                search1 = s.get_order_id()
+                if search_form.search.data in search1:
+                    search_list.append(s)
+            order_list = search_list
+            return render_template("customer_orders.html", order_list=order_list, email=email, time_form=time_form, search_form=search_form)
+        if time_form.validate_on_submit():
+            for t in order_list:
+                time_check = t.get_date1()
+                if time_form.date.data == time_check:
+                    time_list.append(t)
+            order_list = time_list
+            return render_template("customer_orders.html", order_list=order_list, email=email, time_form=time_form, search_form=search_form)
+        return render_template("customer_orders.html", order_list=order_list, email=email, time_form=time_form, search_form=search_form)
         
     else:
         return redirect(url_for("e_store"))
 
-
+@app.route('/delete_customer_order/<string:id>', methods=['POST'])
+def remove_customer_order(id):
+    if session.get('customer'):
+        print('hi')
+        db = shelve.open('storage.db', 'w')
+        email = db["online"]
+        order_dict = db[email]
+        entry = order_dict.pop(id)
+        db[email] = order_dict
+        db.close()
+        return redirect(url_for('e_store_order'))
+    else:
+        return redirect(url_for('e_store'))
 
 @app.route("/add/<string:id>", methods=["GET", 'POST'])
 def e_store_add(id):
     if session.get('customer'):
+        
         db = shelve.open('storage.db', 'c')
         customer_dict = {}
         email = db["online"]
@@ -507,10 +539,10 @@ def staff_records():
         for key in temp_dict:
             entry = temp_dict.get(key)
             temp_list.append(entry)
-        form = SearchForm()
+        search_form = SearchForm()
         reset_form = ResetForm()
         time_form = TimeForm()
-        if time_form.validate_on_submit():
+        if time_form.search.data and time_form.validate():
             db.close()
             time_list = []
             for t in temp_list:
@@ -523,23 +555,23 @@ def staff_records():
                     if time3 >= time1 and time3 <= time2:
                         time_list.append(t)
             temp_list = time_list
-            return render_template('temp-records.html', temp_list=temp_list, form=form, reset_form=reset_form, time_form=time_form)
-        elif form.validate_on_submit():
+            return render_template('temp-records.html', temp_list=temp_list, search_form=form, reset_form=reset_form, time_form=time_form)
+        if search_form.submit.data and search_form.validate():
             db.close()
             search_list = []
             for j in temp_list:
                 nric_check = j.get_ic_num()
-                if form.search.data.casefold() in nric_check.casefold():
+                if search_form.search.data.casefold() in nric_check.casefold():
                     search_list.append(j)
             temp_list = search_list
-            return render_template('temp-records.html', temp_list=temp_list, form=form, reset_form=reset_form, time_form=time_form)
-        elif reset_form.validate_on_submit():
+            return render_template('temp-records.html', temp_list=temp_list, search_form=search_form, reset_form=reset_form, time_form=time_form)
+        if reset_form.reset.data and reset_form.validate():
             db["Temp"] = {}
             temp_dict = db['Temp']
             temp_list = []
-            return render_template('temp-records.html', temp_list=temp_list, form=form, reset_form=reset_form, time_form=time_form)
+            return render_template('temp-records.html', temp_list=temp_list, search_form=search_form, reset_form=reset_form, time_form=time_form)
 
-        return render_template('temp-records.html', temp_list=temp_list, form=form, reset_form=reset_form, time_form=time_form)
+        return render_template('temp-records.html', temp_list=temp_list, search_form=search_form, reset_form=reset_form, time_form=time_form)
     else:
         return redirect(url_for('staff_login'))
 
@@ -560,13 +592,7 @@ def delete():
             return redirect(url_for('staff_records'))
 
 
-@app.route("/")
-@app.route("/stuff", methods=['GET'])
-def stuff():
-    if session.get('logged_in'):
-        db = shelve.open('storage.db', 'c')
-        num = db["number"]
-        return jsonify(result=num)
+
 
 @app.route("/")
 @app.route("/admin_graph", methods=['GET', 'POST'])
@@ -602,6 +628,10 @@ def shop_order():
         db = shelve.open('storage.db', 'c')
         order_dict = {}
         order_list = []
+        time_form = TimeForm1()
+        search_form = SearchForm()
+        time_list = []
+        search_list = []
         try:
             order_dict = db['Order']
         except:
@@ -610,8 +640,21 @@ def shop_order():
         for key in order_dict:
             entry = order_dict.get(key)
             order_list.append(entry)
-        
-        return render_template('admin_orders.html', order_list=order_list)
+        if search_form.validate_on_submit():
+            for s in order_list:
+                search1 = s.get_order_id()
+                if search_form.search.data in search1:
+                    search_list.append(s)
+            order_list = search_list
+            return render_template("admin_orders.html", order_list=order_list, time_form=time_form, search_form=search_form)
+        if time_form.validate_on_submit():
+            for t in order_list:
+                time_check = t.get_date1()
+                if time_form.date.data == time_check:
+                    time_list.append(t)
+            order_list = time_list
+            return render_template("admin_orders.html", order_list=order_list, time_form=time_form, search_form=search_form)
+        return render_template("admin_orders.html", order_list=order_list, time_form=time_form, search_form=search_form)
     else:
         return redirect(url_for('staff_login'))
     
@@ -671,6 +714,19 @@ def staff_estore():
     else:
         return redirect(url_for('staff_login'))
 
+
+@app.route('/delete_order/<string:id>', methods=['POST'])
+def remove_order(id):
+    if session.get('logged_in'):
+        db = shelve.open('storage.db', 'w')
+        order_dict = db["Order"]
+        entry = order_dict.pop(id)
+        db["Order"] = order_dict
+        db.close()
+        return redirect(url_for('shop_order'))
+    else:
+        return redirect(url_for('staff_login'))
+
 @app.route('/delete/<string:id>', methods=['POST'])
 def remove(id):
     if session.get('logged_in'):
@@ -682,8 +738,6 @@ def remove(id):
         entry = product_dict.pop(id)
         print(entry)
         db["Product"] = product_dict
-        db.close()
-        
         db.close()
         return redirect(url_for('staff_estore'))
     else:

@@ -1,46 +1,48 @@
 {% extends "admin_layout.html" %} {% block title %}Store Entry - Staff{%
-endblock %} {% block heading %}Store Entry - Staff{% endblock %} {% block
-content%}
-<main>
-  <div class="container-fluid count-container">
-    <div class="mb-5">
-      <h1 class="count-title">Live Counter</h1>
+  endblock %} {% block heading %}Store Entry - Staff{% endblock %} {% block
+  content%}
+  <main>
+    <div class="container-fluid count-container">
+      <div class="mb-5">
+        <h1 class="count-title">Live Counter</h1>
+      </div>
+      <form class="odometer-face">
+        <div class="digit" id="digit-hundred">{{hundred}}</div>
+        <div class="digit" id="digit-ten">{{ten}}</div>
+        <div class="digit" id="digit-one">{{one}}</div>
+      </form>
+      <div class="odometer-info">
+        <div class="mb-1 text-center">
+          <span class="odometer-title">Number of Customers in Store</span>
+        </div>
+        <div class="odometer-legend">
+            <div class="danger">
+              <span>10-12</span>
+            </div>
+            <div class="warning">
+              <span>6-8</span>
+            </div>
+            <div class="success">
+              <span>Below 4</span>
+            </div>
+        </div>
+        <div class="w-100">
+          <form method="POST" action="" class="d-flex justify-content-between">
+            {{ control_form.hidden_tag() }} {{
+            control_form.add(id="add-count-btn", class="btn primary-btn
+            fit-content-btn") }} {{ control_form.remove(id="remove-count-btn",
+            class="btn primary-btn fit-content-btn") }}
+          </form>
+        </div>
+      </div>
+      <div class="store-wrapper mt-5">
+        <input
+          type="number"
+          class="form-input"
+          placeholder="Enter no. of customers for the day"
+        />
+        <input type="submit" class="btn primary-btn" value="Store" />
+      </div>
     </div>
-    <form class="odometer-face">
-      <div class="digit" id="digit-hundred">{{hundred}}</div>
-      <div class="digit" id="digit-ten">{{ten}}</div>
-      <div class="digit" id="digit-one">{{one}}</div>
-    </form>
-    <div class="odometer-info col-lg-4">
-      <div class="mb-1 text-center">
-        <span class="odometer-title">Number of Customers in Store</span>
-      </div>
-      <div class="row mx-0 w-100 justify-content-between mb-5">
-        <div class="col-lg-4 col-md-4">
-          <div class="danger">
-            <span>10-12</span>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-4">
-          <div class="warning">
-            <span>6-8</span>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-4">
-          <div class="success">
-            <span>Below 4</span>
-          </div>
-        </div>
-      </div>
-      <div class="w-100">
-        <form method="POST" action="" class="d-flex justify-content-between">
-          {{ control_form.hidden_tag() }} {{
-          control_form.add(id="add-count-btn", class="btn primary-btn
-          fit-content-btn") }} {{ control_form.remove(id="remove-count-btn",
-          class="btn primary-btn fit-content-btn") }}
-        </form>
-      </div>
-    </div>
-  </div>
-</main>
-{% endblock %}
+  </main>
+  {% endblock %}
