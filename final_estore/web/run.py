@@ -566,31 +566,19 @@ def stuff():
     if session.get('logged_in'):
         db = shelve.open('storage.db', 'c')
         num = db["number"]
-        # return jsonify(result=num)
-        legend = "# of Orders"
-        labels = ["Delivered", "Undelivered"]
-        values = [12, 19]
-        backgroundColor = ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"]
-        borderColor = ["rgba(255,99,132,1)", "rgba(54, 162, 235, 1)"]
-        return render_template('shop-graph.html', values=values, labels=labels, legend=legend, borderColor=borderColor, backgroundColor=backgroundColor)
-
-@app.route("/")
-@app.route("/store_entry_graph", methods=['GET'])
-def store_entry_graph():
-    if session.get('logged_in'):
-        db = shelve.open('storage.db', 'c')
-        legend = "# of Votes"
-        labels = ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"]
-        values = [12, 19, 3, 5, 2, 3]
-        backgroundColor = ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"]
-        borderColor = ["rgba(255,99,132,1)", "rgba(54, 162, 235, 1)"]
-        return render_template('store-entry-graph.html', values=values, labels=labels, legend=legend, borderColor=borderColor, backgroundColor=backgroundColor)
+        return jsonify(result=num)
 
 @app.route("/")
 @app.route("/admin_graph", methods=['GET', 'POST'])
 def staff_graph():
     if session.get('logged_in'):
-        return render_template('store-entry-graph.html')
+        db = shelve.open('storage.db', 'c')
+        legend = "# of Customers"
+        labels = ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"]
+        values = [12, 19, 3, 5, 2, 3]
+        backgroundColor = ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"]
+        borderColor = ["rgba(255,99,132,1)", "rgba(54, 162, 235, 1)"]
+        return render_template('store-entry-graph.html', values=values, labels=labels, legend=legend, borderColor=borderColor, backgroundColor=backgroundColor)
     else:
         return redirect(url_for('staff_login'))
 
@@ -598,9 +586,14 @@ def staff_graph():
 @app.route("/admin_shop_graph", methods=['GET', 'POST'])
 def shop_graph():
     if session.get('logged_in'):
-        return render_template('shop-graph.html')
-    else:
-        return redirect(url_for('staff_login'))
+        db = shelve.open('storage.db', 'c')
+        num = db["number"]
+        legend = "# of Orders"
+        labels = ["Delivered", "Undelivered"]
+        values = [12, 19]
+        backgroundColor = ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"]
+        borderColor = ["rgba(255,99,132,1)", "rgba(54, 162, 235, 1)"]
+        return render_template('shop-graph.html', values=values, labels=labels, legend=legend, borderColor=borderColor, backgroundColor=backgroundColor)
 
 @app.route("/")
 @app.route("/admin_order", methods=['GET', 'POST'])
