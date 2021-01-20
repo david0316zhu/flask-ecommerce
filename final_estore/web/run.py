@@ -4,7 +4,7 @@ from models import Temp, User, Product, Cart, Detail, Order
 import shelve
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, current_user, logout_user, login_required, LoginManager
-from datetime import datetime, date, time
+from datetime import datetime, date, time, timedelta
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
@@ -527,10 +527,31 @@ def staff_home():
                     ten = num[1]
                     one = num[2]
                     return render_template('staff-live-counter.html', control_form=control_form, hundred=hundred, ten=ten, one=one)
-
         return render_template('staff-live-counter.html', control_form=control_form, hundred=hundred, ten=ten, one=one)
     else:
         return redirect(url_for('staff_login'))
+
+@app.route("/")
+@app.route("/admin_save", methods=['GET', 'POST'])
+def save():
+    if session.get('logged_in'):
+        db = shelve.open('storage.db', 'c')
+        save = {}
+        try:
+            save = db["save"]
+        except:
+            print('error')
+        date = request.form['time']
+        num = request.form['num']
+        save[date] = num
+        db["save"] = save
+        print(db["save"])
+        print('success')
+        db.close()
+        return redirect(url_for('staff_home'))
+        
+
+
 
 @app.route("/")
 @app.route("/admin_records", methods=['GET', 'POST'])
@@ -604,9 +625,28 @@ def delete():
 def staff_graph():
     if session.get('logged_in'):
         db = shelve.open('storage.db', 'c')
+        save = {}
+        try:
+            save = db["save"]
+        except:
+            print('error')
+        i = 1
+        label = []
+        val = []
+        while i < 6:
+            days = datetime.now() - timedelta(days=i)
+            days = days.strftime("%Y-%m-%d")
+            label.append(days)
+            value = save.get(days)
+            print(value)
+            val.append(value)
+            i+=1
+        print(label)
+        print(value)
+
         legend = "# of Customers"
-        labels = ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"]
-        values = [12, 19, 3, 5, 2, 3]
+        labels = label
+        values = val
         backgroundColor = ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"]
         borderColor = ["rgba(255,99,132,1)", "rgba(54, 162, 235, 1)"]
         return render_template('store-entry-graph.html', values=values, labels=labels, legend=legend, borderColor=borderColor, backgroundColor=backgroundColor)
