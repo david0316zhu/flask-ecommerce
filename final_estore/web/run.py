@@ -21,7 +21,8 @@ def home():
     db["online"] = {}
     db["cart"] = {}
     db["error"] = {}
-    db["total"] = {}
+    #db["total"] = {}
+    
     
     # db["Product"]={}
     # db["number"]=0
@@ -647,7 +648,7 @@ def staff_graph():
             val.append(value)
             i+=1
         print(label)
-        print(value)
+        print(val)
 
         legend = "# of Customers"
         labels = label
@@ -663,10 +664,38 @@ def staff_graph():
 def shop_graph():
     if session.get('logged_in'):
         db = shelve.open('storage.db', 'c')
-        num = db["number"]
+        orders = {}
+        orders_list = []
+        label = []
+        val = []
+        try:
+            orders = db["Order"]
+        except:
+            print("error")
+        for key in orders:
+            entry = orders.get(key)
+            orders_list.append(entry)
+        i = 0
+        while i < 5:
+            days = datetime.now() - timedelta(days=i)
+            days = days.strftime("%Y-%m-%d")
+            label.append(days)
+            num = 0
+            for count in orders_list:
+                if str(count.get_date1()) == days:
+                    num += 1
+                    print(num)
+            val.append(num)
+            print(num)
+            i+=1
+        print(label)
+        print(val)
+
+
+            
         legend = "# of Orders"
-        labels = ["Delivered", "Undelivered"]
-        values = [12, 19]
+        labels = label
+        values = val
         backgroundColor = ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"]
         borderColor = ["rgba(255,99,132,1)", "rgba(54, 162, 235, 1)"]
         return render_template('shop-graph.html', values=values, labels=labels, legend=legend, borderColor=borderColor, backgroundColor=backgroundColor)
