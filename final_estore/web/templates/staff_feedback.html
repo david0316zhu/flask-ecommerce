@@ -1,0 +1,120 @@
+{% extends "admin_layout.html" %} {% block title %}Customer Feedback{% endblock
+%} {% block heading %}Customer Feedback{% endblock %} {% block content%}
+<main>
+  <div class="container-fluid grey-container justify-content-between">
+    <div class="bootstrap-iso">
+      <div class="white-card filter-panel">
+        <div class="mb-5">
+          <h3>Filter</h3>
+        </div>
+        <form id="filter-form" method="POST" action="">
+          {{ time_form.hidden_tag() }}
+          <div class="mb-3">
+            <label class="mb-2">
+              <span><b>By Date</b></span>
+            </label>
+            {% if time_form.date.errors %} {{ time_form.date(class="form-input
+            is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in time_form.date.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %} {{ time_form.date(class="form-input",
+            placeholder="YYYY-MM-DD") }} {% endif %}
+          </div>
+          <div class="mb-3">
+            <label for="start-time">
+              <span><b>By Time</b></span>
+            </label>
+            <div class="timepicker mb-3">
+              {% if time_form.time1.errors %} {{
+              time_form.time1(class="form-input is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in time_form.time1.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              {% else %} {{ time_form.time1(class="form-input",
+              placeholder="HH:MM") }} {% endif %}
+              <span>To</span>
+              {% if time_form.time2.errors %} {{
+              time_form.time2(class="form-input is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in time_form.time2.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              {% else %} {{ time_form.time2(class="form-input",
+              placeholder="HH:MM") }} {% endif %}
+            </div>
+          </div>
+          {{ time_form.search(class="btn primary-btn") }}
+        </form>
+      </div>
+    </div>
+    <div class="row flex-column col-lg-8 main-panel">
+      {% if temp_list|length == 0 %}
+      <span><b>No data available.</b></span>
+      {% else %}
+      <div class="d-flex justify-content-end align-items-center mb-5">
+        <form method="POST" action="">
+          {{ search_form.hidden_tag() }}
+          <div class="d-flex justify-content-end">
+            <div class="search-input">
+              {% if search_form.search.errors %} {{
+              search_form.search(class="form-input is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in search_form.search.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+              {% else %} {{ search_form.search(placeholder="Search by name",
+              id="search")}} {% endif %} {{
+              search_form.submit(class="material-icons") }}
+            </div>
+          </div>
+        </form>
+        <form method="POST" action="">
+          {{ reset_form.hidden_tag() }} {{ reset_form.reset(class="btn
+          primary-btn small-btn ml-3") }}
+        </form>
+      </div>
+      <form method="POST" action="{{url_for('delete')}}">
+        <table class="table">
+          <tr class="table-header">
+            <th class="select-toggle"></th>
+            <th class="small-width">Name</th>
+            <th class="small-width">Number</th>
+            <th class="small-width">Rating</th>
+            <th class="small-width">Date</th>
+            <th class="small-width">Time</th>
+          </tr>
+          {% for entry in temp_list %}
+          <tr>
+            <td class="select-toggle">
+              <input
+                type="checkbox"
+                name="mycheckbox"
+                value="{{entry.get_count_id()}}"
+              />
+            </td>
+            <td>{{ entry.get_name() }}</td>
+            <td>{{ entry.get_number() }}</td>
+            <td>{{ entry.get_rating() }}</td>
+            <td>{{ entry.get_date() }}</td>
+            <td>{{ entry.get_time() }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+        <input
+          type="submit"
+          value="Delete selected feedbacks"
+          class="btn btn-primary"
+        />
+      </form>
+      {% endif %}
+    </div>
+  </div>
+</main>
+{% endblock %}{% block scripts %}{{super()}} {% endblock %}

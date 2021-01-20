@@ -41,6 +41,11 @@ def feedback():
     return render_template('feedback.html', form=form)
 
 @app.route("/")
+@app.route("/staff_feedback")
+def staff_feedback():
+    return render_template('staff_feedback.html')
+
+@app.route("/")
 @app.route("/temp_screen", methods=['GET', 'POST'])
 def temp_screen():
     form = Tempform()

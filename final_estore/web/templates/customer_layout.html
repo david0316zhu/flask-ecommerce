@@ -56,7 +56,12 @@
               <a class="dropdown-item" href="{{ url_for('e_store_cart')}}"
                 >Cart</a
               >
-              <a class="dropdown-item" href="{{ url_for('e_store_order') }}">Orders</a>
+              <a class="dropdown-item" href="{{ url_for('e_store_order') }}"
+                >Orders</a
+              >
+              <a class="dropdown-item" href="{{ url_for('feedback') }}"
+                >Feedback</a
+              >
               {% else %}
               <a class="dropdown-item" href="{{ url_for('e_store_login')}}"
                 >Login</a

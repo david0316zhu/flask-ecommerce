@@ -63,16 +63,16 @@ endblock %} {% block content%}
           {{ search_form.hidden_tag() }}
           <div class="d-flex justify-content-end">
             <div class="search-input">
-              {% if search_form.search.errors %} {{ search_form.search(class="form-input
-              is-invalid") }}
+              {% if search_form.search.errors %} {{
+              search_form.search(class="form-input is-invalid") }}
               <div class="invalid-feedback">
                 {% for error in search_form.search.errors %}
                 <span>{{ error }}</span>
                 {% endfor %}
               </div>
               {% else %} {{ search_form.search(placeholder="Search by NRIC",
-              id="search")}} {% endif %} {{ search_form.submit(class="material-icons")
-              }}
+              id="search")}} {% endif %} {{
+              search_form.submit(class="material-icons") }}
             </div>
           </div>
         </form>
@@ -81,44 +81,43 @@ endblock %} {% block content%}
           primary-btn small-btn ml-3") }}
         </form>
       </div>
-      <form method="POST" action="{{url_for('delete')}}">  
-      <table class="table">
-        <tr class="table-header">
-          <th class="select-toggle"></th>
-          <th class="small-width">Last 4 digits of NRIC</th>
-          <th class="small-width">Temperature</th>
-          <th class="small-width">Date</th>
-          <th class="small-width">Time</th>
-          <th class="small-width">Any symptoms</th>
-          <th class="small-width">Been in contact with Covid-19 patients</th>
-        </tr>
-        {% for entry in temp_list %}
-        <tr>
-          <td class="select-toggle"><input type="checkbox" name="mycheckbox" value="{{entry.get_count_id()}}"/></td>
-          <td>{{ entry.get_ic_num() }}</td>
-          <td>{{ entry.get_temperature() }}</td>
-          <td>{{ entry.get_date() }}</td>
-          <td>{{ entry.get_time() }}</td>
-          <td>{{ entry.get_symptoms() }}</td>
-          <td>{{ entry.get_contact() }}</td>
-        </tr>
-        {% endfor %}
-      </table>
-      <input type="submit" value="Delete selected records" class="btn btn-primary">
-      </form> 
+      <form method="POST" action="{{url_for('delete')}}">
+        <table class="table">
+          <tr class="table-header">
+            <th class="select-toggle"></th>
+            <th class="small-width">Last 4 digits of NRIC</th>
+            <th class="small-width">Temperature</th>
+            <th class="small-width">Date</th>
+            <th class="small-width">Time</th>
+            <th class="small-width">Any symptoms</th>
+            <th class="small-width">Been in contact with Covid-19 patients</th>
+          </tr>
+          {% for entry in temp_list %}
+          <tr>
+            <td class="select-toggle">
+              <input
+                type="checkbox"
+                name="mycheckbox"
+                value="{{entry.get_count_id()}}"
+              />
+            </td>
+            <td>{{ entry.get_ic_num() }}</td>
+            <td>{{ entry.get_temperature() }}</td>
+            <td>{{ entry.get_date() }}</td>
+            <td>{{ entry.get_time() }}</td>
+            <td>{{ entry.get_symptoms() }}</td>
+            <td>{{ entry.get_contact() }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+        <input
+          type="submit"
+          value="Delete selected records"
+          class="btn btn-primary"
+        />
+      </form>
       {% endif %}
     </div>
   </div>
 </main>
-{% endblock %}{% block scripts %}{{super()}}
-<!--<script>
-  $(document).ready(function () {
-    $(".select-toggle").hide();
-
-    // Set up select button
-    $("#select-btn").click(function () {
-      $(".select-toggle").toggle();
-    });
-  });
-</script>-->
-{% endblock %}
+{% endblock %}{% block scripts %}{{super()}} {% endblock %}
