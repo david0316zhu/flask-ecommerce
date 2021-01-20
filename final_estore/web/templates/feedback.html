@@ -1,0 +1,50 @@
+{% extends "customer_layout.html" %} {% block title %}Feedback{% endblock %}{%
+    block heading %}Feedback{% endblock %} {% block content %}
+<main class="grey-container">
+    <div class="col-lg-6" id="temp-info">
+      <form id="temp-form" class="mb-5" method="POST" action="">
+        {{ form.hidden_tag() }}
+        <div class="mb-5">
+          <h3>Your Feedback:</h3>
+        </div>
+        <div class="mb-3">
+          {{form.name.label(class="bold-text capitalise")}} {% if
+          form.name.errors %} {{ form.name(class="form-input is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.name.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.name(placeholder="E.g. John", class="form-input")}}
+          {% endif %}
+        </div>
+        <div class="mb-3">
+          {{form.number.label(class="bold-text")}} {% if
+          form.number.errors %} {{ form.number(class="form-input
+          is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.number.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.number(placeholder="E.g. 91234567", class="form-input")}} {% endif %}
+        </div>
+        <div class="mb-3">
+            {{form.rating.label(class="bold-text")}} 
+            {% if form.rating.errors %} {{ form.rating(class="form-input
+          is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.rating.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.rating(class="radio-input")}} {% endif %}
+        </div>
+        <div class="justify-content-start">
+          {{ form.submit(class="btn primary-btn small-btn") }}
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+{% endblock%}

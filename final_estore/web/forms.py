@@ -12,6 +12,12 @@ class Tempform(FlaskForm):
     check = BooleanField("I hereby declare that I have answered the above questions truthfully. I understand that a false declaration is equivalent to an attempt to wilfully deceive Singapore Government officials and cause harm to public safety, and that I may be prosecuted for such offences.", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
+class FeedbackForm(FlaskForm):
+    name = StringField("Name", validators=[DataRequired()])
+    number = FloatField("Number", validators=[DataRequired()])
+    rating = RadioField("Rating", validators=[DataRequired()], choices=[('1','1'), ('2', '2'),('3', '3'), ('4', '4'), ('5', '5')])
+    submit = SubmitField("Submit")
+
 class RegistrationForm(FlaskForm):
     email = StringField('Email',
                         validators=[DataRequired(), Email()])

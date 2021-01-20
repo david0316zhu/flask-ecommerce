@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, flash, redirect, session, request, jsonify
-from forms import Tempform, LoginForm, RegistrationForm, SearchForm, ProductForm, PriceForm, ControlForm, ResetForm, TimeForm, UpdateForm, CartForm, DiscountForm, DetailsForm, PaymentForm, TimeForm1
+from forms import Tempform, LoginForm, FeedbackForm, RegistrationForm, SearchForm, ProductForm, PriceForm, ControlForm, ResetForm, TimeForm, UpdateForm, CartForm, DiscountForm, DetailsForm, PaymentForm, TimeForm1
 from models import Temp, User, Product, Cart, Detail, Order
 import shelve
 from flask_bcrypt import Bcrypt
@@ -34,6 +34,11 @@ def home():
     session['customer'] = False
     return render_template('index.html')
 
+@app.route("/")
+@app.route("/feedback")
+def feedback():
+    form = FeedbackForm()
+    return render_template('feedback.html', form=form)
 
 @app.route("/")
 @app.route("/temp_screen", methods=['GET', 'POST'])
