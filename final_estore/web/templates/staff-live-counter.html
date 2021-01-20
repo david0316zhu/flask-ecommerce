@@ -42,13 +42,19 @@ content%}
       </div>
     </div>
     <div class="store-wrapper mt-5">
-      <input
-        type="number"
-        class="form-input"
-        placeholder="Enter no. of customers for the day"
-      />
-      <input type="submit" class="btn primary-btn" value="Store" />
+      <div class="mb-3">
+        <h4>Save no. of customers:</h4>
+      </div>
+      <div class="store-data">
+        <input
+          type="number"
+          class="form-input"
+          placeholder="Enter no. of customers for the day"
+        />
+        <input type="date" class="form-input" />
+        <input type="submit" class="btn primary-btn small-btn" value="Store" />
+      </div>
     </div>
   </div>
-  </main>
-  {% endblock %}
+</main>
+{% endblock %}

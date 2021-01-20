@@ -1086,12 +1086,16 @@ video {
 
 .store-wrapper {
   width: 500px;
+}
+
+.store-data {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.store-wrapper input[type="number"] {
+.store-wrapper input[type="number"],
+.store-wrapper input[type="date"] {
   margin-right: 2rem;
 }
 
