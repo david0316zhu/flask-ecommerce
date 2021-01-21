@@ -2,40 +2,6 @@
 %} {% block heading %}Store Entry Graph{% endblock %} {% block content%}
 <main>
   <div class="container-fluid grey-container justify-content-between">
-    <div class="white-card filter-panel mt-0">
-      <div class="mb-5">
-        <h3>Filter</h3>
-      </div>
-      <form id="filter-form">
-        <div class="mb-3">
-          <label for="start-time">
-            <span><b>By Time</b></span>
-          </label>
-          <div class="d-flex flex-column">
-            <div>
-              <input type="radio" id="day" name="time" value="day" />
-              <label for="day">Day</label>
-            </div>
-            <div>
-              <input type="radio" id="week" name="time" value="week" />
-              <label for="week">Week</label>
-            </div>
-            <div>
-              <input type="radio" id="month" name="time" value="month" />
-              <label for="month">Month</label>
-            </div>
-            <div>
-              <input type="radio" id="year" name="time" value="year" />
-              <label for="year">Year</label>
-            </div>
-          </div>
-        </div>
-        <div id="form-error" class="error mb-3"></div>
-        <button class="btn primary-btn">
-          <span>Submit</span>
-        </button>
-      </form>
-    </div>
     <div class="row col-lg-8 main-panel">
       <canvas id="myChart"></canvas>
     </div>

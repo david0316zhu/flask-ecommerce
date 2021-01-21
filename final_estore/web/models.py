@@ -5,6 +5,34 @@ from datetime import datetime
 from random import randint
 
 
+class Feedback:
+    counter = 0
+    def __init__(self, name, num, rating, feedback, date):
+        Feedback.counter += 1
+        self.__fcount = Feedback.counter
+        self.__name = name
+        self.__num = num
+        self.__rating = rating
+        self.__feedback = feedback
+        self.__date = date
+    def get_fcount(self):
+        return self.__fcount
+
+    def get_fname(self):
+        return self.__name
+    
+    def get_fnum(self):
+        return self.__num
+    
+    def get_frating(self):
+        return self.__rating
+
+    def get_ffeedback(self):
+        return self.__feedback
+
+    def get_fdate(self):
+        return self.__date
+
 
 class Temp:
     counter = 0
@@ -171,3 +199,4 @@ class Order:
 
     def get_email(self):
         return self.__email
+

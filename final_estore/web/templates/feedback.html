@@ -40,6 +40,17 @@
           </div>
           {% else %} {{ form.rating(class="radio-input")}} {% endif %}
         </div>
+        <div class="mb-3">
+          {{form.feedback.label(class="bold-text")}} {% if
+          form.feedback.errors %} {{ form.feedback(class="form-input
+          is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.feedback.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.feedback(placeholder="Any feedback?", class="form-input")}} {% endif %}
+        </div>
         <div class="justify-content-start">
           {{ form.submit(class="btn primary-btn small-btn") }}
         </div>

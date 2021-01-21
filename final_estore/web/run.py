@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, flash, redirect, session, request, jsonify
 from forms import Tempform, LoginForm, FeedbackForm, RegistrationForm, SearchForm, ProductForm, PriceForm, ControlForm, ResetForm, TimeForm, UpdateForm, CartForm, DiscountForm, DetailsForm, PaymentForm, TimeForm1
-from models import Temp, User, Product, Cart, Detail, Order
+from models import Temp, User, Product, Cart, Detail, Order, Feedback
 import shelve
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, current_user, logout_user, login_required, LoginManager
@@ -36,10 +36,25 @@ def home():
     return render_template('index.html')
 
 @app.route("/")
-@app.route("/feedback")
+@app.route("/feedback", methods=['GET', 'POST'])
 def feedback():
-    form = FeedbackForm()
-    return render_template('feedback.html', form=form)
+    if session.get('customer'):
+        form = FeedbackForm()
+        if form.validate_on_submit():
+            db = shelve.open('storage.db', 'c')
+            dat = date.today()
+            feed = {}
+            try:
+                feed = db["feedback"]
+            except:
+                print("error")
+            fd = Feedback(form.name.data, form.number.data, form.rating.data, form.feedback.data, dat)
+            feed[fd.get_fcount()] = fd
+            db["feedback"] = feed
+            print(db["feedback"])
+            db.close()
+            return redirect(url_for('e_store'))
+        return render_template('feedback.html', form=form)
 
 @app.route("/")
 @app.route("/staff_feedback")
