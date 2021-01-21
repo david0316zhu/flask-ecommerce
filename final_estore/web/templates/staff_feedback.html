@@ -23,38 +23,12 @@
             {% else %} {{ time_form.date(class="form-input",
             placeholder="YYYY-MM-DD") }} {% endif %}
           </div>
-          <div class="mb-3">
-            <label for="start-time">
-              <span><b>By Time</b></span>
-            </label>
-            <div class="timepicker mb-3">
-              {% if time_form.time1.errors %} {{
-              time_form.time1(class="form-input is-invalid") }}
-              <div class="invalid-feedback">
-                {% for error in time_form.time1.errors %}
-                <span>{{ error }}</span>
-                {% endfor %}
-              </div>
-              {% else %} {{ time_form.time1(class="form-input",
-              placeholder="HH:MM") }} {% endif %}
-              <span>To</span>
-              {% if time_form.time2.errors %} {{
-              time_form.time2(class="form-input is-invalid") }}
-              <div class="invalid-feedback">
-                {% for error in time_form.time2.errors %}
-                <span>{{ error }}</span>
-                {% endfor %}
-              </div>
-              {% else %} {{ time_form.time2(class="form-input",
-              placeholder="HH:MM") }} {% endif %}
-            </div>
-          </div>
           {{ time_form.search(class="btn primary-btn") }}
         </form>
       </div>
     </div>
     <div class="row flex-column col-lg-8 main-panel">
-      {% if temp_list|length == 0 %}
+      {% if feed_list|length == 0 %}
       <span><b>No data available.</b></span>
       {% else %}
       <div class="d-flex justify-content-end align-items-center mb-5">
@@ -75,35 +49,32 @@
             </div>
           </div>
         </form>
-        <form method="POST" action="">
-          {{ reset_form.hidden_tag() }} {{ reset_form.reset(class="btn
-          primary-btn small-btn ml-3") }}
-        </form>
       </div>
-      <form method="POST" action="{{url_for('delete')}}">
+      <form method="POST" action="{{url_for('deletef')}}">
         <table class="table">
           <tr class="table-header">
             <th class="select-toggle"></th>
             <th class="small-width">Name</th>
             <th class="small-width">Number</th>
             <th class="small-width">Rating</th>
+            <th class="medium-width">Feedback</th>
             <th class="small-width">Date</th>
-            <th class="small-width">Time</th>
           </tr>
-          {% for entry in temp_list %}
+          {% for entry in feed_list %}
           <tr>
             <td class="select-toggle">
               <input
                 type="checkbox"
                 name="mycheckbox"
-                value="{{entry.get_count_id()}}"
+                value="{{entry.get_fcount()}}"
               />
             </td>
-            <td>{{ entry.get_name() }}</td>
-            <td>{{ entry.get_number() }}</td>
-            <td>{{ entry.get_rating() }}</td>
-            <td>{{ entry.get_date() }}</td>
-            <td>{{ entry.get_time() }}</td>
+            <td>{{ entry.get_fname() }}</td>
+            <td>{{ entry.get_fnum() }}</td>
+            <td>{{ entry.get_frating() }}</td>
+            <td>{{ entry.get_ffeedback() }}</td>
+            <td>{{ entry.get_fdate() }}</td>
+            
           </tr>
           {% endfor %}
         </table>

@@ -57,9 +57,58 @@ def feedback():
         return render_template('feedback.html', form=form)
 
 @app.route("/")
-@app.route("/staff_feedback")
+@app.route("/staff_feedback", methods=['GET', 'POST'])
 def staff_feedback():
+    if session.get('logged_in'):
+        feed_dict = {}
+        db = shelve.open('storage.db', 'w')
+        try:
+            feed_dict = db["feedback"]
+        except:
+            print("error")
+        feed_list = []
+        for key in feed_dict:
+            entry = feed_dict.get(key)
+            feed_list.append(entry)
+        search_form = SearchForm()
+        time_form = TimeForm1()
+        if time_form.validate_on_submit():
+            time_list = []
+            for t in feed_list:
+                time_check = t.get_fdate()
+                if time_form.date.data == time_check:
+                    time_list.append(t)
+            feed_list = time_list
+            return render_template('staff_feedback.html', search_form=search_form, time_form=time_form, feed_list = feed_list)
+        if search_form.validate_on_submit():
+            search_list = []
+            for j in feed_list:
+                name_check = j.get_fname()
+                if search_form.search.data.casefold() in name_check.casefold():
+                    search_list.append(j)
+            feed_list = search_list
+            return render_template('staff_feedback.html', search_form=search_form, time_form=time_form, feed_list = feed_list)
+        return render_template('staff_feedback.html', search_form=search_form, time_form=time_form, feed_list = feed_list)
+    else:
+        return redirect(url_for('staff_login'))
+        
+
     return render_template('staff_feedback.html')
+@app.route("/")
+@app.route("/delete_feedback", methods=['GET', 'POST'])
+def deletef():
+    if session.get('logged_in'):
+        if request.method == 'POST':
+            db = shelve.open('storage.db', 'c')
+            feed_dict = db["feedback"]
+            for getid in request.form.getlist('mycheckbox'):
+                print(getid)
+                entry = feed_dict.pop(int(getid))
+                print(entry)
+            db["feedback"] = feed_dict
+            return redirect(url_for('staff_feedback'))
+
+
 
 @app.route("/")
 @app.route("/temp_screen", methods=['GET', 'POST'])
@@ -580,7 +629,10 @@ def staff_records():
     if session.get('logged_in'):
         temp_dict = {}
         db = shelve.open('storage.db', 'w')
-        temp_dict = db['Temp']
+        try:
+            temp_dict = db['Temp']
+        except:
+            print("error")
         temp_list = []
         
         for key in temp_dict:

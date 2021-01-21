@@ -14,7 +14,7 @@ class Tempform(FlaskForm):
 
 class FeedbackForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired()])
-    number = FloatField("Number", validators=[DataRequired()])
+    number = IntegerField("Number", validators=[DataRequired()])
     rating = RadioField("Rating (1 being very bad and 5 being excellent)", validators=[DataRequired()], choices=[('1','1'), ('2', '2'),('3', '3'), ('4', '4'), ('5', '5')])
     feedback = StringField("Feedback", validators=[Length(max=400)])
     submit = SubmitField("Submit")
