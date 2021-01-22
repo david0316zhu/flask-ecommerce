@@ -364,8 +364,8 @@ def e_store_order():
         
     else:
         return redirect(url_for("e_store"))
-
-@app.route('/delete_customer_order/<string:id>', methods=['POST'])
+@app.route("/")
+@app.route('/delete_customer_order/<string:id>', methods=["GET", 'POST'])
 def remove_customer_order(id):
     if session.get('customer'):
         print('hi')
@@ -376,6 +376,53 @@ def remove_customer_order(id):
         db[email] = order_dict
         db.close()
         return redirect(url_for('e_store_order'))
+    else:
+        return redirect(url_for('e_store'))
+
+
+
+
+@app.route('/delete_customer_cart/<string:id>', methods=["GET", 'POST'])
+def remove_customer_cart(id):
+    if session.get('customer'):
+        print('hi')
+        db = shelve.open('storage.db', 'w')
+        cart_dict = db["cart"]
+        entry = cart_dict.pop(id)
+        db["cart"] = cart_dict
+        db.close()
+        return redirect(url_for('e_store_cart'))
+    else:
+        return redirect(url_for('e_store'))
+
+
+
+@app.route('/add_customer_cart/<string:id>', methods=["GET", 'POST'])
+def add_customer_cart(id):
+    if session.get('customer'):
+        print('hi')
+        db = shelve.open('storage.db', 'w')
+        cart_dict = db["cart"]
+        entry = cart_dict.get(id)
+        entry.set_quantity(entry.get_quantity() + 1)
+        db["cart"] = cart_dict
+        db.close()
+        return redirect(url_for('e_store_cart'))
+    else:
+        return redirect(url_for('e_store'))
+
+
+@app.route('/minus_customer_cart/<string:id>', methods=["GET", 'POST'])
+def minus_customer_cart(id):
+    if session.get('customer'):
+        print('hi')
+        db = shelve.open('storage.db', 'w')
+        cart_dict = db["cart"]
+        entry = cart_dict.get(id)
+        entry.set_quantity(entry.get_quantity() - 1)
+        db["cart"] = cart_dict
+        db.close()
+        return redirect(url_for('e_store_cart'))
     else:
         return redirect(url_for('e_store'))
 
