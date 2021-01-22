@@ -74,14 +74,13 @@
             <td>{{ entry.get_frating() }}</td>
             <td>{{ entry.get_ffeedback() }}</td>
             <td>{{ entry.get_fdate() }}</td>
-            
           </tr>
           {% endfor %}
         </table>
         <input
           type="submit"
           value="Delete selected feedbacks"
-          class="btn btn-primary"
+          class="btn primary-btn red-btn small-btn"
         />
       </form>
       {% endif %}

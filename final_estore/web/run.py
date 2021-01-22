@@ -21,7 +21,7 @@ def home():
     db["online"] = {}
     db["cart"] = {}
     db["error"] = {}
-    #db["total"] = {}
+    # db["total"] = {}
     
     
     # db["Product"]={}
