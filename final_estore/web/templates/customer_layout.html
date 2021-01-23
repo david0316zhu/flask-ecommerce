@@ -76,10 +76,12 @@
           <i class="material-icons-outlined pink-text mr-2">call</i>
           <span>+65 1234 5678</span>
         </div>
-        <a class="home-nav-icon position-relative" href="cart.html">
+        {% if session.get('customer') %}
+        <a class="home-nav-icon position-relative" href="{{ url_for('e_store_cart') }}">
           <!-- <div class="badge">3</div> -->
           <i class="material-icons">shopping_cart</i>
         </a>
+        {% endif %}
         <a
           class="d-flex align-items-center exit-btn"
           id="exit-btn"
